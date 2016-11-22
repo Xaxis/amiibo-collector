@@ -1,0 +1,224 @@
+//--------
+// Fluid-grid mixin for creating fluid and responsive columns.
+// See: https://github.com/Xaxis/fluid-grid
+//
+// @cols              Number of columns
+// @break             Breakpoint width
+// @mod               Modifier ratio
+// @gutter            Gutter width
+// @fluid-gutter      Fluid gutter percentage width
+@mixin fg-col(
+  $cols: 1,
+  $break: 0,
+  $mod: 0,
+  $gutter: $fg-gutter,
+  $fluid-gutter: $fg-fluid-gutter
+) {
+
+  // Default column styling
+  & {
+    box-sizing: border-box;
+  }
+  position: relative;
+  float: left;
+  &:before,
+  &:after {
+    content: " ";
+    display: table;
+  }
+  &:after {
+    clear: both;
+  }
+
+  // Fixed gutter
+  html.csscalc & {
+    margin-left: $gutter;
+  }
+
+  // Fluid gutter
+  html:not(.csscalc) & {
+    margin-left: #{$fluid-gutter + '%'};
+  }
+
+  // Eliminate first column margin
+  html.csscalc &, html:not(.csscalc) & {
+    &:first-child {
+      margin-left: 0;
+    }
+  }
+
+  // Equal column width
+  @if $mod == 0 and $mod != 1 {
+
+    // When css calc()
+    html.csscalc & {
+      width: -webkit-calc(((100% / #{$cols}) - #{$gutter}) + (#{$gutter / $cols}));
+      width: calc(((100% / #{$cols}) - #{$gutter}) + (#{$gutter / $cols}));
+    }
+
+    // When NOT css calc()
+    html:not(.csscalc) & {
+      $ucw: (100 / $cols);
+      $cw: 0;
+      @if $cols == 1 {
+        $cw: $ucw;
+      } @else {
+        $cw: $ucw - $fluid-gutter + ($fluid-gutter / $cols);
+      }
+      width: #{$cw + '%'};
+    }
+  }
+
+    // Modifier column width
+  @else if $mod {
+    $mw: 0;
+
+    // 1/7 width
+    @if $mod == '1/8' {
+      $mw: 12.5;
+    }
+
+    // 1/8 width
+    @if $mod == '1/7' {
+      $mw: 14.2857142857;
+    }
+
+    // 1/6 width
+    @if $mod == '1/6' {
+      $mw: 16.6666666667;
+    }
+
+    // 1/5 width
+    @if $mod == '1/5' {
+      $mw: 20;
+    }
+
+    // 1/4 width
+    @if $mod == '1/4' {
+      $mw: 25;
+    }
+
+    // 1/3 width
+    @if $mod == '1/3' {
+      $mw: 33.3333;
+    }
+
+    // 2/5 width
+    @if $mod == '2/5' {
+      $mw: 40;
+    }
+
+    // 1/2 width
+    @if $mod == '1/2' {
+      $mw: 50;
+    }
+
+    // 3/5 width
+    @if $mod == '3/5' {
+      $mw: 60;
+    }
+
+    // 2/3 width
+    @if $mod == '2/3' {
+      $mw: 66.6666;
+    }
+
+    // 3/4 width
+    @if $mod == '3/4' {
+      $mw: 75;
+    }
+
+    // 4/5 width
+    @if $mod == '4/5' {
+      $mw: 80;
+    }
+
+    // 7/8 width
+    @if $mod == '7/8' {
+      $mw: 87.5;
+    }
+
+    // When css calc()
+    html.csscalc & {
+      width: -webkit-calc(#{$mw + '%'} - (#{$gutter} / 2));
+      width: calc(#{$mw + '%'} - (#{$gutter} / 2));
+    }
+
+    // When NOT css calc()
+    html:not(.csscalc) & {
+      $p: $mw / 100;
+      $cw: ($p * 100) - $fluid-gutter + ($fluid-gutter / 2);
+      width: #{$cw + '%'};
+    }
+  }
+
+  // Include any extra rules
+  @content;
+
+  // Responsive media query
+  @if $break > 0 {
+    @media only screen and (max-width: $break) {
+
+      // When css calc() and NOT css calc()
+      html.csscalc &, html:not(.csscalc) & {
+        width: 100%;
+        margin-left: 0;
+        & + * {
+          margin-top: $gutter;
+        }
+
+        // Include breakpoint style overrides
+        @content;
+      }
+    }
+  }
+}
+
+//--------
+// Fluid-grid base classes
+// See: https://github.com/Xaxis/fluid-grid
+@for $i from 1 through 8 {
+  .fg-col:first-child:nth-last-child(#{$i}),
+  .fg-col:first-child:nth-last-child(#{$i}) ~ .fg-col {
+    @include fg-col(#{$i}, $fg-col-13, 0);
+    &.fg-1-8 {
+      @include fg-col(#{$i}, $fg-col-13, '1/8');
+    }
+    &.fg-1-7 {
+      @include fg-col(#{$i}, $fg-col-13, '1/7');
+    }
+    &.fg-1-6 {
+      @include fg-col(#{$i}, $fg-col-13, '1/6');
+    }
+    &.fg-1-5 {
+      @include fg-col(#{$i}, $fg-col-13, '1/5');
+    }
+    &.fg-1-4 {
+      @include fg-col(#{$i}, $fg-col-13, '1/4');
+    }
+    &.fg-1-3 {
+      @include fg-col(#{$i}, $fg-col-13, '1/3');
+    }
+    &.fg-2-5 {
+      @include fg-col(#{$i}, $fg-col-13, '2/5');
+    }
+    &.fg-1-2 {
+      @include fg-col(#{$i}, $fg-col-13, '1/2');
+    }
+    &.fg-3-5 {
+      @include fg-col(#{$i}, $fg-col-13, '3/5');
+    }
+    &.fg-2-3 {
+      @include fg-col(#{$i}, $fg-col-13, '2/3');
+    }
+    &.fg-3-4 {
+      @include fg-col(#{$i}, $fg-col-13, '3/4');
+    }
+    &.fg-4-5 {
+      @include fg-col(#{$i}, $fg-col-13, '4/5');
+    }
+    &.fg-7-8 {
+      @include fg-col(#{$i}, $fg-col-13, '7/8');
+    }
+  }
+}

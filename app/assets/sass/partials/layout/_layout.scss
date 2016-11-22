@@ -1,0 +1,56 @@
+//--------
+// Layout
+//
+// Core/over arching layout structures defining sitewide zones
+
+
+.intro {
+  @include clearfix();
+  @include site-width('md', true, false);
+  margin-bottom: 20px;
+  padding: $fg-gutter;
+}
+
+
+.controls {
+  @include clearfix();
+  margin-bottom: 20px;
+  padding: $fg-gutter;
+  background-color: $light-gray;
+  z-index: 999;
+  opacity: 0.8;
+  transition: padding 350ms ease;
+  &.stuck {
+    width: 100%;
+    padding: 0 $fg-gutter;
+    transition: padding 350ms ease;
+  }
+  .page-width {
+    @include clearfix();
+    @include site-width('md', true, false);
+    padding: $fg-gutter;
+  }
+  a + a {
+    margin-left: $fg-gutter;
+  }
+}
+
+
+.grid-container {
+  @include clearfix();
+  @include site-width('md', true, false);
+  padding: $fg-gutter;
+  .amiibo-grid + .amiibo-grid {
+    margin-top: 4%;
+  }
+  .grid-item {
+    opacity: 0.3;
+    img {
+      width: 100%;
+      height: auto;
+    }
+  }
+  .grid-item.collected {
+    opacity: 1;
+  }
+}

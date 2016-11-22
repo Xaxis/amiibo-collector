@@ -1,0 +1,67 @@
+//--------
+// Main
+//
+// Main Stylesheet Entry Point
+// This file combines imported files into a primary style sheet
+
+
+//--------
+// Variable definitions
+@import "partials/core/config";
+
+
+//--------
+// Grid Structure
+@import "partials/core/grid";
+
+
+//--------
+// Mixin definitions
+@import "partials/core/mixers";
+
+
+//--------
+// Typography definitions
+@import "partials/core/fonts";
+
+
+//--------
+// Media print style definitions
+@import "partials/core/print";
+
+
+//--------
+// Element resets based on normalize
+// See https://github.com/necolas/normalize.css
+// See http://necolas.github.io/normalize.css/latest/test.html
+@import "vendor/normalize";
+
+
+//--------
+// Core element and element library definitions
+@import "partials/core/base";
+
+
+//--------
+// Helper class definitions
+@import "partials/core/helpers";
+
+
+//--------
+// Sitewide core layout structure
+@import "partials/layout/layout";
+
+
+//--------
+// Sitewide header layout
+@import "partials/layout/header";
+
+
+//--------
+// Sitewide footer layout
+@import "partials/layout/footer";
+
+
+//--------
+// Objects
+@import "partials/object/grid";

@@ -1,0 +1,179 @@
+//--------
+// Config
+//
+// Variable definitions
+
+
+//----------------------------------------------------------------------------------------------------------------------
+// GRID
+//----------------------------------------------------------------------------------------------------------------------
+
+//--------
+// Grid dimensions (REQUIRED)
+$fg-col: 40px;                                    // Column width
+$fg-gutter: 20px;                                 // Gutter width
+$fg-fluid-gutter: 1.6;                            // Fluid gutter percentage
+
+//--------
+// Grid dimensions (AUXILIARY)
+$fg-col-total: 24;                                // Column total
+$fg-grid-width: $fg-col + $fg-gutter;             // Grid width (60px)
+$fg-grid-total: $fg-grid-width * $fg-col-total;   // Grid total width
+
+//--------
+// Grid columns
+$fg-col-1: $fg-grid-width * 1;
+$fg-col-2: $fg-grid-width * 2;
+$fg-col-3: $fg-grid-width * 3;
+$fg-col-4: $fg-grid-width * 4;
+$fg-col-5: $fg-grid-width * 5;
+$fg-col-6: $fg-grid-width * 6;
+$fg-col-7: $fg-grid-width * 7;
+$fg-col-8: $fg-grid-width * 8;
+$fg-col-9: $fg-grid-width * 9;
+$fg-col-10: $fg-grid-width * 10;
+$fg-col-11: $fg-grid-width * 11;
+$fg-col-12: $fg-grid-width * 12;
+$fg-col-13: $fg-grid-width * 13;
+$fg-col-14: $fg-grid-width * 14;
+$fg-col-15: $fg-grid-width * 15;
+$fg-col-16: $fg-grid-width * 16;
+$fg-col-17: $fg-grid-width * 17;
+$fg-col-18: $fg-grid-width * 18;
+$fg-col-19: $fg-grid-width * 19;
+$fg-col-20: $fg-grid-width * 20;
+$fg-col-21: $fg-grid-width * 21;
+$fg-col-22: $fg-grid-width * 22;
+$fg-col-23: $fg-grid-width * 23;
+$fg-col-24: $fg-grid-width * 24;
+
+
+//----------------------------------------------------------------------------------------------------------------------
+// BREAKPOINTS
+//----------------------------------------------------------------------------------------------------------------------
+
+//--------
+// Grid breakpoints
+$fg-break-lg: $fg-col-24;                           // 1440px   Wide
+$fg-break-md: $fg-col-16;                           // 960px    Desktop
+$fg-break-sm: $fg-col-13;                           // 780px    Tablet
+$fg-break-xs: $fg-col-8;                            // 480px    Mobile
+
+
+//----------------------------------------------------------------------------------------------------------------------
+// FONTS
+//----------------------------------------------------------------------------------------------------------------------
+
+//--------
+// Font family
+$font-regular: 'Open Sans';
+$font-light: 'Open Sans Light';
+$font-bold: 'Open Sans Semibold';
+
+//--------
+// Font weights
+$font-weight-light: 100;
+$font-weight-regular: 400;
+$font-weight-bold: 800;
+
+//--------
+// Base font
+$base-font-family: $font-regular;
+$base-font-weight: $font-weight-regular;
+$base-font-size: 16px;
+$base-line-height: 1.4;
+
+//--------
+// Fixed font
+$fixed-font-family: monospace;
+$fixed-font-size: 85%;
+$fixed-line-height: $base-line-height;
+
+
+//----------------------------------------------------------------------------------------------------------------------
+// DIMENSIONS
+//----------------------------------------------------------------------------------------------------------------------
+
+//--------
+// Stack order
+$z-index-0:   0;
+$z-index-1:   1;
+$z-index-2:   2;
+$z-index-3:   3;
+$z-index-4:   4;
+$z-index-5:   5;
+$z-index-6:   6;
+$z-index-7:   7;
+$z-index-8:   8;
+$z-index-9:   9;
+$z-index-10: 10;
+$z-below: -999999;
+$z-above: 999999;
+
+
+//----------------------------------------------------------------------------------------------------------------------
+// TRANSITIONS
+//----------------------------------------------------------------------------------------------------------------------
+
+//--------
+// Defaults
+$trans-speed: 0.2s;
+$trans-ease: linear;
+
+
+//----------------------------------------------------------------------------------------------------------------------
+// BASE COLORS
+//----------------------------------------------------------------------------------------------------------------------
+
+//--------
+// Base colors
+$white: rgba(255, 255, 255, 1.0);      // #ffffff
+$white-hex: #ffffff;
+$amber: rgba(255, 173, 26, 1.0);       // #ffae1a
+$amber-hex: #ffae1a;
+$yellow: rgba(255, 216, 110, 1.0);     // #ffd86e
+$yellow-hex: #ffd86e;
+$black: rgba(34, 34, 34, 1.0);         // #222222
+$black-hex: #222222;
+$crimson: rgba(214, 55, 0, 1.0);       // #d63700
+$crimson-hex: #d63700;
+$red: rgba(255, 92, 54, 1.0);          // #ff5c36
+$red-hex: #ff5c36;
+$pink: rgba(255, 168, 145, 1.0);       // #ffa091
+$pink-hex: #ffa091;
+$forest: rgba(20, 147, 128, 1.0);      // #149380
+$forest-hex: #149380;
+$green: rgba(0, 216, 123, 1.0);        // #00d87b
+$green-hex: #00d87b;
+$seafoam: rgba(89, 226, 183, 1.0);     // #59e2b7
+$seafoam-hex: #59e2b7;
+$blue: rgba(56, 128, 255, 1.0);        // #3880ff
+$blue-hex: #3880ff;
+$azure: rgba(89, 161, 247, 1.0);       // #59a1f7
+$azure-hex: #59a1f7;
+$sky: rgba(145, 178, 255, 1.0);        // #91b2ff
+$sky-hex: #91b2ff;
+$gray: rgba(222, 222, 222, 1.0);       // #DEDEDE
+$gray-hex: #DEDEDE;
+
+//--------
+// Link colors
+
+//--------
+// Text colors
+$main-text-color: #5D5E59;
+
+//--------
+// Common colors
+$light-gray: #f7f7f7;
+$soft-gray: #fafafa;
+$mid-gray: #aaaaaa;
+$text-ltgrey: #989898;
+
+
+//----------------------------------------------------------------------------------------------------------------------
+// SITEWIDE LAYOUT
+//----------------------------------------------------------------------------------------------------------------------
+$page-padding: 0 $fg-gutter;
+$page-xl-padding: 0 $fg-gutter * 4;
+

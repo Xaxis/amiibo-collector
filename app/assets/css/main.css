@@ -5173,7 +5173,8 @@ body {
   .grid-container .amiibo-grid + .amiibo-grid {
     margin-top: 4%; }
   .grid-container .grid-item {
-    opacity: 0.3; }
+    opacity: 0.3;
+    text-align: center; }
     .grid-container .grid-item img {
       width: 100%;
       height: auto; }

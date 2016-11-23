@@ -36,21 +36,61 @@ define([
       animalcrossing: {
         title: "Animal Crossing",
         amiibos: {
-          'blathers': {},
-          'celeste': {},
-          'cyrus': {},
-          'digby': {},
-          'isabellewinteroutfit': {},
-          'kappn': {},
-          'kicks': {},
-          'kk': {},
-          'lottie': {},
-          'mabel': {},
-          'reese': {},
-          'reseti': {},
-          'rover': {},
-          'timmytommy': {},
-          'tomnook': {}
+          blathers: {
+            title: "Blathers"
+          },
+          celeste: {
+            title: "Celeste"
+          },
+          cyrus: {
+            title: "Cyrus"
+          },
+          digby: {
+            title: "Digby"
+          },
+          isabellewinteroutfit: {
+            title: "Isabelle (winter outfit)"
+          },
+          kappn: {
+            title: "Kappn"
+          },
+          kicks: {
+            title: "Kicks"
+          },
+          kk: {
+            title: "K.K."
+          },
+          lottie: {
+            title: "Lottie"
+          },
+          mabel: {
+            title: "Mabel"
+          },
+          reese: {
+            title: "Reese"
+          },
+          reseti: {
+            title: "Reseti"
+          },
+          rover: {
+            title: "Rover"
+          },
+          timmytommy: {
+            title: "Timmy & Tommy"
+          },
+          tomnook: {
+            title: "Tom Nook"
+          }
+        }
+      },
+
+      // Chibi robo
+      chibi: {
+        title: "Chibi Robo",
+        amiibos: {
+          robo: {
+            title: "Chibi Robo"
+          }
         }
       },
 
@@ -58,8 +98,118 @@ define([
       kirby: {
         title: "Kirby",
         amiibos: {
-          'kingdedede': {},
-          'waddledee': {}
+          kingdedede: {
+            title: "King Dedede"
+          },
+          kirby: {
+            title: "Kirby"
+          },
+          metaknight: {
+            title: "Meta Knight"
+          },
+          waddledee: {
+            title: "Waddle Dee"
+          }
+        }
+      },
+
+      // Legend of zelda
+      loz: {
+        title: "Legend of Zelda",
+        amiibos: {
+          anniversarylink: {
+            title: "Link - 30th Anniversary"
+          },
+          linkarcher: {
+            title: "Link - Archer"
+          },
+          linkrider: {
+            title: "Link - Rider"
+          },
+          ocarinalink: {
+            title: "Link - Ocarina of Time"
+          },
+          toonlink: {
+            title: "Toon Link - The Wind Waker"
+          },
+          wolflink: {
+            title: "Wolf Link"
+          },
+          zelda: {
+            title: "Zelda - The Wind Waker"
+          }
+        }
+      },
+
+      // Mega man
+      megaman: {
+        title: "Mega Man - Legacy Collection",
+        amiibos: {
+          gold: {
+            title: "Mega Man - Gold Edition"
+          }
+        }
+      },
+
+      // Monster hunter
+      monsterhunter: {
+        title: "Monster Hunter",
+        amiibos: {
+
+        }
+      },
+
+      // Shovel knight
+      shovelknight: {
+        title: "Shovel Knight",
+        amiibos: {
+          shovelknight: {
+            title: "Shovel Knight"
+          }
+        }
+      },
+
+      // Skylanders
+      skylanders: {
+        title: "Skylanders Superchargers",
+        amiibos: {
+          hammerslambowser: {
+            title: "Hammer Slam Bowser"
+          },
+          superchargeddonkeykong: {
+            title: "Super Charged Donkey Kong"
+          }
+        }
+      },
+
+      // Splatoons
+      splatoons: {
+        title: "Splatoons",
+        amiibos: {
+          callie: {
+            title: "Callie"
+          },
+          inklingboy1: {
+            title: "Inkling Girl 1"
+          },
+          inklingboy2: {
+            title: "Inkling Girl 2"
+          },
+          inklinggirl1: {
+            title: "Inkling Girl 1"
+          },
+          inklinggirl2: {
+            title: "Inkling Girl 2"
+          },
+          inklingsquidgreen: {
+            title: "Inkling Squid (Green)"
+          },
+          inklingsquidorange: {
+            title: "Inkling Squid (Orange)"
+          },
+          marie: {
+            title: "Marie"
+          }
         }
       },
 
@@ -67,62 +217,171 @@ define([
       ssb: {
         title: "Super Smash Brothers",
         amiibos: {
-          bowser: {},
-          bowserjr: {},
-          captainfalcon: {},
-          charizard: {},
-          darkpit: {},
-          diddykong: {},
-          donkeykong: {},
-          drmario: {},
-          duckhunt: {},
-          falco: {},
-          famicomrob: {},
-          fox: {},
-          gamewatch: {},
-          ganondorf: {},
-          greninja: {},
-          ike: {},
-          jigglypuff: {},
-          kingdedede: {},
-          kirby: {},
-          link: {},
-          littlemac: {},
-          lucario: {},
-          lucas: {},
-          lucina: {},
-          luigi: {},
-          mario: {},
-          marth: {},
-          megaman: {},
-          metaknight: {},
-          mewtwo: {},
-          miibrawler: {},
-          miigunner: {},
-          miiswordfighter: {},
-          ness: {},
-          olimar: {},
-          pacman: {},
-          palutena: {},
-          peach: {},
-          pikachu: {},
-          pit: {},
-          rob: {},
-          robin: {},
-          rosalina: {},
-          roy: {},
-          ryu: {},
-          samus: {},
-          sheik: {},
-          shulk: {},
-          sonic: {},
-          toonlink: {},
-          villager: {},
-          wario: {},
-          wiifittrainer: {},
-          yoshi: {},
-          zelda: {},
-          zerosuitsamus: {}
+          bowser: {
+            title: "Bowser"
+          },
+          bowserjr: {
+            title: "Bowser Jr."
+          },
+          captainfalcon: {
+            title: "Captain Falcon"
+          },
+          charizard: {
+            title: "Charizard"
+          },
+          darkpit: {
+            title: "Dark Pit"
+          },
+          diddykong: {
+            title: "Diddy Kong"
+          },
+          donkeykong: {
+            title: "Donkey Kong"
+          },
+          drmario: {
+            title: "Dr. Mario"
+          },
+          duckhunt: {
+            title: "Duck Hunt Dog"
+          },
+          falco: {
+            title: "Falco"
+          },
+          famicomrob: {
+            title: "Famicom Rob"
+          },
+          fox: {
+            title: "Fox"
+          },
+          gamewatch: {
+            title: "Mr. Game & Watch"
+          },
+          ganondorf: {
+            title: "Ganondorf"
+          },
+          greninja: {
+            title: "Greninja"
+          },
+          ike: {
+            title: "Ike"
+          },
+          jigglypuff: {
+            title: "Jiggly Puff"
+          },
+          kingdedede: {
+            title: "King Dedede"
+          },
+          kirby: {
+            title: "Kirby"
+          },
+          link: {
+            title: "Link"
+          },
+          littlemac: {
+            title: "Little Mac"
+          },
+          lucario: {
+            title: "Lucario"
+          },
+          lucas: {
+            title: "Lucas"
+          },
+          lucina: {
+            title: "Lucina"
+          },
+          luigi: {
+            title: "Luigi"
+          },
+          mario: {
+            title: "Mario"
+          },
+          marth: {
+            title: "Marth"
+          },
+          megaman: {
+            title: "Mega Man"
+          },
+          mewtwo: {
+            title: "Mewtwo"
+          },
+          miibrawler: {
+            title: "Mii Brawler"
+          },
+          miigunner: {
+            title: "Mii Gunner"
+          },
+          miiswordfighter: {
+            title: "Mii Sword Fighter"
+          },
+          ness: {
+            title: "Ness"
+          },
+          olimar: {
+            title: "Olimar"
+          },
+          pacman: {
+            title: "Pac Man"
+          },
+          palutena: {
+            title: "Palutena"
+          },
+          peach: {
+            title: "Peach"
+          },
+          pikachu: {
+            title: "Pikachu"
+          },
+          pit: {
+            title: "Pit"
+          },
+          rob: {
+            title: "Rob"
+          },
+          robin: {
+            title: "Robin"
+          },
+          rosalina: {
+            title: "Rosalina"
+          },
+          roy: {
+            title: "Roy"
+          },
+          ryu: {
+            title: "Ryu"
+          },
+          samus: {
+            title: "Samus"
+          },
+          sheik: {
+            title: "Sheik"
+          },
+          shulk: {
+            title: "Shulk"
+          },
+          sonic: {
+            title: "Sonic"
+          },
+          toonlink: {
+            title: "Toon Link"
+          },
+          villager: {
+            title: "Villager"
+          },
+          wario: {
+            title: "Wario"
+          },
+          wiifittrainer: {
+            title: "Wii Fit Trainer"
+          },
+          yoshi: {
+            title: "Yoshi"
+          },
+          zelda: {
+            title: "Zelda"
+          },
+          zerosuitsamus: {
+            title: "Zero Suit Samus"
+          }
         }
       },
 
@@ -130,21 +389,64 @@ define([
       supermario: {
         title: "Super Mario",
         amiibos: {
-          boo: {},
-          bowser: {},
-          daisy: {},
-          diddykong: {},
-          donkeykong: {},
-          goldmario: {},
-          luigi: {},
-          mario: {},
-          peach: {},
-          rosalina: {},
-          silvermario: {},
-          toad: {},
-          waluigi: {},
-          wario: {},
-          yoshi: {}
+          boo: {
+            title: "Boo"
+          },
+          bowser: {
+            title: "Bowser"
+          },
+          daisy: {
+            title: "Daisy"
+          },
+          diddykong: {
+            title: "Diddy Kong"
+          },
+          donkeykong: {
+            title: "Donkey Kong"
+          },
+          goldmario: {
+            title: "Gold Mario"
+          },
+          luigi: {
+            title: "Luigi"
+          },
+          mario: {
+            title: "Mario"
+          },
+          peach: {
+            title: "Peach"
+          },
+          rosalina: {
+            title: "Rosalina"
+          },
+          silvermario: {
+            title: "Silver Mario"
+          },
+          toad: {
+            title: "Toad"
+          },
+          waluigi: {
+            title: "Waluigi"
+          },
+          wario: {
+            title: "Wario"
+          },
+          yoshi: {
+            title: "Yoshi"
+          }
+        }
+      },
+
+      // Super Mario Bros. 30th
+      supermario30th: {
+        title: "Super Mario Bros. 30th",
+        amiibos: {
+          classiccolor: {
+            title: "30th Anniversary Mario - Classic Color"
+          },
+          moderncolor: {
+            title: "30th Anniversary Mario - Modern Color"
+          }
         }
       },
 
@@ -152,11 +454,21 @@ define([
       yoshi: {
         title: "Yoshi",
         amiibos: {
-          blueyarnyoshi: {},
-          greenyarnyoshi: {},
-          megayarnyoshi: {},
-          pinkyarnyoshi: {},
-          poochi: {}
+          blueyarnyoshi: {
+            title: "Blue Yarn Yoshi"
+          },
+          greenyarnyoshi: {
+            title: "Green Yarn Yoshi"
+          },
+          megayarnyoshi: {
+            title: "Mega Yarn Yoshi"
+          },
+          pinkyarnyoshi: {
+            title: "Pink Yarn Yoshi"
+          },
+          poochy: {
+            title: "Poochy"
+          }
         }
       }
     },
@@ -165,7 +477,7 @@ define([
     // Local Storage configuration
     storage_settings: {
       id: "amiibo-collection",
-      dont_use_local: false,
+      dont_use_local: true,
       is_local: window.localStorage ? true : false
     },
 
@@ -237,12 +549,12 @@ define([
         _.each(group.amiibos, function(amiibo, amiibo_name) {
           var
             amiibo_path        = path + group_name + '-' + amiibo_name + '.png';
-
+console.log(amiibo);
           // Create new grid object
           grid.find('.' + group_name + ' .group').append(self.templates.amiiboGridItem({
             amiibo_name: amiibo_name,
             amiibo_path: amiibo_path,
-            amiibo_title: '',
+            amiibo_title: amiibo.title || '',
             amiibo_class: ((amiibo.collected) ? 'collected' : '')
           }));
         });

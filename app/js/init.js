@@ -4,13 +4,15 @@
 define([
   'devgrid',
   'modernizr-tests',
+  'modal',
   'router',
-  'core/_module/views/_moduleView'
+  'core/main/views/mainView'
 ], function(
   Devgrid,
   ModernizrTests,
+  Modal,
   Router,
-  _ModuleView
+  MainView
 ) {
   var Init = function() {
     return {
@@ -23,10 +25,11 @@ define([
         // Module initializations
         Devgrid.initialize();
         ModernizrTests.initialize();
-        Router.initialize({pushState: true});
+        new Modal().initialize();
+        // Router.initialize({pushState: true});
 
         // Backbone initializations
-        new _ModuleView();
+        new MainView();
       }
     };
   };

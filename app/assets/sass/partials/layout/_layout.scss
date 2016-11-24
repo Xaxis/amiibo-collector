@@ -16,22 +16,33 @@
   @include clearfix();
   margin-bottom: 20px;
   padding: $fg-gutter;
-  background-color: $light-gray;
+  background-color: $blue;
   z-index: 999;
-  opacity: 0.8;
   transition: padding 350ms ease;
+  text-align: center;
   &.stuck {
     width: 100%;
     padding: 0 $fg-gutter;
     transition: padding 350ms ease;
+    a {
+      font-size: 1.4em;
+      transition: font-size 350ms ease;
+    }
   }
   .page-width {
     @include clearfix();
     @include site-width('md', true, false);
     padding: $fg-gutter;
   }
+  a {
+    font-family: "FontAwesome";
+    font-weight: lighter;
+    font-size: 2.0em;
+    color: $white;
+    transition: font-size 350ms ease;
+  }
   a + a {
-    margin-left: $fg-gutter;
+    margin-left: 15%;
   }
 }
 
@@ -53,5 +64,103 @@
   }
   .grid-item.collected {
     opacity: 1;
+  }
+}
+
+
+.menu {
+  text-align: left;
+  overflow-y: scroll;
+  height: 100%;
+  background: rgba($black-hex, 0.8) !important;
+  .title {
+    font-size: 1.5rem;
+    font-weight: bolder;
+    margin-bottom: 30px;
+  }
+
+  // Stats menu
+  &.menu-stats {
+    .stat-group {
+      padding: 8px 12px;
+      border: 1px dashed $white;
+      margin-bottom: 20px;
+      &:first-child {
+        border: 1px dashed $blue;
+        &.complete {
+          border: 1px solid $blue;
+        }
+      }
+      &.complete {
+        border: 1px solid $white;
+      }
+      .group-title {
+        font-weight: bolder;
+        font-size: 1.0rem;
+      }
+      .group-perc {
+        margin-top: 10px;
+        font-size: 0.9rem;
+      }
+    }
+  }
+
+  // Group menu
+  &.menu-group {
+    .group-group {
+      padding: 8px 12px;
+      margin-bottom: 10px;
+      display: table;
+      width: 100%;
+      height: 40px;
+      .cell {
+        display: table-cell;
+        vertical-align: middle;
+        font-size: 1.0rem;
+        line-height: 0.1rem;
+      }
+      .group-input {
+        width: 50px;
+      }
+      .group-title {
+        cursor: pointer;
+        color: $blue;
+        transition: color 250ms ease;
+        &:hover,
+        &:focus,
+        &:active {
+          color: $azure;
+          transition: color 250ms ease;
+        }
+      }
+    }
+  }
+
+  // Filter menu
+  &.menu-filter {
+    .filter-controls {
+      .control {
+        font-size: 1.5em;
+        margin-bottom: 40px;
+        cursor: pointer;
+        color: $blue;
+        transition: color 250ms ease;
+        &:hover,
+        &:focus,
+        &:active {
+          color: $azure;
+          transition: color 250ms ease;
+        }
+        .icon {
+          font-family: "FontAwesome";
+          display: inline-block;
+          color: $white;
+        }
+        .control-title {
+          display: inline-block;
+          margin-left: 30px;
+        }
+      }
+    }
   }
 }

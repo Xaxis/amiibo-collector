@@ -32,13 +32,15 @@ body {
 //----------------------------------------------------------------------------------------------------------------------
 
 a {
-
+  color: $blue;
+  text-decoration: none;
+  transition: color 250ms ease;
 }
-
 a:hover,
 a:focus,
 a:active {
-
+  color: $azure;
+  transition: color 250ms ease;
 }
 
 

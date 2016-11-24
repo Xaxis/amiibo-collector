@@ -25,6 +25,7 @@
     "jquery.sticky": "git+https://github.com/Xaxis/jquery.sticky.git",
     "lodash": "^3.10.0",
     "modernizr": "^3.0.0-alpha.4",
+    "remodal": "^1.1.0",
     "requirejs": "^2.1.19",
     "requirejs-text": "^2.0.12",
     "underscore": "^1.8.3"

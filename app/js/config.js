@@ -17,11 +17,13 @@
       text:                 'libs/vendor/requirejs-text/text',
       underscore:           'libs/vendor/underscore/underscore',
       backbone:             'libs/vendor/backbone/backbone',
+      remodal:              'libs/vendor/remodal/dist/remodal.min',
 
       // Native modules
       util:                 'libs/native/util/util',
       devgrid:              'libs/native/devgrid/devgrid',
-      'modernizr-tests':    'libs/native/modernizr-tests/modernizr-tests'
+      'modernizr-tests':    'libs/native/modernizr-tests/modernizr-tests',
+      modal:                'libs/native/modal/modal'
     },
     shim: {
       'jquery.eye': ['jquery'],

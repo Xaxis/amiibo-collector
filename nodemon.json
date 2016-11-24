@@ -1,4 +1,0 @@
-{
-  "verbose": true,
-  "ignore": [".git/", "node_modules/", "node_modules/*", "app/", "app/*"]
-}

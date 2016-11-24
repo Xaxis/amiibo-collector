@@ -1,0 +1,105 @@
+//--------
+// Buttons
+
+
+// Helper class
+.btn {
+  display: inline-block;
+  text-decoration: none;
+  margin-right: $fg-gutter;
+  padding: $fg-gutter / 2 $fg-gutter * 2;
+  &:last-child {
+    margin-right: 0;
+  }
+  &:first-letter {
+    text-transform: uppercase;
+  }
+  transition:
+          color $trans-speed $trans-ease,
+          background $trans-speed $trans-ease,
+          border $trans-speed $trans-ease;
+
+  // Default state transitions
+  &:hover, &:focus {
+    transition:
+            color $trans-speed $trans-ease,
+            background $trans-speed $trans-ease,
+            border $trans-speed $trans-ease;
+  }
+  &:active {
+    transition:
+            color $trans-speed $trans-ease,
+            background $trans-speed $trans-ease,
+            border $trans-speed $trans-ease;
+  }
+
+  &.solid-blue {
+    color: $white;
+    border: 2px solid $blue;
+    background-color: $blue;
+    &:hover, &:focus {
+      background-color: $solid-blue-hover;
+    }
+    &:active {
+      background-color: $solid-blue-active;
+    }
+  }
+}
+
+// Button mixin
+@mixin button($class: 'solid-blue') {
+  display: inline-block;
+  text-decoration: none;
+  margin-right: $fg-gutter;
+  padding: $fg-gutter / 2 $fg-gutter * 2;
+  &:last-child {
+    margin-right: 0;
+  }
+  &:first-letter {
+    text-transform: uppercase;
+  }
+  transition:
+          color $trans-speed $trans-ease,
+          background $trans-speed $trans-ease,
+          border $trans-speed $trans-ease;
+
+  // Default state transitions
+  &:hover, &:focus {
+    transition:
+            color $trans-speed $trans-ease,
+            background $trans-speed $trans-ease,
+            border $trans-speed $trans-ease;
+  }
+  &:active {
+    transition:
+            color $trans-speed $trans-ease,
+            background $trans-speed $trans-ease,
+            border $trans-speed $trans-ease;
+  }
+
+  // Solid blue
+  @if ($class == 'solid-blue') {
+    color: $white;
+    border: 2px solid $blue;
+    background-color: $blue;
+    &:hover, &:focus {
+      background-color: $solid-blue-hover;
+    }
+    &:active {
+      background-color: $solid-blue-active;
+    }
+  }
+
+  // Outline blue
+  @if ($class == 'outline-blue') {
+    color: $blue;
+    border: 2px solid $blue;
+    background-color: $white;
+    &:hover, &:focus {
+      background-color: $solid-blue-hover;
+    }
+    &:active {
+      background-color: $solid-blue-active;
+    }
+  }
+}

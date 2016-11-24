@@ -5101,6 +5101,17 @@ body {
   font-family: 'Open Sans Light';
   font-size: 100%/1.5; }
 
+a {
+  color: #3880ff;
+  text-decoration: none;
+  transition: color 250ms ease; }
+
+a:hover,
+a:focus,
+a:active {
+  color: #59a1f7;
+  transition: color 250ms ease; }
+
 .sitewide {
   margin: 0 auto;
   max-width: 100%; }
@@ -5130,10 +5141,10 @@ body {
 .controls {
   margin-bottom: 20px;
   padding: 20px;
-  background-color: #f7f7f7;
+  background-color: #3880ff;
   z-index: 999;
-  opacity: 0.8;
-  transition: padding 350ms ease; }
+  transition: padding 350ms ease;
+  text-align: center; }
   .controls:before, .controls:after {
     content: "";
     display: table; }
@@ -5143,6 +5154,9 @@ body {
     width: 100%;
     padding: 0 20px;
     transition: padding 350ms ease; }
+    .controls.stuck a {
+      font-size: 1.4em;
+      transition: font-size 350ms ease; }
   .controls .page-width {
     margin: 0 auto;
     max-width: 960px;
@@ -5155,8 +5169,14 @@ body {
     @media only screen and (min-width: 1440px) {
       .controls .page-width {
         max-width: 1440px; } }
+  .controls a {
+    font-family: "FontAwesome";
+    font-weight: lighter;
+    font-size: 2.0em;
+    color: white;
+    transition: font-size 350ms ease; }
   .controls a + a {
-    margin-left: 20px; }
+    margin-left: 15%; }
 
 .grid-container {
   margin: 0 auto;
@@ -5180,6 +5200,91 @@ body {
       height: auto; }
   .grid-container .grid-item.collected {
     opacity: 1; }
+
+.menu {
+  text-align: left;
+  overflow-y: scroll;
+  height: 100%;
+  background: rgba(34, 34, 34, 0.8) !important; }
+  .menu .title {
+    font-size: 1.5rem;
+    font-weight: bolder;
+    margin-bottom: 30px; }
+  .menu.menu-stats .stat-group {
+    padding: 8px 12px;
+    border: 1px dashed white;
+    margin-bottom: 20px; }
+    .menu.menu-stats .stat-group:first-child {
+      border: 1px dashed #3880ff; }
+      .menu.menu-stats .stat-group:first-child.complete {
+        border: 1px solid #3880ff; }
+    .menu.menu-stats .stat-group.complete {
+      border: 1px solid white; }
+    .menu.menu-stats .stat-group .group-title {
+      font-weight: bolder;
+      font-size: 1.0rem; }
+    .menu.menu-stats .stat-group .group-perc {
+      margin-top: 10px;
+      font-size: 0.9rem; }
+  .menu.menu-group .group-group {
+    padding: 8px 12px;
+    margin-bottom: 10px;
+    display: table;
+    width: 100%;
+    height: 40px; }
+    .menu.menu-group .group-group .cell {
+      display: table-cell;
+      vertical-align: middle;
+      font-size: 1.0rem;
+      line-height: 0.1rem; }
+    .menu.menu-group .group-group .group-input {
+      width: 50px; }
+    .menu.menu-group .group-group .group-title {
+      cursor: pointer;
+      color: #3880ff;
+      transition: color 250ms ease; }
+      .menu.menu-group .group-group .group-title:hover, .menu.menu-group .group-group .group-title:focus, .menu.menu-group .group-group .group-title:active {
+        color: #59a1f7;
+        transition: color 250ms ease; }
+  .menu.menu-filter .filter-controls .control {
+    font-size: 1.5em;
+    margin-bottom: 40px;
+    cursor: pointer;
+    color: #3880ff;
+    transition: color 250ms ease; }
+    .menu.menu-filter .filter-controls .control:hover, .menu.menu-filter .filter-controls .control:focus, .menu.menu-filter .filter-controls .control:active {
+      color: #59a1f7;
+      transition: color 250ms ease; }
+    .menu.menu-filter .filter-controls .control .icon {
+      font-family: "FontAwesome";
+      display: inline-block;
+      color: white; }
+    .menu.menu-filter .filter-controls .control .control-title {
+      display: inline-block;
+      margin-left: 30px; }
+
+.btn {
+  display: inline-block;
+  text-decoration: none;
+  margin-right: 20px;
+  padding: 10px 40px;
+  transition: color 0.2s linear, background 0.2s linear, border 0.2s linear; }
+  .btn:last-child {
+    margin-right: 0; }
+  .btn:first-letter {
+    text-transform: uppercase; }
+  .btn:hover, .btn:focus {
+    transition: color 0.2s linear, background 0.2s linear, border 0.2s linear; }
+  .btn:active {
+    transition: color 0.2s linear, background 0.2s linear, border 0.2s linear; }
+  .btn.solid-blue {
+    color: white;
+    border: 2px solid #3880ff;
+    background-color: #3880ff; }
+    .btn.solid-blue:hover, .btn.solid-blue:focus {
+      background-color: #59a1f7; }
+    .btn.solid-blue:active {
+      background-color: #91b2ff; }
 
 .grid:before, .grid:after {
   content: "";
@@ -5243,64 +5348,11 @@ body {
     clear: left;
     margin-left: 0 !important; } }
 
-@media only screen and (min-width: 660px) and (max-width: 780px) {
-  .grid .grid-item {
-    position: relative;
-    float: left; }
-    .grid .grid-item {
-      box-sizing: border-box; }
-    .grid .grid-item:before, .grid .grid-item:after {
-      content: " ";
-      display: table; }
-    .grid .grid-item:after {
-      clear: both; }
-    html.csscalc .grid .grid-item {
-      margin-left: 40px; }
-    html:not(.csscalc) .grid .grid-item {
-      margin-left: 4%; }
-    html.csscalc .grid .grid-item:first-child, html:not(.csscalc) .grid .grid-item:first-child {
-      margin-left: 0; }
-    html.csscalc .grid .grid-item {
-      width: -webkit-calc(((100% / 3) - 40px) + (13.3333333333px));
-      width: calc(((100% / 3) - 40px) + (13.3333333333px)); }
-    html:not(.csscalc) .grid .grid-item {
-      width: 30.6666666667%; }
-  .grid .grid-item:nth-child(3n+1) {
-    clear: left;
-    margin-left: 0 !important; } }
-
-@media only screen and (min-width: 360px) and (max-width: 660px) {
-  .grid .grid-item {
-    position: relative;
-    float: left; }
-    .grid .grid-item {
-      box-sizing: border-box; }
-    .grid .grid-item:before, .grid .grid-item:after {
-      content: " ";
-      display: table; }
-    .grid .grid-item:after {
-      clear: both; }
-    html.csscalc .grid .grid-item {
-      margin-left: 40px; }
-    html:not(.csscalc) .grid .grid-item {
-      margin-left: 4%; }
-    html.csscalc .grid .grid-item:first-child, html:not(.csscalc) .grid .grid-item:first-child {
-      margin-left: 0; }
-    html.csscalc .grid .grid-item {
-      width: -webkit-calc(((100% / 2) - 40px) + (20px));
-      width: calc(((100% / 2) - 40px) + (20px)); }
-    html:not(.csscalc) .grid .grid-item {
-      width: 48%; }
-  .grid .grid-item:nth-child(2n+1) {
-    clear: left;
-    margin-left: 0 !important; } }
-
-@media only screen and (max-width: 360px) {
+@media only screen and (min-width: 360px) and (max-width: 780px) {
   .grid .grid-item {
     position: relative;
     float: left;
-    clear: left;
-    margin-left: 0 !important; }
+    font-size: 0.8em; }
     .grid .grid-item {
       box-sizing: border-box; }
     .grid .grid-item:before, .grid .grid-item:after {
@@ -5309,13 +5361,311 @@ body {
     .grid .grid-item:after {
       clear: both; }
     html.csscalc .grid .grid-item {
-      margin-left: 40px; }
+      margin-left: 20px; }
     html:not(.csscalc) .grid .grid-item {
-      margin-left: 4%; }
+      margin-left: 2%; }
     html.csscalc .grid .grid-item:first-child, html:not(.csscalc) .grid .grid-item:first-child {
       margin-left: 0; }
     html.csscalc .grid .grid-item {
-      width: -webkit-calc(((100% / 1) - 40px) + (40px));
-      width: calc(((100% / 1) - 40px) + (40px)); }
+      width: -webkit-calc(((100% / 4) - 20px) + (5px));
+      width: calc(((100% / 4) - 20px) + (5px)); }
     html:not(.csscalc) .grid .grid-item {
-      width: 100%; } }
+      width: 23.5%; }
+  .grid .grid-item:nth-child(4n+1) {
+    clear: left;
+    margin-left: 0 !important; } }
+
+/*
+ *  Remodal - v1.0.6
+ *  Responsive, lightweight, fast, synchronized with CSS animations, fully customizable modal window plugin with declarative configuration and hash tracking.
+ *  http://vodkabears.github.io/remodal/
+ *
+ *  Made by Ilya Makarov
+ *  Under MIT License
+ */
+/* ==========================================================================
+   Remodal's necessary styles
+   ========================================================================== */
+/* Hide scroll bar */
+html.remodal-is-locked {
+  overflow: hidden;
+  -ms-touch-action: none;
+  touch-action: none; }
+
+/* Anti FOUC */
+.remodal,
+[data-remodal-id] {
+  display: none; }
+
+/* Necessary styles of the overlay */
+.remodal-overlay {
+  position: fixed;
+  z-index: 9999;
+  top: -5000px;
+  right: -5000px;
+  bottom: -5000px;
+  left: -5000px;
+  display: none; }
+
+/* Necessary styles of the wrapper */
+.remodal-wrapper {
+  position: fixed;
+  z-index: 10000;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: none;
+  overflow: auto;
+  text-align: center;
+  -webkit-overflow-scrolling: touch; }
+
+.remodal-wrapper:after {
+  display: inline-block;
+  height: 100%;
+  margin-left: -0.05em;
+  content: ""; }
+
+/* Fix iPad, iPhone glitches */
+.remodal-overlay,
+.remodal-wrapper {
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden; }
+
+/* Necessary styles of the modal dialog */
+.remodal {
+  position: relative;
+  outline: none;
+  -webkit-text-size-adjust: 100%;
+  -moz-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+  text-size-adjust: 100%; }
+
+.remodal-is-initialized {
+  /* Disable Anti-FOUC */
+  display: inline-block; }
+
+/* ==========================================================================
+   Remodal's default mobile first theme
+   ========================================================================== */
+/* Default theme styles for the background */
+.remodal-bg.remodal-is-opening,
+.remodal-bg.remodal-is-opened {
+  -webkit-filter: blur(3px);
+  filter: blur(3px); }
+
+/* Default theme styles of the overlay */
+.remodal-overlay {
+  background-color: rgba(34, 34, 34, 0.7); }
+
+.remodal-overlay.remodal-is-opening,
+.remodal-overlay.remodal-is-closing {
+  -webkit-animation-duration: 0.3s;
+  animation-duration: 0.3s;
+  -webkit-animation-fill-mode: forwards;
+  animation-fill-mode: forwards; }
+
+.remodal-overlay.remodal-is-opening {
+  -webkit-animation-name: remodal-overlay-opening-keyframes;
+  animation-name: remodal-overlay-opening-keyframes; }
+
+.remodal-overlay.remodal-is-closing {
+  -webkit-animation-name: remodal-overlay-closing-keyframes;
+  animation-name: remodal-overlay-closing-keyframes; }
+
+/* Default theme styles of the wrapper */
+/* Default theme styles of the modal dialog */
+.remodal {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 30px;
+  -webkit-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
+  color: white;
+  background: #222222; }
+
+.remodal.remodal-is-opening,
+.remodal.remodal-is-closing {
+  -webkit-animation-duration: 0.3s;
+  animation-duration: 0.3s;
+  -webkit-animation-fill-mode: forwards;
+  animation-fill-mode: forwards; }
+
+.remodal.remodal-is-opening {
+  -webkit-animation-name: remodal-opening-keyframes;
+  animation-name: remodal-opening-keyframes; }
+
+.remodal.remodal-is-closing {
+  -webkit-animation-name: remodal-closing-keyframes;
+  animation-name: remodal-closing-keyframes; }
+
+/* Vertical align of the modal dialog */
+.remodal,
+.remodal-wrapper:after {
+  vertical-align: middle; }
+
+/* Close button */
+.remodal-close {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: block;
+  overflow: visible;
+  width: 35px;
+  height: 35px;
+  margin: 0;
+  padding: 0;
+  cursor: pointer;
+  -webkit-transition: color 0.2s;
+  transition: color 0.2s;
+  text-decoration: none;
+  color: #3880ff;
+  border: 0;
+  outline: 0;
+  background: transparent; }
+
+.remodal-close:hover,
+.remodal-close:focus {
+  color: #dedede; }
+
+.remodal-close:before {
+  font-family: "Calibre Web Regular" !important;
+  font-size: 25px;
+  line-height: 35px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  width: 35px;
+  content: "\00d7";
+  text-align: center; }
+
+/* Dialog buttons */
+.remodal-button-container {
+  margin-top: 30px; }
+
+.remodal-confirm {
+  display: inline-block;
+  text-decoration: none;
+  margin-right: 20px;
+  padding: 10px 40px;
+  transition: color 0.2s linear, background 0.2s linear, border 0.2s linear;
+  color: white;
+  border: 2px solid #3880ff;
+  background-color: #3880ff; }
+  .remodal-confirm:last-child {
+    margin-right: 0; }
+  .remodal-confirm:first-letter {
+    text-transform: uppercase; }
+  .remodal-confirm:hover, .remodal-confirm:focus {
+    transition: color 0.2s linear, background 0.2s linear, border 0.2s linear; }
+  .remodal-confirm:active {
+    transition: color 0.2s linear, background 0.2s linear, border 0.2s linear; }
+  .remodal-confirm:hover, .remodal-confirm:focus {
+    background-color: #59a1f7; }
+  .remodal-confirm:active {
+    background-color: #91b2ff; }
+
+.remodal-cancel {
+  display: inline-block;
+  text-decoration: none;
+  margin-right: 20px;
+  padding: 10px 40px;
+  transition: color 0.2s linear, background 0.2s linear, border 0.2s linear;
+  color: #3880ff;
+  border: 2px solid #3880ff;
+  background-color: white; }
+  .remodal-cancel:last-child {
+    margin-right: 0; }
+  .remodal-cancel:first-letter {
+    text-transform: uppercase; }
+  .remodal-cancel:hover, .remodal-cancel:focus {
+    transition: color 0.2s linear, background 0.2s linear, border 0.2s linear; }
+  .remodal-cancel:active {
+    transition: color 0.2s linear, background 0.2s linear, border 0.2s linear; }
+  .remodal-cancel:hover, .remodal-cancel:focus {
+    background-color: #59a1f7; }
+  .remodal-cancel:active {
+    background-color: #91b2ff; }
+
+/* Remove inner padding and border in Firefox 4+ for the button tag. */
+.remodal-confirm::-moz-focus-inner,
+.remodal-cancel::-moz-focus-inner,
+.remodal-close::-moz-focus-inner {
+  padding: 0;
+  border: 0; }
+
+/* Keyframes
+   ========================================================================== */
+@-webkit-keyframes remodal-opening-keyframes {
+  from {
+    -webkit-transform: scale(1.05);
+    transform: scale(1.05);
+    opacity: 0; }
+  to {
+    -webkit-transform: none;
+    transform: none;
+    opacity: 1; } }
+
+@keyframes remodal-opening-keyframes {
+  from {
+    -webkit-transform: scale(1.05);
+    transform: scale(1.05);
+    opacity: 0; }
+  to {
+    -webkit-transform: none;
+    transform: none;
+    opacity: 1; } }
+
+@-webkit-keyframes remodal-closing-keyframes {
+  from {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    opacity: 1; }
+  to {
+    -webkit-transform: scale(0.95);
+    transform: scale(0.95);
+    opacity: 0; } }
+
+@keyframes remodal-closing-keyframes {
+  from {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    opacity: 1; }
+  to {
+    -webkit-transform: scale(0.95);
+    transform: scale(0.95);
+    opacity: 0; } }
+
+@-webkit-keyframes remodal-overlay-opening-keyframes {
+  from {
+    opacity: 0; }
+  to {
+    opacity: 1; } }
+
+@keyframes remodal-overlay-opening-keyframes {
+  from {
+    opacity: 0; }
+  to {
+    opacity: 1; } }
+
+@-webkit-keyframes remodal-overlay-closing-keyframes {
+  from {
+    opacity: 1; }
+  to {
+    opacity: 0; } }
+
+@keyframes remodal-overlay-closing-keyframes {
+  from {
+    opacity: 1; }
+  to {
+    opacity: 0; } }
+
+/* IE8
+   ========================================================================== */
+.lt-ie9 .remodal-overlay {
+  background: #2b2e38; }
+
+.lt-ie9 .remodal {
+  width: 700px; }

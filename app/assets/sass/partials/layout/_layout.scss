@@ -7,7 +7,6 @@
 .intro {
   @include clearfix();
   @include site-width('md', true, false);
-  margin-bottom: 20px;
   padding: $fg-gutter;
 }
 
@@ -57,6 +56,12 @@
   .grid-item {
     opacity: 0.3;
     text-align: center;
+    .completed-icon {
+      font-family: "FontAwesome";
+      font-size: 1.2rem;
+      color: $green;
+      display: none;
+    }
     img {
       width: 100%;
       height: auto;
@@ -64,6 +69,10 @@
   }
   .grid-item.collected {
     opacity: 1;
+    .completed-icon {
+      display: inline-block;
+      margin-right: 10px;
+    }
   }
 }
 
@@ -82,17 +91,33 @@
   // Stats menu
   &.menu-stats {
     .stat-group {
+      position: relative;
       padding: 8px 12px;
       border: 1px dashed $white;
       margin-bottom: 20px;
       &:first-child {
-        border: 1px dashed $blue;
+        border: 1px dashed $green;
         &.complete {
-          border: 1px solid $blue;
+          border: 1px solid $green;
+          .completed-icon {
+            display: block;
+          }
         }
       }
       &.complete {
         border: 1px solid $white;
+        .completed-icon {
+          display: block;
+        }
+      }
+      .completed-icon {
+        position: absolute;
+        right: 10px;
+        top: 10px;
+        font-family: "FontAwesome";
+        font-size: 1.2rem;
+        color: $green;
+        display: none;
       }
       .group-title {
         font-weight: bolder;
@@ -160,6 +185,22 @@
           display: inline-block;
           margin-left: 30px;
         }
+      }
+    }
+  }
+
+  // Menu share
+  &.menu-share {
+    .url-share-info {
+      margin-bottom: 20px;
+    }
+    .url-share-input {
+      margin-bottom: 40px;
+      input {
+        border: 2px solid $white;
+        background: transparent;
+        padding: 8px 6px;
+        width: 100%;
       }
     }
   }

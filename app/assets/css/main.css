@@ -5098,7 +5098,7 @@ html, body {
   margin: 0; }
 
 body {
-  font-family: 'Open Sans Light';
+  font-family: 'Open Sans';
   font-size: 100%/1.5; }
 
 a {
@@ -5127,7 +5127,6 @@ a:active {
 .intro {
   margin: 0 auto;
   max-width: 960px;
-  margin-bottom: 20px;
   padding: 20px; }
   .intro:before, .intro:after {
     content: "";
@@ -5195,11 +5194,19 @@ a:active {
   .grid-container .grid-item {
     opacity: 0.3;
     text-align: center; }
+    .grid-container .grid-item .completed-icon {
+      font-family: "FontAwesome";
+      font-size: 1.2rem;
+      color: #00d87b;
+      display: none; }
     .grid-container .grid-item img {
       width: 100%;
       height: auto; }
   .grid-container .grid-item.collected {
     opacity: 1; }
+    .grid-container .grid-item.collected .completed-icon {
+      display: inline-block;
+      margin-right: 10px; }
 
 .menu {
   text-align: left;
@@ -5211,15 +5218,28 @@ a:active {
     font-weight: bolder;
     margin-bottom: 30px; }
   .menu.menu-stats .stat-group {
+    position: relative;
     padding: 8px 12px;
     border: 1px dashed white;
     margin-bottom: 20px; }
     .menu.menu-stats .stat-group:first-child {
-      border: 1px dashed #3880ff; }
+      border: 1px dashed #00d87b; }
       .menu.menu-stats .stat-group:first-child.complete {
-        border: 1px solid #3880ff; }
+        border: 1px solid #00d87b; }
+        .menu.menu-stats .stat-group:first-child.complete .completed-icon {
+          display: block; }
     .menu.menu-stats .stat-group.complete {
       border: 1px solid white; }
+      .menu.menu-stats .stat-group.complete .completed-icon {
+        display: block; }
+    .menu.menu-stats .stat-group .completed-icon {
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      font-family: "FontAwesome";
+      font-size: 1.2rem;
+      color: #00d87b;
+      display: none; }
     .menu.menu-stats .stat-group .group-title {
       font-weight: bolder;
       font-size: 1.0rem; }
@@ -5262,6 +5282,15 @@ a:active {
     .menu.menu-filter .filter-controls .control .control-title {
       display: inline-block;
       margin-left: 30px; }
+  .menu.menu-share .url-share-info {
+    margin-bottom: 20px; }
+  .menu.menu-share .url-share-input {
+    margin-bottom: 40px; }
+    .menu.menu-share .url-share-input input {
+      border: 2px solid white;
+      background: transparent;
+      padding: 8px 6px;
+      width: 100%; }
 
 .btn {
   display: inline-block;

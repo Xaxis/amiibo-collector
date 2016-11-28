@@ -64,6 +64,7 @@ define([
 
       // Animal Crossing
       animalcrossing: {
+        ec: '0',
         title: "Animal Crossing",
         amiibos: {
           blathers: {
@@ -116,6 +117,7 @@ define([
 
       // Chibi robo
       chibi: {
+        ec: '1',
         title: "Chibi Robo",
         amiibos: {
           robo: {
@@ -126,6 +128,7 @@ define([
 
       // Kirby - @todo - Where are the rest of the kirbys?
       kirby: {
+        ec: '2',
         title: "Kirby",
         amiibos: {
           kingdedede: {
@@ -145,6 +148,7 @@ define([
 
       // Legend of zelda
       loz: {
+        ec: '3',
         title: "Legend of Zelda",
         amiibos: {
           anniversarylink: {
@@ -173,6 +177,7 @@ define([
 
       // Mega man
       megaman: {
+        ec: '4',
         title: "Mega Man - Legacy Collection",
         amiibos: {
           gold: {
@@ -183,6 +188,7 @@ define([
 
       // Monster hunter
       // monsterhunter: {
+      //   ec: '5',
       //   title: "Monster Hunter",
       //   amiibos: {
       //
@@ -191,6 +197,7 @@ define([
 
       // Shovel knight
       shovelknight: {
+        ec: '6',
         title: "Shovel Knight",
         amiibos: {
           shovelknight: {
@@ -201,6 +208,7 @@ define([
 
       // Skylanders
       skylanders: {
+        ec: '7',
         title: "Skylanders Superchargers",
         amiibos: {
           hammerslambowser: {
@@ -214,28 +222,29 @@ define([
 
       // Splatoons
       splatoons: {
+        ec: '8',
         title: "Splatoons",
         amiibos: {
           callie: {
             title: "Callie"
           },
           inklingboy1: {
-            title: "Inkling Girl 1"
+            title: "Inkling Girl"
           },
           inklingboy2: {
-            title: "Inkling Girl 2"
+            title: "Inkling Girl"
           },
           inklinggirl1: {
-            title: "Inkling Girl 1"
+            title: "Inkling Girl"
           },
           inklinggirl2: {
-            title: "Inkling Girl 2"
+            title: "Inkling Girl"
           },
           inklingsquidgreen: {
-            title: "Inkling Squid (Green)"
+            title: "Inkling Squid"
           },
           inklingsquidorange: {
-            title: "Inkling Squid (Orange)"
+            title: "Inkling Squid"
           },
           marie: {
             title: "Marie"
@@ -245,6 +254,7 @@ define([
 
       // Super smash brothers
       ssb: {
+        ec: '9',
         title: "Super Smash Brothers",
         amiibos: {
           bowser: {
@@ -417,6 +427,7 @@ define([
 
       // Super Mario
       supermario: {
+        ec: '10',
         title: "Super Mario",
         amiibos: {
           boo: {
@@ -469,6 +480,7 @@ define([
 
       // Super Mario Bros. 30th
       supermario30th: {
+        ec: '11',
         title: "Super Mario Bros. 30th",
         amiibos: {
           classiccolor: {
@@ -482,6 +494,7 @@ define([
 
       // Yoshi
       yoshi: {
+        ec: '12',
         title: "Yoshi",
         amiibos: {
           blueyarnyoshi: {
@@ -507,8 +520,9 @@ define([
     // Local Storage configuration
     storage_settings: {
       id: "amiibo-collection",
-      dont_use_local: true,
-      is_local: window.localStorage ? true : false
+      dont_use_local: false,
+      is_local: window.localStorage ? true : false,
+      loaded: false
     },
 
 
@@ -520,6 +534,7 @@ define([
       // Bind methods
       _.bindAll(this,
         'loadAmiibos',
+        'storageDiff',
         'toggleStatsMenu',
         'toggleGroupMenu',
         'toggleFilterMenu',
@@ -554,9 +569,6 @@ define([
         modal.open();
       }
 
-      // Load the menus
-      // ...
-
       // Load the amiibos
       this.loadAmiibos();
     },
@@ -575,8 +587,10 @@ define([
       grid.empty();
 
       // Test to see if we should load from local storage
-      if (this.storage_settings.is_local && !this.storage_settings.dont_use_local) {
+      if (this.storage_settings.is_local && !this.storage_settings.dont_use_local && !this.loaded) {
+        this.loaded = true;
         if (window.localStorage.getItem(this.storage_settings.id)) {
+          this.storageDiffUpdate();
           this.amiibos = JSON.parse(window.localStorage.getItem(this.storage_settings.id));
         }
       }
@@ -589,6 +603,10 @@ define([
             group_title: group.title
           });
 
+        // Update meta properties
+        group.id = group_name;
+        group.size = _.size(group.amiibos);
+
         // Add group only if it hasn't been set to not load
         if (!group.unchecked) {
 
@@ -596,9 +614,15 @@ define([
           grid.append(grid_group);
 
           // Create new group container
+          var ec = 0;
           _.each(group.amiibos, function(amiibo, amiibo_name) {
             var
               amiibo_path        = path + group_name + '-' + amiibo_name + '.png';
+
+            // Update amiibo id
+            amiibo.id = amiibo_name;
+            amiibo.ec = amiibo.ec || ec;
+            ec++;
 
             // Create new grid object
             grid.find('.' + group_name + ' .group').append(self.templates.amiiboGridItem({
@@ -610,6 +634,66 @@ define([
           });
         }
       });
+    },
+
+
+    /**
+     * Tests for differences in the collection initialization object and the local storage object, making changes where
+     * applicable to the local storage object.
+     */
+    storageDiffUpdate: function() {
+      var
+        initObj         = this.amiibos,
+        localObj        = JSON.parse(window.localStorage.getItem(this.storage_settings.id));
+
+      // Add new groups to local object
+      _.each(_.keys(initObj), function(v) {
+
+        // Add new groups
+        if (!(v in localObj)) {
+          localObj[v] = initObj[v];
+        }
+
+        // Add collection item to the group
+        _.each(initObj[v].amiibos, function(item, key) {
+          if (!(key in localObj[v].amiibos)) {
+            localObj[v].amiibos[key] = initObj[v].amiibos[key];
+          }
+        });
+      });
+
+      // Remove groups to local object
+      _.each(_.keys(localObj), function(l) {
+
+        // Remove old collection item from group
+        _.each(localObj[l].amiibos, function(item, key) {
+          if (!(key in initObj[l].amiibos)) {
+            delete localObj[l].amiibos[key];
+          }
+        });
+
+        // Remove old group
+        if (!(l in initObj)) {
+          delete localObj[l];
+        }
+      });
+
+      // Update simple properties like titles that may have changed
+      _.each(initObj, function(vObj, key) {
+        if (vObj.title != localObj[key].title) {
+          localObj[key].title = vObj.title;
+        }
+
+        // Iterate over the collection object checking simple things like titles
+        _.each(initObj[key].amiibos, function(cObj, id) {
+          if (localObj[key].amiibos[id].title != cObj.title) {
+            localObj[key].amiibos[id].title = initObj[key].amiibos[id].title;
+          }
+        });
+      });
+
+      // Update the local storage object
+      window.localStorage.setItem(this.storage_settings.id, JSON.stringify(localObj));
     },
 
 
@@ -650,22 +734,40 @@ define([
         stats.total += stats[group_name].total;
         stats.owned += stats[group_name].owned;
 
+        // Determine percentage
+        var group_perc = ((stats[group_name].owned / stats[group_name].total) * 100).toFixed(2);
+
         // Add a stat group to the container
         stats_container.append(self.templates.menuStatsGroup({
-          group_name: group.title,
+          group_id: group_name,
+          group_title: group.title,
           group_total: stats[group_name].total,
           group_owned: stats[group_name].owned,
-          group_perc: ((stats[group_name].owned / stats[group_name].total) * 100).toFixed(2)
+          group_perc: group_perc
         }));
+
+        // Add the completed class if a group is completed
+        if (group_perc >= 100) {
+          $('[data-group-id="' + group_name + '"]').addClass('complete');
+        }
       });
+
+      // Determine overall percentage
+      var overall_perc = ((stats.owned / stats.total) * 100).toFixed(2);
 
       // Add the overall stat
       stats_container.prepend(self.templates.menuStatsGroup({
-        group_name: "Total",
+        group_id: 'amiibo-total',
+        group_title: "Total",
         group_total: stats.total,
         group_owned: stats.owned,
-        group_perc: ((stats.owned / stats.total) * 100).toFixed(2)
+        group_perc: overall_perc
       }));
+
+      // Add the completed class if all groups are completed
+      if (overall_perc >= 100) {
+        $('[data-group-id="amiibo-total"]').addClass('complete');
+      }
 
       // Toggle menu open/closed
       this.menus.stats.open();
@@ -766,32 +868,67 @@ define([
     /**
      * Sort groups alpha ascending.
      */
-    filterSortAlphaAsc: function(e) {
-      this.amiibos = _.sortBy(this.amiibos);
-      console.log(this.amiibos);
+    filterSortAlphaAsc: function() {
+
+      // Sort the amiibo groups
+     this.amiibos =  _.reduce(_.sortBy(this.amiibos, 'id'), function(o, v) {
+        o[v.id] = v;
+        return o;
+      }, {});
+
+      // Sort each amiibo groups amiibos
+      _.each(this.amiibos, function(group) {
+        group.amiibos = _.reduce(_.sortBy(group.amiibos, 'id'), function(o, v) {
+          o[v.id] = v;
+          return o;
+        }, {});
+      });
+
+      // Reload the amiibos
       this.loadAmiibos();
+      this.menus.filter.close();
     },
 
 
     /**
      * Sort groups alpha descending.
      */
-    filterSortAlphaDesc: function(e) {
-      var
-        self                = this,
-        amiibos             = {};
+    filterSortAlphaDesc: function() {
 
-      // Sort
-      amiibos = _.sortBy(this.amiibos);
-      console.log(amiibos);
+      // Sort the amiibo groups
+      this.amiibos =  _.reduce(_.sortBy(this.amiibos, 'id').reverse(), function(o, v) {
+        o[v.id] = v;
+        return o;
+      }, {});
+
+      // Sort each amiibo groups amiibos
+      _.each(this.amiibos, function(group) {
+        group.amiibos = _.reduce(_.sortBy(group.amiibos, 'id').reverse(), function(o, v) {
+          o[v.id] = v;
+          return o;
+        }, {});
+      });
+
+      // Reload the amiibos
+      this.loadAmiibos();
+      this.menus.filter.close();
     },
 
 
     /**
      * Sort by total number ascending.
      */
-    filterSortTotalAsc: function(e) {
-      console.log(e);
+    filterSortTotalAsc: function() {
+
+      // Sort the amiibo groups by
+      this.amiibos =  _.reduce(_.sortBy(this.amiibos, 'size'), function(o, v) {
+        o[v.id] = v;
+        return o;
+      }, {});
+
+      // Reload the amiibos
+      this.loadAmiibos();
+      this.menus.filter.close();
     },
 
 
@@ -799,18 +936,48 @@ define([
      * Sort by total number descending.
      */
     filterSortTotalDesc: function(e) {
-      console.log(e);
+
+      // Sort the amiibo groups by
+      this.amiibos =  _.reduce(_.sortBy(this.amiibos, 'size').reverse(), function(o, v) {
+        o[v.id] = v;
+        return o;
+      }, {});
+
+      // Reload the amiibos
+      this.loadAmiibos();
+      this.menus.filter.close();
     },
 
 
     /**
      * Toggle and load the share menu
+     * @todo - ...
      */
     toggleShareMenu: function() {
+      var
+        url_str         = '#';
+
+      // Add the modal menu
       if (!this.menus.share) {
         this.menus.share = $(this.templates.menuShare()).remodal();
         this.$el.append(this.menus.share);
+        $('.url-share-input input').focus(function() {
+          this.select();
+        });
       }
+
+      // Generate unique URL string
+      _.each(this.amiibos, function(group) {
+        url_str += 'g' + group.ec;
+        _.each(group.amiibos, function(amiibo) {
+          if (amiibo.collected) {
+            url_str += 'a' + amiibo.ec;
+          }
+        });
+      });
+
+      // Populate the url into the input
+      $('.url-share-input input').val(window.location.href + url_str);
 
       // Toggle menu open/closed
       this.menus.share.open();

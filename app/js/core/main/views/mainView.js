@@ -534,7 +534,7 @@ define([
       // Bind methods
       _.bindAll(this,
         'loadAmiibos',
-        'storageDiff',
+        'storageDiffUpdate',
         'toggleStatsMenu',
         'toggleGroupMenu',
         'toggleFilterMenu',
@@ -977,10 +977,139 @@ define([
       });
 
       // Populate the url into the input
-      $('.url-share-input input').val(window.location.href + url_str);
-
+      $('.url-share-input input').val(window.location.href.replace('#', '') + url_str);
+      
       // Toggle menu open/closed
       this.menus.share.open();
+
+      
+      // Build a shareable image, reference canvas and its drawing context
+      var
+        canvas          = $('.image-canvas .share-image'),
+        c_w             = 0,
+        c_h             = 0,
+        ctx             = null,
+        items_to_draw   = 0,
+        max_per_row     = 4,
+        max_w           = 0,
+        max_h           = 0,
+        total_rows      = 1,
+        row_w           = 0,
+        row_h           = 0,
+        items_drawn     = 0,
+        rows_drawn      = 0,
+        group_title_h   = 50,
+        last_row_h      = 0;
+
+      // Create canvas image size from items that need to be drawn
+      _.each(this.amiibos, function(group) {
+        var
+          inc_row         = true,
+          collected       = _.filter(group.amiibos, function(am) {
+            return am.collected;
+          }).length;
+
+        // Proceed if one or more in group is collected
+        if (collected) {
+          _.each(group.amiibos, function(amiibo, amiibo_name) {
+            if (amiibo.collected) {
+              var
+                img       = $('.grid-item[data-amiibo-name="' + amiibo_name + '"] img')[0];
+
+              // Update current maximum width if it's greater
+              if (img.width > max_w) max_w = img.width;
+
+              // Update current maximum height if it's greater
+              if (img.height > max_h) max_h = img.height;
+
+              // Increment the total items to draw
+              items_to_draw += 1;
+
+              // Increment total rows
+              if (!(items_to_draw % max_per_row)) {
+                total_rows += 1;
+                inc_row = false;
+              } else {
+                inc_row = true;
+              }
+            }
+          });
+          if (!inc_row) total_rows += 1;
+        }
+      });
+
+      // Update and set dimension values
+      // total_rows = total_rows - _.size(this.amiibos);
+      row_w = max_w * max_per_row;
+      row_h = max_h;
+      canvas[0].width = (row_w);
+      canvas[0].height = (max_h * total_rows);
+      canvas.width(canvas[0].width);
+      canvas.height(canvas[0].height);
+      c_w = canvas[0].width;
+      c_h = canvas[0].height;
+      ctx = canvas[0].getContext("2d", {alpha: true});
+
+      // Set the canvas background color
+      ctx.fillStyle = "white";
+      ctx.fillRect(0, 0, c_w, c_h);
+
+      // Draw the amiibos
+      _.each(this.amiibos, function(group, group_name) {
+        var
+          collected       = _.filter(group.amiibos, function(am) {
+            return am.collected;
+          }).length;
+
+        // Proceed if one or more in group has been collected
+        if (collected) {
+
+          // Draw group title text
+          ctx.font = "28px Sans-Serif";
+          ctx.fillStyle = "black";
+          // ctx.fillText(group.title, 20, last_row_h + group_title_h);
+
+          // Iterate over items in group
+          _.each(group.amiibos, function(amiibo, amiibo_name) {
+            if (amiibo.collected) {
+              var
+                img       = $('.grid-item[data-amiibo-name="' + amiibo_name + '"] img')[0],
+                dx        = (max_w * items_drawn),
+                dy        = (max_h * rows_drawn);
+
+              // Increment which item is being drawn in a given row
+              items_drawn += 1;
+
+              // Increment row being drawn
+              if (items_drawn >= max_per_row) {
+                items_drawn = 0;
+                rows_drawn += 1;
+              }
+
+              // Update the height of the last row drawn
+              last_row_h = dy + max_h;
+
+              // Draw the image
+              ctx.drawImage(img, dx, dy, img.width, img.height);
+            }
+          });
+
+          // Update number of rows drawn
+          if (items_drawn > 0) rows_drawn += 1;
+          items_drawn = 0;
+        }
+      });
+      
+      // Convert canvas to image element
+      var collection_img = new Image();
+      collection_img.src = canvas[0].toDataURL("image/png");
+      var link_wrapper = $('<a href="' + collection_img.src + '" download="AmiiboCollection.png"></a>');
+      link_wrapper.append(collection_img);
+      canvas.after(link_wrapper);
+      canvas.hide();
+
+      // Update the image download link
+      $('.image-share-info a').attr('href', collection_img.src);
     },
 
 

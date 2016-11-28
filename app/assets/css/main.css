@@ -5291,6 +5291,18 @@ a:active {
       background: transparent;
       padding: 8px 6px;
       width: 100%; }
+  .menu.menu-share .image-share-info {
+    margin-bottom: 20px; }
+  .menu.menu-share .image-canvas {
+    margin-bottom: 40px; }
+    .menu.menu-share .image-canvas canvas {
+      display: block;
+      width: 400px;
+      height: 500px;
+      background: white; }
+    .menu.menu-share .image-canvas img {
+      width: 100%;
+      height: auto; }
 
 .btn {
   display: inline-block;
@@ -5377,7 +5389,7 @@ a:active {
     clear: left;
     margin-left: 0 !important; } }
 
-@media only screen and (min-width: 360px) and (max-width: 780px) {
+@media only screen and (min-width: 600px) and (max-width: 780px) {
   .grid .grid-item {
     position: relative;
     float: left;
@@ -5401,6 +5413,33 @@ a:active {
     html:not(.csscalc) .grid .grid-item {
       width: 23.5%; }
   .grid .grid-item:nth-child(4n+1) {
+    clear: left;
+    margin-left: 0 !important; } }
+
+@media only screen and (max-width: 600px) {
+  .grid .grid-item {
+    position: relative;
+    float: left;
+    font-size: 0.7em; }
+    .grid .grid-item {
+      box-sizing: border-box; }
+    .grid .grid-item:before, .grid .grid-item:after {
+      content: " ";
+      display: table; }
+    .grid .grid-item:after {
+      clear: both; }
+    html.csscalc .grid .grid-item {
+      margin-left: 15px; }
+    html:not(.csscalc) .grid .grid-item {
+      margin-left: 1%; }
+    html.csscalc .grid .grid-item:first-child, html:not(.csscalc) .grid .grid-item:first-child {
+      margin-left: 0; }
+    html.csscalc .grid .grid-item {
+      width: -webkit-calc(((100% / 3) - 15px) + (5px));
+      width: calc(((100% / 3) - 15px) + (5px)); }
+    html:not(.csscalc) .grid .grid-item {
+      width: 32.6666666667%; }
+  .grid .grid-item:nth-child(3n+1) {
     clear: left;
     margin-left: 0 !important; } }
 

@@ -6,18 +6,16 @@
  *
  * @todo - Figure out why fontawesome icons aren't loading on mobile browsers.
  *
- * @todo - Add functionality to add/remove all of a group at once.
- *
  * @todo - Add in all animal crossing cards.
  *
  * @todo - Missing "Guardian" in the Legend of Zelda series.
- *
- * @todo - Splatoons boy titles are saying "girl"
  *
  * @todo - Write functionality that enables users to save collection configuration and then
  * reupload configuration later.
  *
  * @todo - Write deployment script.
+ *
+ * @todo - jQuery.sticky isn't working right after you open and then close a modal
  */
 define([
   'jquery',
@@ -72,7 +70,8 @@ define([
       'click .control[data-control-id="sort-total-asc"]': 'filterSortTotalAsc',
       'click .control[data-control-id="sort-total-desc"]': 'filterSortTotalDesc',
       'click .control-share': 'toggleShareMenu',
-      'click .grid-item': 'toggleSelectedAmiibo'
+      'click .grid-item': 'toggleSelectedAmiibo',
+      'click .amiibo-grid h2': 'toggleSelectedGroup'
     },
 
     // Stores references to loaded menus
@@ -247,10 +246,10 @@ define([
             title: "Callie"
           },
           inklingboy1: {
-            title: "Inkling Girl"
+            title: "Inkling Boy"
           },
           inklingboy2: {
-            title: "Inkling Girl"
+            title: "Inkling Boy"
           },
           inklinggirl1: {
             title: "Inkling Girl"
@@ -565,7 +564,8 @@ define([
         'filterSortTotalAsc',
         'filterSortTotalDesc',
         'toggleShareMenu',
-        'toggleSelectedAmiibo'
+        'toggleSelectedAmiibo',
+        'toggleSelectedGroup'
       );
       
       // Initialize sticky navigation
@@ -631,7 +631,9 @@ define([
         var
           grid_group        = self.templates.amiiboGroup({
             group_name: group_name,
-            group_title: group.title
+            group_title: group.title,
+            group_collected: _.filter(group.amiibos, 'collected').length,
+            group_total: _.size(group.amiibos)
           });
 
         // Update meta properties
@@ -663,6 +665,17 @@ define([
               amiibo_class: ((amiibo.collected) ? 'collected' : '')
             }));
           });
+
+          // Add appropriate class on group
+          if (_.size(group.amiibos) == _.filter(group.amiibos, 'collected').length) {
+            $('.amiibo-grid[data-group-name="' + group_name + '"]')
+              .data('group-collected', 'yes')
+              .addClass('group-collected');
+          } else {
+            $('.amiibo-grid[data-group-name="' + group_name + '"]')
+              .data('group-collected', 'no')
+              .removeClass('group-collected');
+          }
         }
       });
     },
@@ -1177,9 +1190,13 @@ define([
      */
     toggleSelectedAmiibo: function(e) {
       var
-        target        = $(e.currentTarget),
-        amiibo_group  = target.closest('.amiibo-grid').data('group-name'),
-        amiibo_name   = target.data('amiibo-name');
+        target                  = $(e.currentTarget),
+        amiibo_group_container  = target.closest('.amiibo-grid'),
+        amiibo_group            = amiibo_group_container .data('group-name'),
+        amiibo_name             = target.data('amiibo-name');
+
+      // Stop propagation so group isn't clicked
+      e.stopPropagation();
 
       // Toggle the UI
       target.toggleClass('collected');
@@ -1194,6 +1211,52 @@ define([
       // Update the local storage object
       if (this.storage_settings.is_local && !this.storage_settings.dont_use_local) {
         window.localStorage.setItem(this.storage_settings.id, JSON.stringify(this.amiibos));
+      }
+
+      // Update the group stats
+      target
+        .closest('.amiibo-grid')
+        .find('.group-stat-collected')
+        .html(_.filter(this.amiibos[amiibo_group].amiibos, 'collected').length);
+
+      // Add appropriate class on group
+      if (_.size(this.amiibos[amiibo_group].amiibos) == _.filter(this.amiibos[amiibo_group].amiibos, 'collected').length) {
+        amiibo_group_container.addClass('group-collected');
+      } else {
+        amiibo_group_container.removeClass('group-collected');
+      }
+    },
+
+
+    /**
+     * Allows user to select/deselect an entire group at once.
+     */
+    toggleSelectedGroup: function(e) {
+      var
+        target        = $(e.currentTarget).closest('.amiibo-grid');
+
+      // Iterate through groups selecting or unselecting items based on group data flag
+      if (target.data('group-collected') == 'no' || !target.data('group-collected')) {
+        target
+          .addClass('group-collected')
+          .find('.grid-item')
+          .each(function(idx, item) {
+            if (!$(item).hasClass('collected')) {
+              $(item).click();
+            }
+          });
+        target.data('group-collected', 'yes');
+      }
+      else if (target.data('group-collected') == 'yes') {
+        target
+          .removeClass('group-collected')
+          .find('.grid-item')
+          .each(function(idx, item) {
+            if ($(item).hasClass('collected')) {
+                $(item).click();
+          }
+          });
+        target.data('group-collected', 'no');
       }
     }
 

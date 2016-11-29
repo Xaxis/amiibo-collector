@@ -7,6 +7,9 @@
 .intro {
   @include clearfix();
   @include site-width('md', true, false);
+  @include breakpoint($min: $fg-col-14) {
+    @include site-width('lg', true, false);
+  }
   padding: $fg-gutter;
 }
 
@@ -31,6 +34,9 @@
   .page-width {
     @include clearfix();
     @include site-width('md', true, false);
+    @include breakpoint($min: $fg-col-14) {
+      @include site-width('lg', true, false);
+    }
     padding: $fg-gutter;
   }
   a {
@@ -49,7 +55,28 @@
 .grid-container {
   @include clearfix();
   @include site-width('md', true, false);
+  @include breakpoint($min: $fg-col-14) {
+    @include site-width('lg', true, false);
+  }
   padding: $fg-gutter;
+  .amiibo-grid {
+    h2 {
+      cursor: pointer;
+      display: inline-block;
+      &:before {
+        display: inline-block;
+        content: "\f1db";
+        font-family: "FontAwesome";
+        margin-right: 15px;
+        color: $blue;
+      }
+    }
+    &.group-collected {
+      h2:before{
+        content: "\f111";
+      }
+    }
+  }
   .amiibo-grid + .amiibo-grid {
     margin-top: 4%;
   }

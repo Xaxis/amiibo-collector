@@ -5142,6 +5142,13 @@ a:active {
   @media only screen and (min-width: 1440px) {
     .intro {
       max-width: 1440px; } }
+  @media only screen and (min-width: 840px) {
+    .intro {
+      margin: 0 auto;
+      max-width: 1440px; } }
+  @media only screen and (min-width: 840px) and (min-width: 1440px) {
+    .intro {
+      max-width: 1440px; } }
 
 .controls {
   margin-bottom: 20px;
@@ -5174,6 +5181,13 @@ a:active {
     @media only screen and (min-width: 1440px) {
       .controls .page-width {
         max-width: 1440px; } }
+    @media only screen and (min-width: 840px) {
+      .controls .page-width {
+        margin: 0 auto;
+        max-width: 1440px; } }
+  @media only screen and (min-width: 840px) and (min-width: 1440px) {
+    .controls .page-width {
+      max-width: 1440px; } }
   .controls a {
     font-family: "FontAwesome";
     font-weight: lighter;
@@ -5195,6 +5209,24 @@ a:active {
   @media only screen and (min-width: 1440px) {
     .grid-container {
       max-width: 1440px; } }
+  @media only screen and (min-width: 840px) {
+    .grid-container {
+      margin: 0 auto;
+      max-width: 1440px; } }
+  @media only screen and (min-width: 840px) and (min-width: 1440px) {
+    .grid-container {
+      max-width: 1440px; } }
+  .grid-container .amiibo-grid h2 {
+    cursor: pointer;
+    display: inline-block; }
+    .grid-container .amiibo-grid h2:before {
+      display: inline-block;
+      content: "\f1db";
+      font-family: "FontAwesome";
+      margin-right: 15px;
+      color: #3880ff; }
+  .grid-container .amiibo-grid.group-collected h2:before {
+    content: "\f111"; }
   .grid-container .amiibo-grid + .amiibo-grid {
     margin-top: 4%; }
   .grid-container .grid-item {
@@ -5369,7 +5401,7 @@ a:active {
     clear: left;
     margin-left: 0 !important; } }
 
-@media only screen and (min-width: 780px) and (max-width: 1440px) {
+@media only screen and (min-width: 840px) and (max-width: 1440px) {
   .grid .grid-item {
     position: relative;
     float: left; }
@@ -5387,15 +5419,15 @@ a:active {
     html.csscalc .grid .grid-item:first-child, html:not(.csscalc) .grid .grid-item:first-child {
       margin-left: 0; }
     html.csscalc .grid .grid-item {
-      width: -webkit-calc(((100% / 4) - 40px) + (10px));
-      width: calc(((100% / 4) - 40px) + (10px)); }
+      width: -webkit-calc(((100% / 6) - 40px) + (6.6666666667px));
+      width: calc(((100% / 6) - 40px) + (6.6666666667px)); }
     html:not(.csscalc) .grid .grid-item {
-      width: 22%; }
-  .grid .grid-item:nth-child(4n+1) {
+      width: 13.3333333333%; }
+  .grid .grid-item:nth-child(6n+1) {
     clear: left;
     margin-left: 0 !important; } }
 
-@media only screen and (min-width: 600px) and (max-width: 780px) {
+@media only screen and (min-width: 600px) and (max-width: 840px) {
   .grid .grid-item {
     position: relative;
     float: left;

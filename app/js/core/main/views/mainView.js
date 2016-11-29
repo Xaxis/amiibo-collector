@@ -1,20 +1,29 @@
 /**
  * Backbone module view template
+ *
+ * @todo - Add functionality so that you can tap once to add to your COLLECTED list, tap twice to add to your
+ * WANT/WISH list, tap three times to uncheck.
+ *
+ * @todo - Figure out why fontawesome icons aren't loading on mobile browsers.
+ *
+ * @todo - Add functionality to add/remove all of a group at once.
+ *
+ * @todo - Add in all animal crossing cards.
  */
 define([
   'jquery',
   'underscore',
   'backbone',
   'jquery.sticky',
-  'text!../templates/amiibo-group.tpl.html',
-  'text!../templates/amiibo-grid-item.tpl.html',
-  'text!../templates/message-browser-compat.tpl.html',
-  'text!../templates/menu-filter.tpl.html',
-  'text!../templates/menu-group.tpl.html',
-  'text!../templates/menu-group-group.tpl.html',
-  'text!../templates/menu-share.tpl.html',
-  'text!../templates/menu-stats.tpl.html',
-  'text!../templates/menu-stats-group.tpl.html'
+  'text!core/main/templates/amiibo-group.tpl.html',
+  'text!core/main/templates/amiibo-grid-item.tpl.html',
+  'text!core/main/templates/message-browser-compat.tpl.html',
+  'text!core/main/templates/menu-filter.tpl.html',
+  'text!core/main/templates/menu-group.tpl.html',
+  'text!core/main/templates/menu-group-group.tpl.html',
+  'text!core/main/templates/menu-share.tpl.html',
+  'text!core/main/templates/menu-stats.tpl.html',
+  'text!core/main/templates/menu-stats-group.tpl.html'
 ], function(
   $,
   _,
@@ -126,7 +135,7 @@ define([
         }
       },
 
-      // Kirby - @todo - Where are the rest of the kirbys?
+      // Kirby
       kirby: {
         ec: '2',
         title: "Kirby",
@@ -532,11 +541,12 @@ define([
     /**
      * Initialize the application.
      */
-    initialize: function() {
+    initialize: function( route ) {
 
       // Bind methods
       _.bindAll(this,
         'loadAmiibos',
+        'loadAmiibosFromURL',
         'storageDiffUpdate',
         'toggleStatsMenu',
         'toggleGroupMenu',
@@ -574,6 +584,15 @@ define([
 
       // Load the amiibos
       this.loadAmiibos();
+
+      // Examine the route seeing if it's a shared URL
+      if (route) {
+        if (route.match(/collection=/)) {
+          var
+            collection_str        = route.replace('collection=', '');
+          this.loadAmiibosFromURL(collection_str);
+        }
+      }
     },
 
 
@@ -637,6 +656,17 @@ define([
           });
         }
       });
+    },
+
+
+    /**
+     * Takes an encoded collection URL and loads the corresponding collection to display.
+     */
+    loadAmiibosFromURL: function( url_str ) {
+      var
+        groups        = url_str.split('/[^0-9]/');
+      // console.log(url_str);
+      console.log(groups);
     },
 
 
@@ -954,11 +984,11 @@ define([
 
     /**
      * Toggle and load the share menu
-     * @todo - ...
+     * Load the share menu with a dynamically generated share URL and collection image.
      */
-    toggleShareMenu: function() {
+    toggleShareMenu: function( shared ) {
       var
-        url_str         = '#';
+        url_str         = '#collection=';
 
       // Add the modal menu
       if (!this.menus.share) {

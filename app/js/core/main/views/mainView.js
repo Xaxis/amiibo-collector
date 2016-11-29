@@ -341,6 +341,9 @@ define([
           megaman: {
             title: "Mega Man"
           },
+          metaknight: {
+            title: "Meta Knight"
+          },
           mewtwo: {
             title: "Mewtwo"
           },
@@ -979,10 +982,6 @@ define([
       // Populate the url into the input
       $('.url-share-input input').val(window.location.href.replace('#', '') + url_str);
       
-      // Toggle menu open/closed
-      this.menus.share.open();
-
-      
       // Build a shareable image, reference canvas and its drawing context
       var
         canvas          = $('.image-canvas .share-image'),
@@ -999,7 +998,8 @@ define([
         items_drawn     = 0,
         rows_drawn      = 0,
         group_title_h   = 50,
-        last_row_h      = 0;
+        last_row_h      = 0,
+        is_collected    = false;
 
       // Create canvas image size from items that need to be drawn
       _.each(this.amiibos, function(group) {
@@ -1008,6 +1008,9 @@ define([
           collected       = _.filter(group.amiibos, function(am) {
             return am.collected;
           }).length;
+
+        // Update collected flag
+        if (collected) is_collected = true;
 
         // Proceed if one or more in group is collected
         if (collected) {
@@ -1038,78 +1041,95 @@ define([
         }
       });
 
-      // Update and set dimension values
-      // total_rows = total_rows - _.size(this.amiibos);
-      row_w = max_w * max_per_row;
-      row_h = max_h;
-      canvas[0].width = (row_w);
-      canvas[0].height = (max_h * total_rows);
-      canvas.width(canvas[0].width);
-      canvas.height(canvas[0].height);
-      c_w = canvas[0].width;
-      c_h = canvas[0].height;
-      ctx = canvas[0].getContext("2d", {alpha: true});
+      // Proceed when at least one thing has been collected
+      if (is_collected) {
+        $('.not-collected-message').remove();
 
-      // Set the canvas background color
-      ctx.fillStyle = "white";
-      ctx.fillRect(0, 0, c_w, c_h);
+        // Update and set dimension values
+        // total_rows = total_rows - _.size(this.amiibos);
+        row_w = max_w * max_per_row;
+        row_h = max_h;
+        canvas[0].width = (row_w);
+        canvas[0].height = (max_h * total_rows);
+        canvas.width(canvas[0].width);
+        canvas.height(canvas[0].height);
+        c_w = canvas[0].width;
+        c_h = canvas[0].height;
+        ctx = canvas[0].getContext("2d", {alpha: true});
 
-      // Draw the amiibos
-      _.each(this.amiibos, function(group, group_name) {
-        var
-          collected       = _.filter(group.amiibos, function(am) {
-            return am.collected;
-          }).length;
+        // Set the canvas background color
+        ctx.fillStyle = "white";
+        ctx.fillRect(0, 0, c_w, c_h);
 
-        // Proceed if one or more in group has been collected
-        if (collected) {
+        // Draw the amiibos
+        _.each(this.amiibos, function(group, group_name) {
+          var
+            collected       = _.filter(group.amiibos, function(am) {
+              return am.collected;
+            }).length;
 
-          // Draw group title text
-          ctx.font = "28px Sans-Serif";
-          ctx.fillStyle = "black";
-          // ctx.fillText(group.title, 20, last_row_h + group_title_h);
+          // Proceed if one or more in group has been collected
+          if (collected) {
 
-          // Iterate over items in group
-          _.each(group.amiibos, function(amiibo, amiibo_name) {
-            if (amiibo.collected) {
-              var
-                img       = $('.grid-item[data-amiibo-name="' + amiibo_name + '"] img')[0],
-                dx        = (max_w * items_drawn),
-                dy        = (max_h * rows_drawn);
+            // Draw group title text
+            ctx.font = "28px Sans-Serif";
+            ctx.fillStyle = "black";
+            // ctx.fillText(group.title, 20, last_row_h + group_title_h);
 
-              // Increment which item is being drawn in a given row
-              items_drawn += 1;
+            // Iterate over items in group
+            _.each(group.amiibos, function(amiibo, amiibo_name) {
+              if (amiibo.collected) {
+                var
+                  img       = $('.grid-item[data-amiibo-name="' + amiibo_name + '"] img')[0],
+                  dx        = (max_w * items_drawn),
+                  dy        = (max_h * rows_drawn);
 
-              // Increment row being drawn
-              if (items_drawn >= max_per_row) {
-                items_drawn = 0;
-                rows_drawn += 1;
+                // Increment which item is being drawn in a given row
+                items_drawn += 1;
+
+                // Increment row being drawn
+                if (items_drawn >= max_per_row) {
+                  items_drawn = 0;
+                  rows_drawn += 1;
+                }
+
+                // Update the height of the last row drawn
+                last_row_h = dy + max_h;
+
+                // Draw the image
+                ctx.drawImage(img, dx, dy, img.width, img.height);
               }
+            });
 
-              // Update the height of the last row drawn
-              last_row_h = dy + max_h;
+            // Update number of rows drawn
+            if (items_drawn > 0) rows_drawn += 1;
+            items_drawn = 0;
+          }
+        });
 
-              // Draw the image
-              ctx.drawImage(img, dx, dy, img.width, img.height);
-            }
-          });
+        // Convert canvas to image element
+        var collection_img = new Image();
+        collection_img.src = canvas[0].toDataURL("image/png");
+        $('.image-link-wrapper').remove();
+        var link_wrapper = $('<a class="image-link-wrapper" href="' + collection_img.src + '" download="AmiiboCollection.png"></a>');
+        link_wrapper.html(collection_img);
+        canvas.after(link_wrapper);
+        canvas.hide();
 
-          // Update number of rows drawn
-          if (items_drawn > 0) rows_drawn += 1;
-          items_drawn = 0;
-        }
-      });
-      
-      // Convert canvas to image element
-      var collection_img = new Image();
-      collection_img.src = canvas[0].toDataURL("image/png");
-      var link_wrapper = $('<a href="' + collection_img.src + '" download="AmiiboCollection.png"></a>');
-      link_wrapper.append(collection_img);
-      canvas.after(link_wrapper);
-      canvas.hide();
+        // Update the image download link
+        $('.image-share-info a').attr('href', collection_img.src);
+      }
 
-      // Update the image download link
-      $('.image-share-info a').attr('href', collection_img.src);
+      // Update with nothing collected message
+      else {
+        $('.not-collected-message').remove();
+        $('.image-canvas').prepend('<div class="not-collected-message">It appears you have not collected anything yet!</div>');
+        $('.image-canvas').find('img').remove();
+        canvas.hide();
+      }
+
+      // Toggle menu open/closed
+      this.menus.share.open();
     },
 
 

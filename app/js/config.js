@@ -7,7 +7,7 @@
    * Configure require.js
    */
   require.config({
-    baseUrl: 'js',
+    baseUrl: 'app/js',
     paths: {
 
       // Vendor dependencies

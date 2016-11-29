@@ -9,6 +9,15 @@
  * @todo - Add functionality to add/remove all of a group at once.
  *
  * @todo - Add in all animal crossing cards.
+ *
+ * @todo - Missing "Guardian" in the Legend of Zelda series.
+ *
+ * @todo - Splatoons boy titles are saying "girl"
+ *
+ * @todo - Write functionality that enables users to save collection configuration and then
+ * reupload configuration later.
+ *
+ * @todo - Write deployment script.
  */
 define([
   'jquery',
@@ -602,7 +611,7 @@ define([
     loadAmiibos: function() {
       var
         self        = this,
-        path        = 'assets/images/amiibos/',
+        path        = 'app/assets/images/amiibos/',
         grid        = $('.grid-container');
 
       // Make sure the grid container is cleared out

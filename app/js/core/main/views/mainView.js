@@ -6,16 +6,12 @@
  *
  * @todo - Figure out why fontawesome icons aren't loading on mobile browsers.
  *
- * @todo - Add in all animal crossing cards.
- *
- * @todo - Missing "Guardian" in the Legend of Zelda series.
+ * @todo - Add in all animal crossing card amiibos
  *
  * @todo - Write functionality that enables users to save collection configuration and then
  * reupload configuration later.
  *
  * @todo - Write deployment script.
- *
- * @todo - jQuery.sticky isn't working right after you open and then close a modal
  */
 define([
   'jquery',
@@ -30,7 +26,8 @@ define([
   'text!core/main/templates/menu-group-group.tpl.html',
   'text!core/main/templates/menu-share.tpl.html',
   'text!core/main/templates/menu-stats.tpl.html',
-  'text!core/main/templates/menu-stats-group.tpl.html'
+  'text!core/main/templates/menu-stats-group.tpl.html',
+  'text!core/main/templates/menu-restart.tpl.html'
 ], function(
   $,
   _,
@@ -44,7 +41,8 @@ define([
   menuGroupGroupTpl,
   menuShareTpl,
   menuStatsTpl,
-  menuStatsGroupTpl
+  menuStatsGroupTpl,
+  menuRestartTpl
 ) {
   var _ModuleView = Backbone.View.extend({
     el: $('body'),
@@ -58,7 +56,8 @@ define([
       menuGroupGroup: _.template(menuGroupGroupTpl),
       menuShare: _.template(menuShareTpl),
       menuStats: _.template(menuStatsTpl),
-      menuStatsGroup: _.template(menuStatsGroupTpl)
+      menuStatsGroup: _.template(menuStatsGroupTpl),
+      menuRestart: _.template(menuRestartTpl)
     },
 
     events: {
@@ -70,6 +69,7 @@ define([
       'click .control[data-control-id="sort-total-asc"]': 'filterSortTotalAsc',
       'click .control[data-control-id="sort-total-desc"]': 'filterSortTotalDesc',
       'click .control-share': 'toggleShareMenu',
+      'click .control-restart': 'toggleRestartMenu',
       'click .grid-item': 'toggleSelectedAmiibo',
       'click .amiibo-grid h2': 'toggleSelectedGroup'
     },
@@ -95,6 +95,9 @@ define([
           },
           digby: {
             title: "Digby"
+          },
+          isabellesummeroutfit: {
+            title: "Isabelle (summer outfit)"
           },
           isabellewinteroutfit: {
             title: "Isabelle (winter outfit)"
@@ -171,6 +174,9 @@ define([
           anniversarylink: {
             title: "Link - 30th Anniversary"
           },
+          guardian: {
+            title: "Guardian"
+          },
           linkarcher: {
             title: "Link - Archer"
           },
@@ -204,13 +210,30 @@ define([
       },
 
       // Monster hunter
-      // monsterhunter: {
-      //   ec: '5',
-      //   title: "Monster Hunter",
-      //   amiibos: {
-      //
-      //   }
-      // },
+      monsterhunter: {
+        ec: '5',
+        title: "Monster Hunter",
+        amiibos: {
+          beriorosuaiola: {
+            title: "Beriorosu & Avuria"
+          },
+          kurupekkodan: {
+            title: "Kurupekko & Dan Seniors"
+          },
+          navirou: {
+            title: "Nabiru"
+          },
+          rioreiacheval: {
+            title: "Rioreia & Cheval"
+          },
+          rioreusuriderboy: {
+            title: "Sekigan of Rioreusu & Rider Boy"
+          },
+          rioreusuridergirl: {
+            title: "Sekigan of Rioreusu & Rider Boy"
+          }
+        }
+      },
 
       // Shovel knight
       shovelknight: {
@@ -231,8 +254,14 @@ define([
           hammerslambowser: {
             title: "Hammer Slam Bowser"
           },
+          darkhammerslambowser: {
+            title: "Dark Hammer Slam Bowser"
+          },
           superchargeddonkeykong: {
             title: "Super Charged Donkey Kong"
+          },
+          darksuperchargeddonkeykong: {
+            title: "Dark Super Charged Donkey Kong"
           }
         }
       },
@@ -305,7 +334,7 @@ define([
             title: "Falco"
           },
           famicomrob: {
-            title: "Famicom Rob"
+            title: "Famicom R.O.B."
           },
           fox: {
             title: "Fox"
@@ -395,7 +424,7 @@ define([
             title: "Pit"
           },
           rob: {
-            title: "Rob"
+            title: "R.O.B."
           },
           robin: {
             title: "Robin"
@@ -549,12 +578,11 @@ define([
     /**
      * Initialize the application.
      */
-    initialize: function( route ) {
+    initialize: function() {
 
       // Bind methods
       _.bindAll(this,
         'loadAmiibos',
-        'loadAmiibosFromURL',
         'storageDiffUpdate',
         'toggleStatsMenu',
         'toggleGroupMenu',
@@ -564,6 +592,7 @@ define([
         'filterSortTotalAsc',
         'filterSortTotalDesc',
         'toggleShareMenu',
+        'toggleRestartMenu',
         'toggleSelectedAmiibo',
         'toggleSelectedGroup'
       );
@@ -581,7 +610,15 @@ define([
           $(elm).removeClass('stuck');
         }
       });
-      
+
+      // Capture the scroll position when a modal opens so it can be restored when modals are closed
+      $(document).on('opening', '.remodal', function () {
+        $(this).data('last-scroll-pos', $(window).scrollTop());
+      });
+      $(document).on('closed', '.remodal', function () {
+        $(window).scrollTop($(this).data('last-scroll-pos'));
+      });
+
       // Trigger not supported message if user browser doesn't support localStorage
       if (!this.storage_settings.is_local) {
         var modal = $(this.templates.messageBrowserCompat({
@@ -593,15 +630,6 @@ define([
 
       // Load the amiibos
       this.loadAmiibos();
-
-      // Examine the route seeing if it's a shared URL
-      if (route) {
-        if (route.match(/collection=/)) {
-          var
-            collection_str        = route.replace('collection=', '');
-          this.loadAmiibosFromURL(collection_str);
-        }
-      }
     },
 
 
@@ -678,17 +706,6 @@ define([
           }
         }
       });
-    },
-
-
-    /**
-     * Takes an encoded collection URL and loads the corresponding collection to display.
-     */
-    loadAmiibosFromURL: function( url_str ) {
-      var
-        groups        = url_str.split('/[^0-9]/');
-      // console.log(url_str);
-      console.log(groups);
     },
 
 
@@ -1186,6 +1203,29 @@ define([
 
 
     /**
+     * Toggle and load the restart menu.
+     */
+    toggleRestartMenu: function() {
+      var
+        self        = this;
+
+      // Add the modal menu
+      if (!this.menus.restart) {
+        this.menus.restart = $(this.templates.menuRestart()).remodal();
+        this.$el.append(this.menus.restart);
+        $('.menu-restart .restart-continue').on('click', function() {
+          window.localStorage.removeItem(self.storage_settings.id);
+          window.location.href = '/';
+          self.menus.restart.close();
+        });
+      }
+
+      // Toggle menu open/closed
+      this.menus.restart.open();
+    },
+
+
+    /**
      * Toggle whether or not an amiibo has been collected.
      */
     toggleSelectedAmiibo: function(e) {
@@ -1221,9 +1261,13 @@ define([
 
       // Add appropriate class on group
       if (_.size(this.amiibos[amiibo_group].amiibos) == _.filter(this.amiibos[amiibo_group].amiibos, 'collected').length) {
-        amiibo_group_container.addClass('group-collected');
+        amiibo_group_container
+          .data('group-collected', 'yes')
+          .addClass('group-collected');
       } else {
-        amiibo_group_container.removeClass('group-collected');
+        amiibo_group_container
+          .data('group-collected', 'no')
+          .removeClass('group-collected');
       }
     },
 

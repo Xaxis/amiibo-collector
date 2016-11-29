@@ -4732,7 +4732,7 @@
   font-family: 'FontAwesome';
   font-style: normal;
   font-weight: 400;
-  src: local("FontAwesome"), local("FontAwesome"), url(assets/fonts/fontawesome-webfont.woff2) format("woff2"), url(assets/fonts/fontawesome-webfont.woff) format("woff"); }
+  src: local("FontAwesome"), local("FontAwesome"), url(app/assets/fonts/fontawesome-webfont.woff2) format("woff2"), url(app/assets/fonts/fontawesome-webfont.woff) format("woff"); }
 
 /*! normalize.css v3.0.2 | MIT License | git.io/normalize */
 /**
@@ -5169,6 +5169,9 @@ a:active {
     .controls.stuck a {
       font-size: 1.4em;
       transition: font-size 350ms ease; }
+      @media only screen and (min-width: 600px) {
+        .controls.stuck a {
+          font-size: 1.2em; } }
   .controls .page-width {
     margin: 0 auto;
     max-width: 960px;
@@ -5194,8 +5197,14 @@ a:active {
     font-size: 2.0em;
     color: white;
     transition: font-size 350ms ease; }
+    @media only screen and (max-width: 600px) {
+      .controls a {
+        font-size: 1.2em; } }
   .controls a + a {
     margin-left: 15%; }
+    @media only screen and (max-width: 600px) {
+      .controls a + a {
+        margin-left: 10%; } }
 
 .grid-container {
   margin: 0 auto;
@@ -5219,6 +5228,12 @@ a:active {
   .grid-container .amiibo-grid h2 {
     cursor: pointer;
     display: inline-block; }
+    @media only screen and (max-width: 840px) {
+      .grid-container .amiibo-grid h2 {
+        font-size: 1.2rem; } }
+    @media only screen and (max-width: 600px) {
+      .grid-container .amiibo-grid h2 {
+        font-size: 1.0rem; } }
     .grid-container .amiibo-grid h2:before {
       display: inline-block;
       content: "\f1db";
@@ -5231,7 +5246,8 @@ a:active {
     margin-top: 4%; }
   .grid-container .grid-item {
     opacity: 0.3;
-    text-align: center; }
+    text-align: center;
+    cursor: pointer; }
     .grid-container .grid-item .completed-icon {
       font-family: "FontAwesome";
       font-size: 1.2rem;
@@ -5341,6 +5357,8 @@ a:active {
     .menu.menu-share .image-canvas img {
       width: 100%;
       height: auto; }
+  .menu.menu-restart .restart-info {
+    margin-bottom: 30px; }
 
 .btn {
   display: inline-block;

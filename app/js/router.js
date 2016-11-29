@@ -3,12 +3,10 @@
  */
 define([
   'underscore',
-  'backbone',
-  'main'
+  'backbone'
 ], function(
   _,
-  Backbone,
-  Main
+  Backbone
 ) {
   var AppRouter = Backbone.Router.extend({
     routes: {
@@ -23,9 +21,6 @@ define([
 
     // Default route handler
     app_router.on('route:defaultAction', function(actions) {
-
-      // Applicaiton initialization
-      new Main(actions);
     });
 
     // Start history stack

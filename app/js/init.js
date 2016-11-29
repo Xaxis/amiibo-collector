@@ -5,12 +5,14 @@ define([
   'devgrid',
   'modernizr-tests',
   'modal',
-  'router'
+  'router',
+  'main'
 ], function(
   Devgrid,
   ModernizrTests,
   Modal,
-  Router
+  Router,
+  Main
 ) {
   var Init = function() {
     return {
@@ -25,6 +27,7 @@ define([
         ModernizrTests.initialize();
         new Modal().initialize();
         Router.initialize({pushState: true});
+        new Main();
       }
     };
   };

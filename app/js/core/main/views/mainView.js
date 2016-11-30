@@ -71,7 +71,8 @@ define([
       'click .control-share': 'toggleShareMenu',
       'click .control-restart': 'toggleRestartMenu',
       'click .grid-item': 'toggleSelectedAmiibo',
-      'click .amiibo-grid h2': 'toggleSelectedGroup'
+      'click .amiibo-grid h2 .group-select-toggle': 'toggleSelectedGroup',
+      'click .amiibo-grid h2 .group-expando-toggle': 'toggleExpandGroup'
     },
 
     // Stores references to loaded menus
@@ -594,7 +595,8 @@ define([
         'toggleShareMenu',
         'toggleRestartMenu',
         'toggleSelectedAmiibo',
-        'toggleSelectedGroup'
+        'toggleSelectedGroup',
+        'toggleExpandGroup'
       );
       
       // Initialize sticky navigation
@@ -1279,6 +1281,9 @@ define([
       var
         target        = $(e.currentTarget).closest('.amiibo-grid');
 
+      // Stop click propagation from h2's events
+      e.stopPropagation();
+
       // Iterate through groups selecting or unselecting items based on group data flag
       if (target.data('group-collected') == 'no' || !target.data('group-collected')) {
         target
@@ -1301,6 +1306,30 @@ define([
           }
           });
         target.data('group-collected', 'no');
+      }
+    },
+
+
+    /**
+     * Toggles a group open and closed.
+     */
+    toggleExpandGroup: function(e) {
+      var
+        target        = $(e.currentTarget),
+        parent        = target.closest('.amiibo-grid'),
+        group         = parent.find('.group');
+
+      // Stop click propagation from h2's events
+      e.stopPropagation();
+
+      // Add indicator class to target
+      parent.toggleClass('group-closed');
+      
+      // Switch icon in control
+      if (parent.hasClass('group-closed')) {
+        group.hide();
+      } else {
+        group.show();
       }
     }
 

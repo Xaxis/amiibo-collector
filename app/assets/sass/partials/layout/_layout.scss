@@ -4,6 +4,7 @@
 // Core/over arching layout structures defining sitewide zones
 
 
+// Introduction/header element
 .intro {
   @include clearfix();
   @include site-width('md', true, false);
@@ -14,6 +15,7 @@
 }
 
 
+// Main application controls
 .controls {
   @include clearfix();
   margin-bottom: 20px;
@@ -33,6 +35,12 @@
         font-size: 1.2em;
       }
     }
+    a + a {
+      margin-left: 15%;
+      @include breakpoint($max: $fg-col-10) {
+        margin-left: 12%;
+      }
+    }
   }
   .page-width {
     @include clearfix();
@@ -49,18 +57,19 @@
     color: $white;
     transition: font-size 350ms ease;
     @include breakpoint($max: $fg-col-10) {
-      font-size: 1.2em;
+      font-size: 1.4em;
     }
   }
   a + a {
     margin-left: 15%;
     @include breakpoint($max: $fg-col-10) {
-      margin-left: 10%;
+      margin-left: 12%;
     }
   }
 }
 
 
+// Styles for collection grid
 .grid-container {
   @include clearfix();
   @include site-width('md', true, false);
@@ -70,7 +79,6 @@
   padding: $fg-gutter;
   .amiibo-grid {
     h2 {
-      cursor: pointer;
       display: inline-block;
       @include breakpoint($max: $fg-col-14) {
         font-size: 1.2rem;
@@ -78,17 +86,42 @@
       @include breakpoint($max: $fg-col-10) {
         font-size: 1.0rem;
       }
-      &:before {
+      .group-control {
+        cursor: pointer;
         display: inline-block;
-        content: "\f1db";
         font-family: "FontAwesome";
         margin-right: 15px;
         color: $blue;
       }
+      .group-select-toggle {
+        &.toggle-uncollected {
+          display: none;
+        }
+      }
+      .group-expando-toggle {
+        &.toggle-closed {
+          display: none;
+        }
+      }
     }
     &.group-collected {
-      h2:before{
-        content: "\f111";
+      .group-select-toggle {
+        &.toggle-collected {
+          display: none;
+        }
+        &.toggle-uncollected {
+          display: inline-block;
+        }
+      }
+    }
+    &.group-closed {
+      .group-expando-toggle {
+        &.toggle-closed {
+          display: inline-block;
+        }
+        &.toggle-opened {
+          display: none;
+        }
       }
     }
   }

@@ -1,5 +1,12 @@
 <!-- Amiibo group -->
 <div class="amiibo-grid <%= group_name %>" data-group-name="<%= group_name %>">
-    <h2><%= group_title %> (<span class="group-stat-collected"><%= group_collected %></span> of <span class="group-stat-total"><%= group_total %></span>)</h2>
+    <h2>
+        <span class="group-control group-expando-toggle toggle-closed">&#xf0fe;</span>
+        <span class="group-control group-expando-toggle toggle-opened">&#xf146;</span>
+        <span class="group-control group-select-toggle toggle-collected">&#xf1db;</span>
+        <span class="group-control group-select-toggle toggle-uncollected">&#xf111;</span>
+        <span class="group-title-text"><%= group_title %></span>
+        (<span class="group-stat-collected"><%= group_collected %></span> of <span class="group-stat-total"><%= group_total %></span>)
+    </h2>
     <div class="grid group"></div>
 </div>

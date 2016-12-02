@@ -7445,6 +7445,10 @@ a:active {
   color: #59a1f7;
   transition: color 250ms ease; }
 
+em {
+  color: #ff5c36;
+  font-weight: bold; }
+
 .sitewide {
   margin: 0 auto;
   max-width: 100%; }
@@ -7575,6 +7579,8 @@ a:active {
       display: none; }
     .grid-container .amiibo-grid h2 .group-expando-toggle.toggle-closed {
       display: none; }
+  .grid-container .amiibo-grid .group {
+    overflow: hidden; }
   .grid-container .amiibo-grid.group-collected .group-select-toggle.toggle-collected {
     display: none; }
   .grid-container .amiibo-grid.group-collected .group-select-toggle.toggle-uncollected {
@@ -7582,6 +7588,8 @@ a:active {
   .grid-container .amiibo-grid.group-closed .group-expando-toggle.toggle-closed {
     display: inline-block; }
   .grid-container .amiibo-grid.group-closed .group-expando-toggle.toggle-opened {
+    display: none; }
+  .grid-container .amiibo-grid.group-closed .group {
     display: none; }
   .grid-container .amiibo-grid + .amiibo-grid {
     margin-top: 4%; }
@@ -7642,62 +7650,53 @@ a:active {
       margin-top: 10px;
       font-size: 0.9rem; }
   .menu.menu-group .group-group {
-    padding: 8px 12px;
-    margin-bottom: 10px;
-    display: table;
-    width: 100%;
-    height: 40px; }
-    .menu.menu-group .group-group .cell {
-      display: table-cell;
-      vertical-align: middle;
-      font-size: 1.0rem;
-      line-height: 0.1rem; }
-    .menu.menu-group .group-group .group-input {
-      width: 50px; }
-    .menu.menu-group .group-group .group-title {
-      cursor: pointer;
-      color: #3880ff;
-      transition: color 250ms ease; }
-      .menu.menu-group .group-group .group-title:hover, .menu.menu-group .group-group .group-title:focus, .menu.menu-group .group-group .group-title:active {
-        color: #59a1f7;
-        transition: color 250ms ease; }
-  .menu.menu-filter .filter-controls .control {
-    font-size: 1.5em;
-    margin-bottom: 40px;
-    cursor: pointer;
-    color: #3880ff;
-    transition: color 250ms ease; }
-    .menu.menu-filter .filter-controls .control:hover, .menu.menu-filter .filter-controls .control:focus, .menu.menu-filter .filter-controls .control:active {
-      color: #59a1f7;
-      transition: color 250ms ease; }
-    .menu.menu-filter .filter-controls .control .icon {
+    margin-bottom: 20px; }
+    .menu.menu-group .group-group .checkbox-icon {
+      display: inline-block;
       font-family: "FontAwesome";
+      margin-right: 15px;
+      cursor: pointer; }
+    .menu.menu-group .group-group:not(.checked) .checkbox-icon.checked {
+      display: none; }
+    .menu.menu-group .group-group:not(.checked) .checkbox-icon.unchecked {
+      display: inline-block; }
+    .menu.menu-group .group-group.checked .checkbox-icon.checked {
+      display: inline-block; }
+    .menu.menu-group .group-group.checked .checkbox-icon.unchecked {
+      display: none; }
+  .menu.menu-sort .sort-controls .control {
+    margin-bottom: 20px;
+    cursor: pointer; }
+    .menu.menu-sort .sort-controls .control .icon {
+      font-family: "FontAwesome";
+      display: inline-block; }
+    .menu.menu-sort .sort-controls .control .control-title {
       display: inline-block;
-      color: white; }
-    .menu.menu-filter .filter-controls .control .control-title {
-      display: inline-block;
-      margin-left: 30px; }
-  .menu.menu-share .url-share-info {
+      margin-left: 15px; }
+  .menu.menu-share .control {
     margin-bottom: 20px; }
-  .menu.menu-share .url-share-input {
-    margin-bottom: 40px; }
-    .menu.menu-share .url-share-input input {
-      border: 2px solid white;
-      background: transparent;
-      padding: 8px 6px;
-      width: 100%; }
-  .menu.menu-share .image-share-info {
-    margin-bottom: 20px; }
-  .menu.menu-share .image-canvas {
-    margin-bottom: 40px; }
-    .menu.menu-share .image-canvas canvas {
-      display: block;
-      width: 400px;
-      height: 500px;
-      background: white; }
-    .menu.menu-share .image-canvas img {
-      width: 100%;
-      height: auto; }
+    .menu.menu-share .control .icon {
+      font-family: "FontAwesome";
+      margin-right: 15px; }
+    .menu.menu-share .control .info {
+      padding-left: 35px;
+      margin-top: 6px;
+      font-size: .8rem;
+      max-width: 400px; }
+  .menu.menu-share .control-generate-share-image {
+    display: none; }
+    .menu.menu-share .control-generate-share-image .info .download {
+      display: none; }
+    .menu.menu-share .control-generate-share-image .info canvas {
+      display: none; }
+  .menu.menu-share .control-generate-stats-file {
+    display: none; }
+    .menu.menu-share .control-generate-stats-file .info .download {
+      display: none; }
+  .menu.menu-share .control-generate-json-config .info .download {
+    display: none; }
+  .menu.menu-share .control-upload-json-config .info .collection-configuration-input {
+    display: none; }
   .menu.menu-restart .restart-info {
     margin-bottom: 30px; }
 

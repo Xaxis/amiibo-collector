@@ -1,17 +1,21 @@
 /**
  * Backbone module view template
  *
- * @todo - Add functionality so that you can tap once to add to your COLLECTED list, tap twice to add to your
- * WANT/WISH list, tap three times to uncheck.
- *
- * @todo - Figure out why fontawesome icons aren't loading on mobile browsers.
+ * @todo - Add functionality so that you can tap once to add to your COLLECTED list, tap twice to add to your WANT/WISH list, tap three times to uncheck.
  *
  * @todo - Add in all animal crossing card amiibos
  *
- * @todo - Write functionality that enables users to save collection configuration and then
- * reupload configuration later.
+ * @todo - Write functionality that enables users to save collection configuration and then reupload configuration later.
  *
  * @todo - Write deployment script.
+ *
+ * @todo - Create "working" animation when loading menus (such as when the share menu is creating an image).
+ *
+ * @todo - Research if mega man is part of the SSB series and if he should have his own group
+ *
+ * @todo - Convert local storage object check/test to utility method
+ *
+ * @todo - Add "infinity scrolling" functionality so all collection images don't load at once.
  */
 define([
   'jquery',
@@ -21,7 +25,7 @@ define([
   'text!core/main/templates/amiibo-group.tpl.html',
   'text!core/main/templates/amiibo-grid-item.tpl.html',
   'text!core/main/templates/message-browser-compat.tpl.html',
-  'text!core/main/templates/menu-filter.tpl.html',
+  'text!core/main/templates/menu-sort.tpl.html',
   'text!core/main/templates/menu-group.tpl.html',
   'text!core/main/templates/menu-group-group.tpl.html',
   'text!core/main/templates/menu-share.tpl.html',
@@ -36,7 +40,7 @@ define([
   amiiboGroupTpl,
   amiiboGridItemTpl,
   messageBrowserCompatTpl,
-  menuFilterTpl,
+  menuSortTpl,
   menuGroupTpl,
   menuGroupGroupTpl,
   menuShareTpl,
@@ -51,7 +55,7 @@ define([
       amiiboGroup: _.template(amiiboGroupTpl),
       amiiboGridItem: _.template(amiiboGridItemTpl),
       messageBrowserCompat: _.template(messageBrowserCompatTpl),
-      menuFilter: _.template(menuFilterTpl),
+      menuSort: _.template(menuSortTpl),
       menuGroup: _.template(menuGroupTpl),
       menuGroupGroup: _.template(menuGroupGroupTpl),
       menuShare: _.template(menuShareTpl),
@@ -63,12 +67,16 @@ define([
     events: {
       'click .control-stats': 'toggleStatsMenu',
       'click .control-group': 'toggleGroupMenu',
-      'click .control-filter': 'toggleFilterMenu',
-      'click .control[data-control-id="sort-alpha-asc"]': 'filterSortAlphaAsc',
-      'click .control[data-control-id="sort-alpha-desc"]': 'filterSortAlphaDesc',
-      'click .control[data-control-id="sort-total-asc"]': 'filterSortTotalAsc',
-      'click .control[data-control-id="sort-total-desc"]': 'filterSortTotalDesc',
+      'click .control-sort': 'toggleSortMenu',
+      'click .control[data-control-id="sort-alpha-asc"]': 'sortAlphaAsc',
+      'click .control[data-control-id="sort-alpha-desc"]': 'sortAlphaDesc',
+      'click .control[data-control-id="sort-total-asc"]': 'sortTotalAsc',
+      'click .control[data-control-id="sort-total-desc"]': 'sortTotalDesc',
       'click .control-share': 'toggleShareMenu',
+      'click .menu-share .control-generate-share-image .button': 'generateShareImage',
+      'click .menu-share .control-generate-stats-file .button': 'generateStatsFile',
+      'click .menu-share .control-generate-json-config .button': 'generateJSONConfig',
+      'click .menu-share .control-upload-json-config .button': 'uploadJSONConfig',
       'click .control-restart': 'toggleRestartMenu',
       'click .grid-item': 'toggleSelectedAmiibo',
       'click .amiibo-grid h2 .group-select-toggle': 'toggleSelectedGroup',
@@ -78,11 +86,11 @@ define([
     // Stores references to loaded menus
     menus: {},
 
+    // Collection initialization object
     amiibos: {
 
       // Animal Crossing
       animalcrossing: {
-        ec: '0',
         title: "Animal Crossing",
         amiibos: {
           blathers: {
@@ -138,7 +146,6 @@ define([
 
       // Chibi robo
       chibi: {
-        ec: '1',
         title: "Chibi Robo",
         amiibos: {
           robo: {
@@ -149,7 +156,6 @@ define([
 
       // Kirby
       kirby: {
-        ec: '2',
         title: "Kirby",
         amiibos: {
           kingdedede: {
@@ -169,7 +175,6 @@ define([
 
       // Legend of zelda
       loz: {
-        ec: '3',
         title: "Legend of Zelda",
         amiibos: {
           anniversarylink: {
@@ -201,7 +206,6 @@ define([
 
       // Mega man
       megaman: {
-        ec: '4',
         title: "Mega Man - Legacy Collection",
         amiibos: {
           gold: {
@@ -212,7 +216,6 @@ define([
 
       // Monster hunter
       monsterhunter: {
-        ec: '5',
         title: "Monster Hunter",
         amiibos: {
           beriorosuaiola: {
@@ -238,7 +241,6 @@ define([
 
       // Shovel knight
       shovelknight: {
-        ec: '6',
         title: "Shovel Knight",
         amiibos: {
           shovelknight: {
@@ -249,7 +251,6 @@ define([
 
       // Skylanders
       skylanders: {
-        ec: '7',
         title: "Skylanders Superchargers",
         amiibos: {
           hammerslambowser: {
@@ -269,7 +270,6 @@ define([
 
       // Splatoons
       splatoons: {
-        ec: '8',
         title: "Splatoons",
         amiibos: {
           callie: {
@@ -301,7 +301,6 @@ define([
 
       // Super smash brothers
       ssb: {
-        ec: '9',
         title: "Super Smash Brothers",
         amiibos: {
           bowser: {
@@ -477,7 +476,6 @@ define([
 
       // Super Mario
       supermario: {
-        ec: '10',
         title: "Super Mario",
         amiibos: {
           boo: {
@@ -530,7 +528,6 @@ define([
 
       // Super Mario Bros. 30th
       supermario30th: {
-        ec: '11',
         title: "Super Mario Bros. 30th",
         amiibos: {
           classiccolor: {
@@ -544,7 +541,6 @@ define([
 
       // Yoshi
       yoshi: {
-        ec: '12',
         title: "Yoshi",
         amiibos: {
           blueyarnyoshi: {
@@ -567,6 +563,11 @@ define([
     },
 
 
+    // Collection settings initialization object
+    collection_settings: {
+      sort_by: 'alpha-asc'
+    },
+
     // Local Storage configuration
     storage_settings: {
       id: "amiibo-collection",
@@ -575,6 +576,11 @@ define([
       loaded: false
     },
 
+    // Placeholder for collection configuration file
+    collection_configuration_file: null,
+
+    // Placeholder for collection stats file
+    collection_stats_file: null,
 
     /**
      * Initialize the application.
@@ -587,12 +593,16 @@ define([
         'storageDiffUpdate',
         'toggleStatsMenu',
         'toggleGroupMenu',
-        'toggleFilterMenu',
-        'filterSortAlphaAsc',
-        'filterSortAlphaDesc',
-        'filterSortTotalAsc',
-        'filterSortTotalDesc',
+        'toggleSortMenu',
+        'sortAlphaAsc',
+        'sortAlphaDesc',
+        'sortTotalAsc',
+        'sortTotalDesc',
         'toggleShareMenu',
+        'generateShareImage',
+        'generateStatsFile',
+        'generateJSONConfig',
+        'uploadJSONConfig',
         'toggleRestartMenu',
         'toggleSelectedAmiibo',
         'toggleSelectedGroup',
@@ -636,9 +646,9 @@ define([
 
 
     /**
-     * Load collector's collected amiibos.
+     * Load collector's collection groups.
      */
-    loadAmiibos: function() {
+    loadAmiibos: function( dont_load ) {
       var
         self        = this,
         path        = 'app/assets/images/amiibos/',
@@ -649,14 +659,25 @@ define([
 
       // Test to see if we should load from local storage
       if (this.storage_settings.is_local && !this.storage_settings.dont_use_local && !this.loaded) {
+
+        // Indicate local storage has been loaded
         this.loaded = true;
+
+        // Proceed to load collection object when it exists
         if (window.localStorage.getItem(this.storage_settings.id)) {
           this.storageDiffUpdate();
           this.amiibos = JSON.parse(window.localStorage.getItem(this.storage_settings.id));
         }
+
+        // Load the collection settings object when it exists otherwise set it
+        if (window.localStorage.getItem(this.storage_settings.id + '_settings')) {
+          this.collection_settings = JSON.parse(window.localStorage.getItem(this.storage_settings.id + '_settings'));
+        } else {
+          window.localStorage.setItem(this.storage_settings.id + '_settings', JSON.stringify(this.collection_settings));
+        }
       }
 
-      // Iterate over amiibos
+      // Iterate over collection
       _.each(this.amiibos, function(group, group_name) {
         var
           grid_group        = self.templates.amiiboGroup({
@@ -664,7 +685,8 @@ define([
             group_title: group.title,
             group_collected: _.filter(group.amiibos, 'collected').length,
             group_total: _.size(group.amiibos)
-          });
+          }),
+          group_elm         = null;
 
         // Update meta properties
         group.id = group_name;
@@ -675,17 +697,15 @@ define([
 
           // Add new group container
           grid.append(grid_group);
+          group_elm = $('.amiibo-grid[data-group-name="' + group_name + '"]');
 
           // Create new group container
-          var ec = 0;
           _.each(group.amiibos, function(amiibo, amiibo_name) {
             var
               amiibo_path        = path + group_name + '-' + amiibo_name + '.png';
 
-            // Update amiibo id
+            // Add collection item id
             amiibo.id = amiibo_name;
-            amiibo.ec = amiibo.ec || ec;
-            ec++;
 
             // Create new grid object
             grid.find('.' + group_name + ' .group').append(self.templates.amiiboGridItem({
@@ -696,18 +716,43 @@ define([
             }));
           });
 
-          // Add appropriate class on group
+          // Add appropriate class on group to indicate whether or not a group has been collected
           if (_.size(group.amiibos) == _.filter(group.amiibos, 'collected').length) {
-            $('.amiibo-grid[data-group-name="' + group_name + '"]')
+            group_elm
               .data('group-collected', 'yes')
               .addClass('group-collected');
           } else {
-            $('.amiibo-grid[data-group-name="' + group_name + '"]')
+            group_elm
               .data('group-collected', 'no')
               .removeClass('group-collected');
           }
+
+          // Toggle show/hide the group based on its user setting
+          if (group.closed) {
+            group_elm.addClass('group-closed');
+          } else {
+            group_elm.removeClass('group-closed');
+          }
         }
       });
+
+      // Sort groups based on collection settings
+      if (!dont_load) {
+        switch (this.collection_settings.sort_by) {
+          case 'alpha-asc' :
+            this.sortAlphaAsc();
+            break;
+          case 'alpha-desc' :
+            this.sortAlphaDesc();
+            break;
+          case 'total-asc' :
+            this.sortTotalAsc();
+            break;
+          case 'total-desc' :
+            this.sortTotalDesc();
+            break;
+        }
+      }
     },
 
 
@@ -878,14 +923,17 @@ define([
         });
 
         // Attach event handler to inputs
-        $('.group-input input').on('click', function(e) {
+        $('.menu-group .checkbox-icon').on('click', function(e) {
           var
             target        = $(e.currentTarget),
-            group_name    = target.data('id'),
-            checked       = target.is(':checked') ? false : true;
+            group         = target.closest('.group-group'),
+            group_name    = target.data('id');
+
+          // Toggle checked class on group
+          group.toggleClass('checked');
 
           // Update whether the group is selected
-          self.amiibos[group_name].unchecked = checked;
+          self.amiibos[group_name].unchecked = target.hasClass('unchecked') ? false : true;
 
           // Update the local storage object
           if (self.storage_settings.is_local && !self.storage_settings.dont_use_local) {
@@ -905,14 +953,14 @@ define([
           // Iterate through groups
           _.each(self.amiibos, function(group, group_name) {
             var
-              input       = $('input[data-id="' + group_name + '"]');
+              input       = $('.checkbox-icon[data-id="' + group_name + '"]');
             if (target_id != group_name) {
               self.amiibos[group_name].unchecked = true;
-              input.prop('checked', false);
+              input.closest('.group-group').removeClass('checked');
               self.loadAmiibos();
             } else {
               self.amiibos[group_name].unchecked = false;
-              input.prop('checked', true);
+              input.closest('.group-group').addClass('checked');
             }
           });
 
@@ -927,30 +975,30 @@ define([
 
 
     /**
-     * Toggle and load the filter menu
+     * Toggle and load the sort menu
      */
-    toggleFilterMenu: function() {
-      if (!this.menus.filter) {
-        this.menus.filter = $(this.templates.menuFilter()).remodal();
-        this.$el.append(this.menus.filter);
+    toggleSortMenu: function() {
+      if (!this.menus.sort) {
+        this.menus.sort = $(this.templates.menuSort()).remodal();
+        this.$el.append(this.menus.sort);
       }
 
       // Toggle menu open/closed
-      this.menus.filter.open();
+      if (this.menus.sort) this.menus.sort.open();
     },
 
     /**
      * Sort groups alpha ascending.
      */
-    filterSortAlphaAsc: function() {
+    sortAlphaAsc: function() {
 
-      // Sort the amiibo groups
+      // Sort the collection groups
      this.amiibos =  _.reduce(_.sortBy(this.amiibos, 'id'), function(o, v) {
         o[v.id] = v;
         return o;
       }, {});
 
-      // Sort each amiibo groups amiibos
+      // Sort each collection groups items
       _.each(this.amiibos, function(group) {
         group.amiibos = _.reduce(_.sortBy(group.amiibos, 'id'), function(o, v) {
           o[v.id] = v;
@@ -958,24 +1006,28 @@ define([
         }, {});
       });
 
-      // Reload the amiibos
-      this.loadAmiibos();
-      this.menus.filter.close();
+      // Update collection settings object
+      this.collection_settings.sort_by = 'alpha-asc';
+      window.localStorage.setItem(this.storage_settings.id + '_settings', JSON.stringify(this.collection_settings));
+
+      // Reload the collection
+      this.loadAmiibos(true);
+      if (this.menus.sort) this.menus.sort.close();
     },
 
 
     /**
      * Sort groups alpha descending.
      */
-    filterSortAlphaDesc: function() {
+    sortAlphaDesc: function() {
 
-      // Sort the amiibo groups
+      // Sort the collection groups
       this.amiibos =  _.reduce(_.sortBy(this.amiibos, 'id').reverse(), function(o, v) {
         o[v.id] = v;
         return o;
       }, {});
 
-      // Sort each amiibo groups amiibos
+      // Sort each collection groups items
       _.each(this.amiibos, function(group) {
         group.amiibos = _.reduce(_.sortBy(group.amiibos, 'id').reverse(), function(o, v) {
           o[v.id] = v;
@@ -983,43 +1035,55 @@ define([
         }, {});
       });
 
-      // Reload the amiibos
-      this.loadAmiibos();
-      this.menus.filter.close();
+      // Update collection settings object
+      this.collection_settings.sort_by = 'alpha-desc';
+      window.localStorage.setItem(this.storage_settings.id + '_settings', JSON.stringify(this.collection_settings));
+
+      // Reload the collection
+      this.loadAmiibos(true);
+      if (this.menus.sort) this.menus.sort.close();
     },
 
 
     /**
      * Sort by total number ascending.
      */
-    filterSortTotalAsc: function() {
+    sortTotalAsc: function() {
 
-      // Sort the amiibo groups by
+      // Sort the collection groups
       this.amiibos =  _.reduce(_.sortBy(this.amiibos, 'size'), function(o, v) {
         o[v.id] = v;
         return o;
       }, {});
 
-      // Reload the amiibos
-      this.loadAmiibos();
-      this.menus.filter.close();
+      // Update collection settings object
+      this.collection_settings.sort_by = 'total-asc';
+      window.localStorage.setItem(this.storage_settings.id + '_settings', JSON.stringify(this.collection_settings));
+
+      // Reload the collection
+      this.loadAmiibos(true);
+      if (this.menus.sort) this.menus.sort.close();
     },
 
 
     /**
      * Sort by total number descending.
      */
-    filterSortTotalDesc: function(e) {
+    sortTotalDesc: function() {
 
-      // Sort the amiibo groups by
+      // Sort the collection groups
       this.amiibos =  _.reduce(_.sortBy(this.amiibos, 'size').reverse(), function(o, v) {
         o[v.id] = v;
         return o;
       }, {});
 
-      // Reload the amiibos
-      this.loadAmiibos();
-      this.menus.filter.close();
+      // Update collection settings object
+      this.collection_settings.sort_by = 'total-desc';
+      window.localStorage.setItem(this.storage_settings.id + '_settings', JSON.stringify(this.collection_settings));
+
+      // Reload the collection
+      this.loadAmiibos(true);
+      if (this.menus.sort) this.menus.sort.close();
     },
 
 
@@ -1027,35 +1091,35 @@ define([
      * Toggle and load the share menu
      * Load the share menu with a dynamically generated share URL and collection image.
      */
-    toggleShareMenu: function( shared ) {
-      var
-        url_str         = '#collection=';
+    toggleShareMenu: function() {
 
       // Add the modal menu
       if (!this.menus.share) {
         this.menus.share = $(this.templates.menuShare()).remodal();
         this.$el.append(this.menus.share);
-        $('.url-share-input input').focus(function() {
-          this.select();
-        });
       }
 
-      // Generate unique URL string
-      _.each(this.amiibos, function(group) {
-        url_str += 'g' + group.ec;
-        _.each(group.amiibos, function(amiibo) {
-          if (amiibo.collected) {
-            url_str += 'a' + amiibo.ec;
-          }
-        });
-      });
+      // Reset configuration generation
+      $('.control-generate-json-config').find('.message').show();
+      $('.control-generate-json-config').find('.download').hide();
 
-      // Populate the url into the input
-      $('.url-share-input input').val(window.location.href.replace('#', '') + url_str);
-      
-      // Build a shareable image, reference canvas and its drawing context
+      // Reset stats generation
+      $('.control-generate-stats-file').find('.message').show();
+      $('.control-generate-stats-file').find('.download').hide();
+
+      // Toggle menu open
+      this.menus.share.open();
+    },
+
+
+    /**
+     * Generates an image of a user's collection.
+     * @todo - This is broken. Isn't generating properly sized images.
+     */
+    generateShareImage: function() {
       var
-        canvas          = $('.image-canvas .share-image'),
+        container       = $('.control-generate-share-image'),
+        canvas          = $('<canvas class="share-image"></canvas>'),
         c_w             = 0,
         c_h             = 0,
         ctx             = null,
@@ -1070,7 +1134,14 @@ define([
         rows_drawn      = 0,
         group_title_h   = 50,
         last_row_h      = 0,
-        is_collected    = false;
+        is_collected    = false,
+        collection_img  = null;
+
+      // Remove any previous canvas elements
+      container.find('.share-image').remove();
+
+      // Append the new share image
+      container.find('.info').append(canvas);
 
       // Create canvas image size from items that need to be drawn
       _.each(this.amiibos, function(group) {
@@ -1179,16 +1250,23 @@ define([
         });
 
         // Convert canvas to image element
-        var collection_img = new Image();
+        collection_img = new Image();
         collection_img.src = canvas[0].toDataURL("image/png");
-        $('.image-link-wrapper').remove();
-        var link_wrapper = $('<a class="image-link-wrapper" href="' + collection_img.src + '" download="AmiiboCollection.png"></a>');
-        link_wrapper.html(collection_img);
-        canvas.after(link_wrapper);
-        canvas.hide();
+        $('.control-generate-share-image .info .message')
+          .hide();
+        $('.control-generate-share-image .info .download')
+          .show()
+          .find('a')
+          .attr('href', collection_img.src);
+
+        // $('.image-link-wrapper').remove();
+        // var link_wrapper = $('<a class="image-link-wrapper" href="' + collection_img.src + '" download="AmiiboCollection.png"></a>');
+        // link_wrapper.html(collection_img);
+        // canvas.after(link_wrapper);
+        // canvas.hide();
 
         // Update the image download link
-        $('.image-share-info a').attr('href', collection_img.src);
+        // $('.image-share-info a').attr('href', collection_img.src);
       }
 
       // Update with nothing collected message
@@ -1198,9 +1276,104 @@ define([
         $('.image-canvas').find('img').remove();
         canvas.hide();
       }
+    },
 
-      // Toggle menu open/closed
-      this.menus.share.open();
+
+    /**
+     * Generates a stats text file of a user's collection.
+     */
+    generateStatsFile: function() {
+      var
+        container     = $('.control-generate-json-config'),
+        file          = '';
+
+      // Iterate collection, creating stats "file" string
+      // ...
+
+      // Revoke previously generated files to prevent memory leaks
+      if (this.collection_stats_file !== null) {
+        window.URL.revokeObjectURL(this.collection_stats_file);
+      }
+
+      // Create new collection configuration file
+      this.collection_stats_file = window.URL.createObjectURL(file);
+
+      // Hide info message show download message
+      container.find('.message').hide();
+      container.find('.download').show().find('a').attr('href', this.stats_file).click();
+    },
+
+
+    /**
+     * Generates a JSON configuration file of a user's collection.
+     */
+    generateJSONConfig: function() {
+      var
+        container     = $('.control-generate-json-config'),
+        json          = JSON.stringify(this.amiibos),
+        file          = new Blob([json], {type: "text/plain"});
+
+      // Revoke previously generated files to prevent memory leaks
+      if (this.collection_configuration_file !== null) {
+        window.URL.revokeObjectURL(this.collection_configuration_file);
+      }
+
+      // Create new collection configuration file
+      this.collection_configuration_file = window.URL.createObjectURL(file);
+
+      // Hide info message show download message
+      container.find('.message').hide();
+      container.find('.download').show().find('a').attr('href', this.collection_configuration_file).click();
+    },
+
+
+    /**
+     * Handles the uploading and parsing of a user's configuration file.
+     */
+    uploadJSONConfig: function() {
+      var
+        self        = this,
+        input       = $('.collection-configuration-input');
+
+      // Trigger input click
+      input.click();
+
+      // Attach handling event once
+      if (!input.data('event-attached')) {
+        input.data('event-attached', true);
+        input.change(function (e){
+          var
+            reader      = new FileReader(),
+            input_elm   = input.get(0),
+            text_file   = null;
+
+          // Proceed when file selected
+          if (input_elm.files.length) {
+            text_file = input_elm.files[0];
+            reader.readAsText(text_file);
+
+            // Attach handler to process file
+            $(reader).on('load', function(e) {
+              var
+                file        = e.target.result,
+                config      = null;
+
+              // Proceed if file exists
+              if (file && file.length) {
+                config = JSON.parse(file);
+
+                // Load the new configuration file
+                self.amiibos = config;
+                if (self.storage_settings.is_local && !self.storage_settings.dont_use_local) {
+                  window.localStorage.setItem(self.storage_settings.id, JSON.stringify(self.amiibos));
+                }
+                self.loadAmiibos();
+                self.menus.share.close();
+              }
+            });
+          }
+        });
+      }
     },
 
 
@@ -1317,6 +1490,7 @@ define([
       var
         target        = $(e.currentTarget),
         parent        = target.closest('.amiibo-grid'),
+        group_name    = parent.attr('data-group-name'),
         group         = parent.find('.group');
 
       // Stop click propagation from h2's events
@@ -1325,12 +1499,15 @@ define([
       // Add indicator class to target
       parent.toggleClass('group-closed');
       
-      // Switch icon in control
+      // Switch icon in control and update collection object
       if (parent.hasClass('group-closed')) {
-        group.hide();
+        this.amiibos[group_name].closed = true;
       } else {
-        group.show();
+        this.amiibos[group_name].closed = false;
       }
+
+      // Update local storage
+      window.localStorage.setItem(this.storage_settings.id, JSON.stringify(this.amiibos));
     }
 
   });

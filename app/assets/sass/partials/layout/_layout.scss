@@ -104,6 +104,9 @@
         }
       }
     }
+    .group {
+      overflow: hidden;
+    }
     &.group-collected {
       .group-select-toggle {
         &.toggle-collected {
@@ -122,6 +125,9 @@
         &.toggle-opened {
           display: none;
         }
+      }
+      .group {
+        display: none;
       }
     }
   }
@@ -153,6 +159,7 @@
 }
 
 
+// Styles for modal menus
 .menu {
   text-align: left;
   overflow-y: scroll;
@@ -209,57 +216,45 @@
   // Group menu
   &.menu-group {
     .group-group {
-      padding: 8px 12px;
-      margin-bottom: 10px;
-      display: table;
-      width: 100%;
-      height: 40px;
-      .cell {
-        display: table-cell;
-        vertical-align: middle;
-        font-size: 1.0rem;
-        line-height: 0.1rem;
-      }
-      .group-input {
-        width: 50px;
-      }
-      .group-title {
+      margin-bottom: 20px;
+      .checkbox-icon {
+        display: inline-block;
+        font-family: "FontAwesome";
+        margin-right: 15px;
         cursor: pointer;
-        color: $blue;
-        transition: color 250ms ease;
-        &:hover,
-        &:focus,
-        &:active {
-          color: $azure;
-          transition: color 250ms ease;
+      }
+      &:not(.checked) {
+        .checkbox-icon.checked {
+          display: none;
+        }
+        .checkbox-icon.unchecked {
+          display: inline-block;
+        }
+      }
+      &.checked {
+        .checkbox-icon.checked {
+          display: inline-block;
+        }
+        .checkbox-icon.unchecked {
+          display: none;
         }
       }
     }
   }
 
-  // Filter menu
-  &.menu-filter {
-    .filter-controls {
+  // Sort menu
+  &.menu-sort {
+    .sort-controls {
       .control {
-        font-size: 1.5em;
-        margin-bottom: 40px;
+        margin-bottom: 20px;
         cursor: pointer;
-        color: $blue;
-        transition: color 250ms ease;
-        &:hover,
-        &:focus,
-        &:active {
-          color: $azure;
-          transition: color 250ms ease;
-        }
         .icon {
           font-family: "FontAwesome";
           display: inline-block;
-          color: $white;
         }
         .control-title {
           display: inline-block;
-          margin-left: 30px;
+          margin-left: 15px;
         }
       }
     }
@@ -267,34 +262,73 @@
 
   // Menu share
   &.menu-share {
-    .url-share-info {
+    .control {
       margin-bottom: 20px;
-    }
-    .url-share-input {
-      margin-bottom: 40px;
-      input {
-        border: 2px solid $white;
-        background: transparent;
-        padding: 8px 6px;
-        width: 100%;
+      .icon {
+        font-family: "FontAwesome";
+        margin-right: 15px;
+      }
+      .button {
+
+      }
+      .info {
+        padding-left: 35px;
+        margin-top: 6px;
+        font-size: .8rem;
+        max-width: 400px;
       }
     }
-    .image-share-info {
-      margin-bottom: 20px;
-    }
-    .image-canvas {
-      margin-bottom: 40px;
-      canvas {
-        display: block;
-        width: 400px;
-        height: 500px;
-        background: $white;
-      }
-      img {
-        width: 100%;
-        height: auto;
+    .control-generate-share-image {
+      display: none;
+      .info {
+        .download {
+          display: none;
+        }
+        canvas {
+          display: none;
+        }
       }
     }
+    .control-generate-stats-file {
+      display: none;
+      .info {
+        .download {
+          display: none;
+        }
+      }
+    }
+    .control-generate-json-config {
+      .info {
+        .download {
+          display: none;
+        }
+      }
+    }
+    .control-upload-json-config {
+      .info {
+        .collection-configuration-input {
+          display: none;
+        }
+      }
+    }
+
+
+    //.image-share-info {
+    //  margin-bottom: 20px;
+    //}
+    //.image-canvas {
+    //  margin-bottom: 40px;
+    //  canvas {
+    //    display: block;
+    //    width: 400px;
+    //    height: 500px;
+    //    background: $white;
+    //  }
+    //  img {
+    //    width: 100%;
+    //    height: auto;
+    //  }
+    //}
   }
 
   // Menu restart

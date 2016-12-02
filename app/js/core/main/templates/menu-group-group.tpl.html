@@ -1,4 +1,5 @@
-<div class="group-group">
-    <div class="cell group-input"><input type="checkbox" checked=<%= checked %> data-id="<%= group_name %>"></div>
-    <div class="cell group-title" data-id="<%= group_name %>"><%= group_title %></div>
+<div class="group-group <%= checked %>">
+    <span class="checkbox-icon checked" data-id="<%= group_name %>">&#xf205;</span>
+    <span class="checkbox-icon unchecked" data-id="<%= group_name %>">&#xf204;</span>
+    <a href="#" class="group-title" data-id="<%= group_name %>"><%= group_title %></a>
 </div>

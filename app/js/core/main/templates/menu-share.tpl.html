@@ -2,19 +2,37 @@
 <div class="remodal menu menu-share" data-remodal-id="share">
     <button data-remodal-action="close" class="remodal-close"></button>
     <div class="title">Share</div>
-    <!--
-    <div class="url-share-info">
-        You can copy and paste the link below to share your collection.
+    <div class="control-generate-share-image control">
+        <span class="icon button">&#xf1c5;</span>
+        <a href="#" class="button">Generate Collection Image</a>
+        <div class="info">
+            <span class="message">Create an image of your collection to share.</span>
+            <span class="download">Image ready to <a href="#" download="MyCollection.png">download</a>.</span>
+            <canvas class="share-image"></canvas>
+        </div>
     </div>
-    <div class="url-share-input">
-        <input type="text">
+    <div class="control-generate-stats-file control">
+        <span class="icon button">&#xf0f6;</span>
+        <a href="#" class="button">Generate Stats File</a>
+        <div class="info">
+            <span class="message">Save your collection statistics to a file.</span>
+            <span class="download">Your stats are ready to <a href="#" download="MyCollectionStats.txt">download</a>.</span>
+        </div>
     </div>
-    -->
-    <div class="image-share-info">
-        <a href="" download="AmiiboCollection.png">Download</a> the generated image below to share.
+    <div class="control-generate-json-config control">
+        <span class="icon button">&#xf1c9;</span>
+        <a href="#" class="button">Generate Configuration File</a>
+        <div class="info">
+            <span class="message">Save your collection configuration to upload elsewhere.</span>
+            <span class="download">Download <a href="#" download="CollectionConfiguration.json" target="_blank">CollectionConfiguration.json</a>.</span>
+        </div>
     </div>
-    <div class="image-canvas">
-        <canvas class="share-image"></canvas>
+    <div class="control-upload-json-config control">
+        <span class="icon button">&#xf093;</span>
+        <a href="#" class="button">Upload Configuration File</a>
+        <div class="info">
+            <span class="message">Upload your collection configuration. <em>Warning!</em>. This will override your current collection configuration.</span>
+            <input class="collection-configuration-input" type='file' name='collection-configuration-input'>
+        </div>
     </div>
 </div>
-

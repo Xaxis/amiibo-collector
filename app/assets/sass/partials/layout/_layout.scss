@@ -138,10 +138,10 @@
     opacity: 0.3;
     text-align: center;
     cursor: pointer;
-    .completed-icon {
+    .control-settings {
       font-family: "FontAwesome";
-      font-size: 1.2rem;
-      color: $green;
+      margin-right: 5px;
+      color: $blue;
       display: none;
     }
     img {
@@ -151,9 +151,8 @@
   }
   .grid-item.collected {
     opacity: 1;
-    .completed-icon {
+    .control-settings {
       display: inline-block;
-      margin-right: 10px;
     }
   }
 }
@@ -165,10 +164,160 @@
   overflow-y: scroll;
   height: 100%;
   background: rgba($black-hex, 0.8) !important;
+
   .title {
     font-size: 1.5rem;
     font-weight: bolder;
     margin-bottom: 30px;
+  }
+
+  // Item settings menu
+  &.menu-item-settings {
+    counter-reset: item;
+    .sub-items-container {
+    }
+
+    // Overall item controls
+    .items-controls {
+      margin-bottom: 40px;
+      .control {
+        display: inline-block;
+        & + .control {
+          margin-left: 20px;
+        }
+        .icon {
+          font-family: "FontAwesome";
+          margin-right: 10px;
+          cursor: pointer;
+        }
+        .button {
+          cursor: pointer;
+        }
+      }
+    }
+
+    // Each item's settings
+    .item {
+      position: relative;
+      padding: 18px 20px;
+      border: 1px solid $dark-border;
+      border-top: 3px solid $dark-border;
+      background-color: rgba($black-hex, 0.5);
+
+      // Altered styles for first sub item element
+      &:first-child {
+        .controls-item-up {
+          cursor: not-allowed;
+          opacity: 0.3;
+        }
+      }
+
+      // The item title or label
+      .item-tab-label {
+        position: absolute;
+        bottom: calc(100% + 3px);
+        left: -1px;
+        height: 30px;
+        width: 100%;
+        background-color: rgba($black-hex, 0.5);
+        .subitem-title {
+          position: relative;
+          line-height: 1.8rem;
+          padding-left: 15px;
+          color: $text-ltgrey;
+          &:after {
+            counter-increment: item;
+            content: " " counter(item);
+          }
+        }
+      }
+
+      // Each sub item's tab controls
+      .item-tab-controls {
+        cursor: pointer;
+        position: absolute;
+        height: 0;
+        bottom: 100%;
+        right: -1px;
+        padding: 4px 14px 4px 7px;
+        line-height: 2.35rem;
+        border-left: 33px solid transparent;
+        border-bottom: 33px solid $dark-border;
+        .control {
+          font-family: "FontAwesome";
+          margin-right: 6px;
+          &:last-child {
+            margin-right: 0;
+          }
+        }
+        .controls-item-favorite-selected {
+          display: none;
+          color: $yellow;
+          &.selected {
+            display: inline;
+          }
+        }
+      }
+      &:last-child {
+        margin-bottom: 30px;
+      }
+      & + .item {
+        margin-top: 50px;
+      }
+      .icon {
+        display: inline-block;
+        font-family: "FontAwesome";
+      }
+      .control {
+        & + .control {
+          margin-top: 15px;
+        }
+        .input {
+          display: table;
+          .cell {
+            display: table-cell;
+          }
+          .icon-cell {
+          }
+          .input-cell {
+            width: 100%;
+            padding-left: 15px;
+            select {
+              color: $black;
+            }
+          }
+        }
+        &.controls-item-status {
+        }
+        &.controls-item-condition {
+        }
+        &.controls-item-note {
+          .button {
+            cursor: pointer;
+          }
+          .notepad {
+            width: 100%;
+            font-size: 0.8rem;
+            font-style: italic;
+            color: $text-ltgrey;
+            cursor: default;
+            outline: 0px solid transparent;
+            overflow: hidden;
+            &.active {
+              margin-top: 10px;
+              min-height: 50px;
+              max-height: 100px;
+              padding: 4px;
+              border: 1px solid $dark-border;
+              cursor: text;
+            }
+            br, p {
+              display: none;
+            }
+          }
+        }
+      }
+    }
   }
 
   // Stats menu
@@ -177,6 +326,7 @@
       position: relative;
       padding: 8px 12px;
       border: 1px dashed $white;
+      background-color: rgba($black-hex, 0.5);
       margin-bottom: 20px;
       &:first-child {
         border: 1px dashed $green;

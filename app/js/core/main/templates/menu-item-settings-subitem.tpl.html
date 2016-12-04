@@ -1,0 +1,50 @@
+<div class="item" data-sub-item-id="<%= sub_item_id %>">
+    <div class="item-tab-label item-tab">
+        <span class="subitem-title" title="Item"><%= sub_item_title %></span>
+    </div>
+    <div class="item-tab-controls item-tab">
+        <span class="controls-item-favorite control" title="Favorite">&#xf006;</span>
+        <span class="controls-item-favorite-selected control" title="Favorite">&#xf005;</span>
+        <span class="controls-item-up control" title="Move Up">&#xf148;</span>
+        <span class="controls-item-remove control" title="Remove">&#xf00d;</span>
+    </div>
+    <div class="controls-item-status control">
+        <div class="input">
+            <div class="cell icon-cell">
+                <span class="icon">&#xf087;</span>
+            </div>
+            <div class="cell input-cell">
+                <select>
+                    <option value="1" selected>NIB (New In Box)</option>
+                    <option value="2">OOB (Out of Box)</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="controls-item-condition control">
+        <div class="input">
+            <div class="cell icon-cell">
+                <span class="icon">&#xf06e;</span>
+            </div>
+            <div class="cell input-cell">
+                <select>
+                    <option value="1">Poor</option>
+                    <option value="2">Okay</option>
+                    <option value="3" selected>Good</option>
+                    <option value="4">Mint</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="controls-item-note control">
+        <div class="input">
+            <div class="cell icon-cell">
+                <span class="icon button">&#xf044;</span>
+            </div>
+            <div class="cell input-cell">
+                <a class="button">Edit Note</a>
+                <div class="notepad" contenteditable="true"></div>
+            </div>
+        </div>
+    </div>
+</div>

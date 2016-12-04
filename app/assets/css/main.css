@@ -7597,19 +7597,18 @@ em {
     opacity: 0.3;
     text-align: center;
     cursor: pointer; }
-    .grid-container .grid-item .completed-icon {
+    .grid-container .grid-item .control-settings {
       font-family: "FontAwesome";
-      font-size: 1.2rem;
-      color: #00d87b;
+      margin-right: 5px;
+      color: #3880ff;
       display: none; }
     .grid-container .grid-item img {
       width: 100%;
       height: auto; }
   .grid-container .grid-item.collected {
     opacity: 1; }
-    .grid-container .grid-item.collected .completed-icon {
-      display: inline-block;
-      margin-right: 10px; }
+    .grid-container .grid-item.collected .control-settings {
+      display: inline-block; }
 
 .menu {
   text-align: left;
@@ -7620,10 +7619,106 @@ em {
     font-size: 1.5rem;
     font-weight: bolder;
     margin-bottom: 30px; }
+  .menu.menu-item-settings {
+    counter-reset: item; }
+    .menu.menu-item-settings .items-controls {
+      margin-bottom: 40px; }
+      .menu.menu-item-settings .items-controls .control {
+        display: inline-block; }
+        .menu.menu-item-settings .items-controls .control + .control {
+          margin-left: 20px; }
+        .menu.menu-item-settings .items-controls .control .icon {
+          font-family: "FontAwesome";
+          margin-right: 10px;
+          cursor: pointer; }
+        .menu.menu-item-settings .items-controls .control .button {
+          cursor: pointer; }
+    .menu.menu-item-settings .item {
+      position: relative;
+      padding: 18px 20px;
+      border: 1px solid #4c4c4c;
+      border-top: 3px solid #4c4c4c;
+      background-color: rgba(34, 34, 34, 0.5); }
+      .menu.menu-item-settings .item:first-child .controls-item-up {
+        cursor: not-allowed;
+        opacity: 0.3; }
+      .menu.menu-item-settings .item .item-tab-label {
+        position: absolute;
+        bottom: calc(100% + 3px);
+        left: -1px;
+        height: 30px;
+        width: 100%;
+        background-color: rgba(34, 34, 34, 0.5); }
+        .menu.menu-item-settings .item .item-tab-label .subitem-title {
+          position: relative;
+          line-height: 1.8rem;
+          padding-left: 15px;
+          color: #989898; }
+          .menu.menu-item-settings .item .item-tab-label .subitem-title:after {
+            counter-increment: item;
+            content: " " counter(item); }
+      .menu.menu-item-settings .item .item-tab-controls {
+        cursor: pointer;
+        position: absolute;
+        height: 0;
+        bottom: 100%;
+        right: -1px;
+        padding: 4px 14px 4px 7px;
+        line-height: 2.35rem;
+        border-left: 33px solid transparent;
+        border-bottom: 33px solid #4c4c4c; }
+        .menu.menu-item-settings .item .item-tab-controls .control {
+          font-family: "FontAwesome";
+          margin-right: 6px; }
+          .menu.menu-item-settings .item .item-tab-controls .control:last-child {
+            margin-right: 0; }
+        .menu.menu-item-settings .item .item-tab-controls .controls-item-favorite-selected {
+          display: none;
+          color: #ffd86e; }
+          .menu.menu-item-settings .item .item-tab-controls .controls-item-favorite-selected.selected {
+            display: inline; }
+      .menu.menu-item-settings .item:last-child {
+        margin-bottom: 30px; }
+      .menu.menu-item-settings .item + .item {
+        margin-top: 50px; }
+      .menu.menu-item-settings .item .icon {
+        display: inline-block;
+        font-family: "FontAwesome"; }
+      .menu.menu-item-settings .item .control + .control {
+        margin-top: 15px; }
+      .menu.menu-item-settings .item .control .input {
+        display: table; }
+        .menu.menu-item-settings .item .control .input .cell {
+          display: table-cell; }
+        .menu.menu-item-settings .item .control .input .input-cell {
+          width: 100%;
+          padding-left: 15px; }
+          .menu.menu-item-settings .item .control .input .input-cell select {
+            color: #222222; }
+      .menu.menu-item-settings .item .control.controls-item-note .button {
+        cursor: pointer; }
+      .menu.menu-item-settings .item .control.controls-item-note .notepad {
+        width: 100%;
+        font-size: 0.8rem;
+        font-style: italic;
+        color: #989898;
+        cursor: default;
+        outline: 0px solid transparent;
+        overflow: hidden; }
+        .menu.menu-item-settings .item .control.controls-item-note .notepad.active {
+          margin-top: 10px;
+          min-height: 50px;
+          max-height: 100px;
+          padding: 4px;
+          border: 1px solid #4c4c4c;
+          cursor: text; }
+        .menu.menu-item-settings .item .control.controls-item-note .notepad br, .menu.menu-item-settings .item .control.controls-item-note .notepad p {
+          display: none; }
   .menu.menu-stats .stat-group {
     position: relative;
     padding: 8px 12px;
     border: 1px dashed white;
+    background-color: rgba(34, 34, 34, 0.5);
     margin-bottom: 20px; }
     .menu.menu-stats .stat-group:first-child {
       border: 1px dashed #00d87b; }

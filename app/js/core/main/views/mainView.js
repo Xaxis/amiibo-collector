@@ -1,11 +1,9 @@
 /**
- * Backbone module view template
+ * Meat and potatoes of this app.
  *
  * @todo - Add functionality so that you can tap once to add to your COLLECTED list, tap twice to add to your WANT/WISH list, tap three times to uncheck.
  *
  * @todo - Add in all animal crossing card amiibos
- *
- * @todo - Write functionality that enables users to save collection configuration and then reupload configuration later.
  *
  * @todo - Write deployment script.
  *
@@ -16,6 +14,10 @@
  * @todo - Convert local storage object check/test to utility method
  *
  * @todo - Add "infinity scrolling" functionality so all collection images don't load at once.
+ *
+ * @todo - Create minimalistic logo with corresponding favicon
+ *
+ * @todo - Add amiibo bundles to list
  */
 define([
   'jquery',
@@ -25,6 +27,8 @@ define([
   'text!core/main/templates/amiibo-group.tpl.html',
   'text!core/main/templates/amiibo-grid-item.tpl.html',
   'text!core/main/templates/message-browser-compat.tpl.html',
+  'text!core/main/templates/menu-item-settings.tpl.html',
+  'text!core/main/templates/menu-item-settings-subitem.tpl.html',
   'text!core/main/templates/menu-sort.tpl.html',
   'text!core/main/templates/menu-group.tpl.html',
   'text!core/main/templates/menu-group-group.tpl.html',
@@ -40,6 +44,8 @@ define([
   amiiboGroupTpl,
   amiiboGridItemTpl,
   messageBrowserCompatTpl,
+  menuItemSettingsTpl,
+  menuItemSettingsSubitemTpl,
   menuSortTpl,
   menuGroupTpl,
   menuGroupGroupTpl,
@@ -48,13 +54,15 @@ define([
   menuStatsGroupTpl,
   menuRestartTpl
 ) {
-  var _ModuleView = Backbone.View.extend({
+  var Main = Backbone.View.extend({
     el: $('body'),
 
     templates: {
       amiiboGroup: _.template(amiiboGroupTpl),
       amiiboGridItem: _.template(amiiboGridItemTpl),
       messageBrowserCompat: _.template(messageBrowserCompatTpl),
+      menuItemSettings: _.template(menuItemSettingsTpl),
+      menuItemSettingsSubitem: _.template(menuItemSettingsSubitemTpl),
       menuSort: _.template(menuSortTpl),
       menuGroup: _.template(menuGroupTpl),
       menuGroupGroup: _.template(menuGroupGroupTpl),
@@ -80,7 +88,19 @@ define([
       'click .control-restart': 'toggleRestartMenu',
       'click .grid-item': 'toggleSelectedAmiibo',
       'click .amiibo-grid h2 .group-select-toggle': 'toggleSelectedGroup',
-      'click .amiibo-grid h2 .group-expando-toggle': 'toggleExpandGroup'
+      'click .amiibo-grid h2 .group-expando-toggle': 'toggleExpandGroup',
+      
+      // @todo - Refactor each "item compoenent" into own view (out of main view)
+      'click .grid-item .control-settings': 'toggleItemSettingsMenu',
+      'click .menu-item-settings .controls-item-add': 'itemSettingsAddSubitem',
+      'click .menu-item-settings .controls-item-up': 'itemSettingsUpSubitem',
+      'click .menu-item-settings .controls-item-favorite': 'itemSettingsFavoriteSubitem',
+      'click .menu-item-settings .controls-item-remove': 'itemSettingsRemoveSubitem',
+      'click .menu-item-settings .controls-item-favorite-selected': 'itemSettingsFavoriteSubitem',
+      'change .menu-item-settings .controls-item-status select': 'itemSettingsSubitemStatusUpdate',
+      'change .menu-item-settings .controls-item-condition select': 'itemSettingsSubitemConditionUpdate',
+      'click .menu-item-settings .controls-item-note .button': 'itemSettingsSubitemNoteToggle',
+      'click .menu-item-settings .controls-item-note .notepad': 'itemSettingsSubitemNoteToggle'
     },
 
     // Stores references to loaded menus
@@ -562,7 +582,6 @@ define([
       }
     },
 
-
     // Collection settings initialization object
     collection_settings: {
       sort_by: 'alpha-asc'
@@ -606,7 +625,17 @@ define([
         'toggleRestartMenu',
         'toggleSelectedAmiibo',
         'toggleSelectedGroup',
-        'toggleExpandGroup'
+        'toggleExpandGroup',
+
+        // @todo - Refactor collection items into own view
+        'toggleItemSettingsMenu',
+        'itemSettingsAddSubitem',
+        'itemSettingsUpSubitem',
+        'itemSettingsFavoriteSubitem',
+        'itemSettingsRemoveSubitem',
+        'itemSettingsSubitemStatusUpdate',
+        'itemSettingsSubitemConditionUpdate',
+        'itemSettingsSubitemNoteToggle'
       );
       
       // Initialize sticky navigation
@@ -1508,9 +1537,298 @@ define([
 
       // Update local storage
       window.localStorage.setItem(this.storage_settings.id, JSON.stringify(this.amiibos));
+    },
+
+
+
+    //
+    // !!!!!!!
+    // @todo - Refactor below collection item functionality into own view
+    // !!!!!!!
+    //
+
+    /**
+     * Opens/initializes the settings modal for a given collection item.
+     * @todo - Enable functionality // menuItemSettingsTpl
+     */
+    toggleItemSettingsMenu: function(e) {
+      var
+        self        = this,
+        target      = $(e.currentTarget),
+        menu        = null,
+        group_name  = target.closest('.amiibo-grid').attr('data-group-name'),
+        item_name   = target.closest('[data-amiibo-name]').attr('data-amiibo-name'),
+        item_obj    = this.amiibos[group_name].amiibos[item_name],
+        open_modal  = true;
+
+      // Make sure further events aren't triggered
+      e.stopPropagation();
+
+      // Make sure the modal isn't already open
+      if (this.menus.item_settings) {
+        if (this.menus.item_settings.hasClass('remodal-is-opened')) {
+          open_modal = false;
+        }
+      }
+
+      // Continue if modal not already open
+      if (open_modal) {
+
+        // Re-populate the item settings menu
+        this.menus.item_settings = $(this.templates.menuItemSettings({
+          item_group: group_name,
+          item_name: item_name,
+          item_title: item_obj.title
+        }));
+        this.menus.item_settings.data('trigger_source', target);
+
+        // Replace previously opened modal instance
+        if (!$('.menu-item-settings').length) {
+          this.$el.append(this.menus.item_settings);
+        } else {
+          $('.menu-item-settings').closest('.remodal-wrapper').replaceWith(this.menus.item_settings);
+        }
+      }
+
+      // Update the menu reference
+      menu = this.menus.item_settings;
+
+      // Remove any previous sub items (for when modal menu is not being opened)
+      menu.find('.sub-items-container').children().remove();
+
+      // Add any existing sub items
+      if (item_obj.subitems) {
+        _.each(item_obj.subitems, function(subitem, idx) {
+          var
+            this_subitem_elm        = null,
+            this_notepad            = null;
+          menu.find('.sub-items-container').append((this_subitem_elm = $(self.templates.menuItemSettingsSubitem({
+            sub_item_title: item_obj.title,
+            sub_item_id: idx
+          }))));
+          if (subitem.favorite) {
+            this_subitem_elm.find('.controls-item-favorite').hide();
+            this_subitem_elm.find('.controls-item-favorite-selected').addClass('selected');
+          } else {
+            this_subitem_elm.find('.controls-item-favorite').show();
+            this_subitem_elm.find('.controls-item-favorite-selected').removeClass('selected');
+          }
+          this_subitem_elm.find('.controls-item-status option[value="' + subitem.status + '"]').prop('selected', true);
+          this_subitem_elm.find('.controls-item-condition option[value="' + subitem.condition + '"]').prop('selected', true);
+          this_notepad = this_subitem_elm.find('.controls-item-note .notepad');
+          this_notepad.html(subitem.note);
+        });
+      }
+
+      // Modalize the menu if it isn't already open
+      if (open_modal) {
+        menu.remodal().open();
+      }
+    },
+
+
+    /**
+     * Adds a new sub-item to an item.
+     */
+    itemSettingsAddSubitem: function(e) {
+      var
+        target          = $(e.currentTarget),
+        container       = target.closest('.menu-item-settings'),
+        items_container = container.find('.sub-items-container'),
+        group_name      = container.attr('data-item-group'),
+        item_name       = container.attr('data-item-name'),
+        sub_item_elm    = null,
+        item_obj        = this.amiibos[group_name].amiibos[item_name],
+        sub_item        = {
+          favorite: false,
+          note: ''
+        };
+
+      // Attempt to access any saved sub items, otherwise create sub item array
+      if (!item_obj.subitems) {
+        item_obj.subitems = [];
+      }
+
+      // Append sub-item element to item's setting page
+      sub_item_elm = $(this.templates.menuItemSettingsSubitem({
+        sub_item_title: item_obj.title,
+        sub_item_id: item_obj.subitems.length
+      }));
+      items_container.append(sub_item_elm);
+
+      // Add sub item object properties
+      sub_item.id = item_obj.subitems.length;
+      sub_item.status = sub_item_elm.find('.controls-item-status option:selected').attr('value');
+      sub_item.condition = sub_item_elm.find('.controls-item-condition option:selected').attr('value');
+
+      // Add sub item to sub items array
+      item_obj.subitems.push(sub_item);
+
+      // Save to local storage
+      window.localStorage.setItem(this.storage_settings.id, JSON.stringify(this.amiibos));
+    },
+
+
+    /**
+     * Move a sub item up one.
+     */
+    itemSettingsUpSubitem: function(e) {
+      var
+        target          = $(e.currentTarget),
+        container       = target.closest('.menu-item-settings'),
+        group_name      = container.attr('data-item-group'),
+        item_name       = container.attr('data-item-name'),
+        sub_item_elm    = target.closest('.item'),
+        sub_item_id     = parseInt(sub_item_elm.attr('data-sub-item-id')),
+        item_obj        = this.amiibos[group_name].amiibos[item_name];
+
+      // Shift array element up one position
+      if (sub_item_id > 0) {
+
+        // Give the sub item before this sub item's current id
+        item_obj.subitems[sub_item_id-1].id = sub_item_id;
+        sub_item_elm.prev('.item').attr('data-sub-item-id', sub_item_id);
+
+        // Update this sub item's current id
+        item_obj.subitems[sub_item_id].id = sub_item_id-1;
+        sub_item_elm.attr('data-sub-item-id', sub_item_id-1);
+
+        // Shift the two items locations in the subitems array
+        item_obj.subitems.splice(sub_item_id-1, 0, item_obj.subitems.splice(sub_item_id, 1)[0]);
+
+        // Save to local storage
+        window.localStorage.setItem(this.storage_settings.id, JSON.stringify(this.amiibos));
+
+        // Reload
+        this.menus.item_settings.data('trigger_source').click();
+      }
+    },
+
+
+    /**
+     * Make selected sub item a favorite.
+     */
+    itemSettingsFavoriteSubitem: function(e) {
+      var
+        target          = $(e.currentTarget),
+        container       = target.closest('.menu-item-settings'),
+        items_container = container.find('.sub-items-container'),
+        group_name      = container.attr('data-item-group'),
+        item_name       = container.attr('data-item-name'),
+        sub_item_elm    = target.closest('.item'),
+        sub_item_id     = parseInt(sub_item_elm.attr('data-sub-item-id')),
+        item_obj        = this.amiibos[group_name].amiibos[item_name];
+      
+      // Set the selected
+      sub_item_elm.find('.controls-item-favorite').toggle();
+      sub_item_elm.find('.controls-item-favorite-selected').toggleClass('selected');
+
+      // Save in local storage
+      item_obj.subitems[sub_item_id].favorite = sub_item_elm.find('.controls-item-favorite-selected').hasClass('selected');
+      window.localStorage.setItem(this.storage_settings.id, JSON.stringify(this.amiibos));
+    },
+
+
+    /**
+     * Removes a collection item's sub-item.
+     */
+    itemSettingsRemoveSubitem: function(e) {
+      var
+        target          = $(e.currentTarget),
+        container       = target.closest('.menu-item-settings'),
+        group_name      = container.attr('data-item-group'),
+        item_name       = container.attr('data-item-name'),
+        sub_item_elm    = target.closest('.item'),
+        sub_item_id     = parseInt(sub_item_elm.attr('data-sub-item-id')),
+        item_obj        = this.amiibos[group_name].amiibos[item_name];
+
+      // Remove from local storage
+      item_obj.subitems = _.without(item_obj.subitems, _.findWhere(item_obj.subitems, {
+        id: sub_item_id
+      }));
+      window.localStorage.setItem(this.storage_settings.id, JSON.stringify(this.amiibos));
+
+      // Remove sub-item element from item's setting page
+      sub_item_elm.remove();
+    },
+
+
+    /**
+     * Updates a collection item's sub-item's "status".
+     */
+    itemSettingsSubitemStatusUpdate: function(e) {
+      var
+        target          = $(e.currentTarget),
+        container       = target.closest('.menu-item-settings'),
+        group_name      = container.attr('data-item-group'),
+        item_name       = container.attr('data-item-name'),
+        sub_item_elm    = target.closest('.item'),
+        sub_item_id     = sub_item_elm.attr('data-sub-item-id'),
+        item_obj        = this.amiibos[group_name].amiibos[item_name],
+        selected        = target.find('option:selected');
+
+      // Update local storage
+      item_obj.subitems[sub_item_id].status = selected.attr("value");
+      window.localStorage.setItem(this.storage_settings.id, JSON.stringify(this.amiibos));
+    },
+
+
+    /**
+     * Updates a collection item's sub-item's "condition".
+     */
+    itemSettingsSubitemConditionUpdate: function(e) {
+      var
+        target          = $(e.currentTarget),
+        container       = target.closest('.menu-item-settings'),
+        group_name      = container.attr('data-item-group'),
+        item_name       = container.attr('data-item-name'),
+        sub_item_elm    = target.closest('.item'),
+        sub_item_id     = sub_item_elm.attr('data-sub-item-id'),
+        item_obj        = this.amiibos[group_name].amiibos[item_name],
+        selected        = target.find('option:selected');
+
+      // Update local storage
+      item_obj.subitems[sub_item_id].condition = selected.attr("value");
+      window.localStorage.setItem(this.storage_settings.id, JSON.stringify(this.amiibos));
+    },
+
+
+    /**
+     * "Activates" a collection item's sub-item's notepad area by preparing it for a user to write a note.
+     */
+    itemSettingsSubitemNoteToggle: function(e) {
+      var
+        target          = $(e.currentTarget),
+        container       = target.closest('.menu-item-settings'),
+        group_name      = container.attr('data-item-group'),
+        item_name       = container.attr('data-item-name'),
+        control         = target.closest('.controls-item-note'),
+        sub_item_elm    = target.closest('.item'),
+        sub_item_id     = sub_item_elm.attr('data-sub-item-id'),
+        item_obj        = this.amiibos[group_name].amiibos[item_name],
+        notepad         = control.find('.notepad'),
+        note            = notepad.html().replace('<br>', '');
+
+      // Continue when the active sequence wasn't activated by a click into the notepad
+      if (!(notepad.hasClass('active') && target.hasClass('notepad'))) {
+
+        // Add active class
+        notepad.toggleClass('active');
+
+        // Update control wording based on active status
+        if (notepad.hasClass('active')) {
+          control.find('.input-cell .button').html('Save Note');
+        } else {
+          control.find('.input-cell .button').html('Edit Note');
+        }
+
+        // Update local storage
+        item_obj.subitems[sub_item_id].note = note;
+        window.localStorage.setItem(this.storage_settings.id, JSON.stringify(this.amiibos));
+      }
     }
 
   });
 
-  return _ModuleView;
+  return Main;
 });

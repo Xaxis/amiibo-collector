@@ -7461,6 +7461,26 @@ em {
   margin: 0 auto;
   max-width: 960px; }
 
+.page-width {
+  margin: 0 auto;
+  max-width: 960px;
+  padding: 20px; }
+  .page-width:before, .page-width:after {
+    content: "";
+    display: table; }
+  .page-width:after {
+    clear: both; }
+  @media only screen and (min-width: 1440px) {
+    .page-width {
+      max-width: 1440px; } }
+  @media only screen and (min-width: 840px) {
+    .page-width {
+      margin: 0 auto;
+      max-width: 1440px; } }
+  @media only screen and (min-width: 840px) and (min-width: 1440px) {
+    .page-width {
+      max-width: 1440px; } }
+
 .intro {
   margin: 0 auto;
   max-width: 960px;
@@ -7508,25 +7528,6 @@ em {
       @media only screen and (max-width: 600px) {
         .controls.stuck a + a {
           margin-left: 12%; } }
-  .controls .page-width {
-    margin: 0 auto;
-    max-width: 960px;
-    padding: 20px; }
-    .controls .page-width:before, .controls .page-width:after {
-      content: "";
-      display: table; }
-    .controls .page-width:after {
-      clear: both; }
-    @media only screen and (min-width: 1440px) {
-      .controls .page-width {
-        max-width: 1440px; } }
-    @media only screen and (min-width: 840px) {
-      .controls .page-width {
-        margin: 0 auto;
-        max-width: 1440px; } }
-  @media only screen and (min-width: 840px) and (min-width: 1440px) {
-    .controls .page-width {
-      max-width: 1440px; } }
   .controls a {
     font-family: "FontAwesome";
     font-weight: lighter;
@@ -7545,7 +7546,9 @@ em {
 .grid-container {
   margin: 0 auto;
   max-width: 960px;
-  padding: 20px; }
+  min-height: 800px;
+  padding: 20px;
+  margin-bottom: 20px; }
   .grid-container:before, .grid-container:after {
     content: "";
     display: table; }
@@ -7794,6 +7797,41 @@ em {
     display: none; }
   .menu.menu-restart .restart-info {
     margin-bottom: 30px; }
+
+.footer {
+  background: #3880ff;
+  color: white; }
+  .footer .col {
+    position: relative;
+    float: left; }
+    .footer .col {
+      box-sizing: border-box; }
+    .footer .col:before, .footer .col:after {
+      content: " ";
+      display: table; }
+    .footer .col:after {
+      clear: both; }
+    html.csscalc .footer .col {
+      margin-left: 20px; }
+    html:not(.csscalc) .footer .col {
+      margin-left: 1.6%; }
+    html.csscalc .footer .col:first-child, html:not(.csscalc) .footer .col:first-child {
+      margin-left: 0; }
+    html.csscalc .footer .col {
+      width: -webkit-calc(((100% / 2) - 20px) + (10px));
+      width: calc(((100% / 2) - 20px) + (10px)); }
+    html:not(.csscalc) .footer .col {
+      width: 49.2%; }
+  .footer .links {
+    text-align: left; }
+  .footer .github {
+    text-align: right; }
+    .footer .github a {
+      font-family: "FontAwesome"; }
+  .footer a {
+    color: white;
+    cursor: pointer;
+    display: inline-block; }
 
 .btn {
   display: inline-block;

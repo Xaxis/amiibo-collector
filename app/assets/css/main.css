@@ -7568,10 +7568,10 @@ em {
     display: inline-block; }
     @media only screen and (max-width: 840px) {
       .grid-container .amiibo-grid h2 {
-        font-size: 1.2rem; } }
+        font-size: 1.4rem; } }
     @media only screen and (max-width: 600px) {
       .grid-container .amiibo-grid h2 {
-        font-size: 1.0rem; } }
+        font-size: 1.2rem; } }
     .grid-container .amiibo-grid h2 .group-control {
       cursor: pointer;
       display: inline-block;
@@ -7612,6 +7612,8 @@ em {
     opacity: 1; }
     .grid-container .grid-item.collected .control-settings {
       display: inline-block; }
+    .grid-container .grid-item.collected .item-title {
+      color: #3880ff; }
 
 .menu {
   text-align: left;
@@ -7881,16 +7883,16 @@ em {
     .grid .grid-item:after {
       clear: both; }
     html.csscalc .grid .grid-item {
-      margin-left: 40px; }
+      margin-left: 20px; }
     html:not(.csscalc) .grid .grid-item {
-      margin-left: 4%; }
+      margin-left: 2%; }
     html.csscalc .grid .grid-item:first-child, html:not(.csscalc) .grid .grid-item:first-child {
       margin-left: 0; }
     html.csscalc .grid .grid-item {
-      width: -webkit-calc(((100% / 6) - 40px) + (6.6666666667px));
-      width: calc(((100% / 6) - 40px) + (6.6666666667px)); }
+      width: -webkit-calc(((100% / 6) - 20px) + (3.3333333333px));
+      width: calc(((100% / 6) - 20px) + (3.3333333333px)); }
     html:not(.csscalc) .grid .grid-item {
-      width: 13.3333333333%; }
+      width: 15%; }
   .grid .grid-item:nth-child(6n+1) {
     clear: left;
     margin-left: 0 !important; } }
@@ -7907,17 +7909,17 @@ em {
     .grid .grid-item:after {
       clear: both; }
     html.csscalc .grid .grid-item {
-      margin-left: 40px; }
+      margin-left: 20px; }
     html:not(.csscalc) .grid .grid-item {
-      margin-left: 4%; }
+      margin-left: 2%; }
     html.csscalc .grid .grid-item:first-child, html:not(.csscalc) .grid .grid-item:first-child {
       margin-left: 0; }
     html.csscalc .grid .grid-item {
-      width: -webkit-calc(((100% / 6) - 40px) + (6.6666666667px));
-      width: calc(((100% / 6) - 40px) + (6.6666666667px)); }
+      width: -webkit-calc(((100% / 5) - 20px) + (4px));
+      width: calc(((100% / 5) - 20px) + (4px)); }
     html:not(.csscalc) .grid .grid-item {
-      width: 13.3333333333%; }
-  .grid .grid-item:nth-child(6n+1) {
+      width: 18.4%; }
+  .grid .grid-item:nth-child(5n+1) {
     clear: left;
     margin-left: 0 !important; } }
 
@@ -7934,16 +7936,16 @@ em {
     .grid .grid-item:after {
       clear: both; }
     html.csscalc .grid .grid-item {
-      margin-left: 20px; }
+      margin-left: 10px; }
     html:not(.csscalc) .grid .grid-item {
-      margin-left: 2%; }
+      margin-left: 1%; }
     html.csscalc .grid .grid-item:first-child, html:not(.csscalc) .grid .grid-item:first-child {
       margin-left: 0; }
     html.csscalc .grid .grid-item {
-      width: -webkit-calc(((100% / 4) - 20px) + (5px));
-      width: calc(((100% / 4) - 20px) + (5px)); }
+      width: -webkit-calc(((100% / 4) - 10px) + (2.5px));
+      width: calc(((100% / 4) - 10px) + (2.5px)); }
     html:not(.csscalc) .grid .grid-item {
-      width: 23.5%; }
+      width: 24.25%; }
   .grid .grid-item:nth-child(4n+1) {
     clear: left;
     margin-left: 0 !important; } }
@@ -7961,14 +7963,14 @@ em {
     .grid .grid-item:after {
       clear: both; }
     html.csscalc .grid .grid-item {
-      margin-left: 15px; }
+      margin-left: 10px; }
     html:not(.csscalc) .grid .grid-item {
       margin-left: 1%; }
     html.csscalc .grid .grid-item:first-child, html:not(.csscalc) .grid .grid-item:first-child {
       margin-left: 0; }
     html.csscalc .grid .grid-item {
-      width: -webkit-calc(((100% / 3) - 15px) + (5px));
-      width: calc(((100% / 3) - 15px) + (5px)); }
+      width: -webkit-calc(((100% / 3) - 10px) + (3.3333333333px));
+      width: calc(((100% / 3) - 10px) + (3.3333333333px)); }
     html:not(.csscalc) .grid .grid-item {
       width: 32.6666666667%; }
   .grid .grid-item:nth-child(3n+1) {

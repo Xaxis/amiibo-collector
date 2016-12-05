@@ -92,7 +92,7 @@ define([
       'click .menu-share .control-upload-json-config .button': 'uploadJSONConfig',
       
       // @todo - Refactor each "item compoenent" into own view (out of main view)
-      'click .grid-item .control-settings': 'toggleItemSettingsMenu',
+      'click .grid-item .grid-item-title .button': 'toggleItemSettingsMenu',
       'click .menu-item-settings .controls-item-add': 'itemSettingsAddSubitem',
       'click .menu-item-settings .controls-item-up': 'itemSettingsUpSubitem',
       'click .menu-item-settings .controls-item-favorite': 'itemSettingsFavoriteSubitem',
@@ -1528,73 +1528,78 @@ define([
         self        = this,
         target      = $(e.currentTarget),
         menu        = null,
+        grid_item   = target.closest('.grid-item.collected'),
         group_name  = target.closest('.amiibo-grid').attr('data-group-name'),
         item_name   = target.closest('[data-amiibo-name]').attr('data-amiibo-name'),
         item_obj    = this.amiibos[group_name].amiibos[item_name],
         open_modal  = true;
 
-      // Make sure further events aren't triggered
-      e.stopPropagation();
+      // Open settings menu only for collected items
+      if (grid_item.length) {
+        
+        // Make sure further events aren't triggered
+        e.stopPropagation();
 
-      // Make sure the modal isn't already open
-      if (this.menus.item_settings) {
-        if (this.menus.item_settings.hasClass('remodal-is-opened')) {
-          open_modal = false;
-        }
-      }
-
-      // Continue if modal not already open
-      if (open_modal) {
-
-        // Re-populate the item settings menu
-        this.menus.item_settings = $(this.templates.menuItemSettings({
-          item_group: group_name,
-          item_name: item_name,
-          item_title: item_obj.title
-        }));
-        this.menus.item_settings.data('trigger_source', target);
-
-        // Replace previously opened modal instance
-        if (!$('.menu-item-settings').length) {
-          this.$el.append(this.menus.item_settings);
-        } else {
-          $('.menu-item-settings').closest('.remodal-wrapper').replaceWith(this.menus.item_settings);
-        }
-      }
-
-      // Update the menu reference
-      menu = this.menus.item_settings;
-
-      // Remove any previous sub items (for when modal menu is not being opened)
-      menu.find('.sub-items-container').children().remove();
-
-      // Add any existing sub items
-      if (item_obj.subitems) {
-        _.each(item_obj.subitems, function(subitem, idx) {
-          var
-            this_subitem_elm        = null,
-            this_notepad            = null;
-          menu.find('.sub-items-container').append((this_subitem_elm = $(self.templates.menuItemSettingsSubitem({
-            sub_item_title: item_obj.title,
-            sub_item_id: idx
-          }))));
-          if (subitem.favorite) {
-            this_subitem_elm.find('.controls-item-favorite').hide();
-            this_subitem_elm.find('.controls-item-favorite-selected').addClass('selected');
-          } else {
-            this_subitem_elm.find('.controls-item-favorite').show();
-            this_subitem_elm.find('.controls-item-favorite-selected').removeClass('selected');
+        // Make sure the modal isn't already open
+        if (this.menus.item_settings) {
+          if (this.menus.item_settings.hasClass('remodal-is-opened')) {
+            open_modal = false;
           }
-          this_subitem_elm.find('.controls-item-status option[value="' + subitem.status + '"]').prop('selected', true);
-          this_subitem_elm.find('.controls-item-condition option[value="' + subitem.condition + '"]').prop('selected', true);
-          this_notepad = this_subitem_elm.find('.controls-item-note .notepad');
-          this_notepad.html(subitem.note);
-        });
-      }
+        }
 
-      // Modalize the menu if it isn't already open
-      if (open_modal) {
-        menu.remodal().open();
+        // Continue if modal not already open
+        if (open_modal) {
+
+          // Re-populate the item settings menu
+          this.menus.item_settings = $(this.templates.menuItemSettings({
+            item_group: group_name,
+            item_name: item_name,
+            item_title: item_obj.title
+          }));
+          this.menus.item_settings.data('trigger_source', target);
+
+          // Replace previously opened modal instance
+          if (!$('.menu-item-settings').length) {
+            this.$el.append(this.menus.item_settings);
+          } else {
+            $('.menu-item-settings').closest('.remodal-wrapper').replaceWith(this.menus.item_settings);
+          }
+        }
+
+        // Update the menu reference
+        menu = this.menus.item_settings;
+
+        // Remove any previous sub items (for when modal menu is not being opened)
+        menu.find('.sub-items-container').children().remove();
+
+        // Add any existing sub items
+        if (item_obj.subitems) {
+          _.each(item_obj.subitems, function(subitem, idx) {
+            var
+              this_subitem_elm        = null,
+              this_notepad            = null;
+            menu.find('.sub-items-container').append((this_subitem_elm = $(self.templates.menuItemSettingsSubitem({
+              sub_item_title: item_obj.title,
+              sub_item_id: idx
+            }))));
+            if (subitem.favorite) {
+              this_subitem_elm.find('.controls-item-favorite').hide();
+              this_subitem_elm.find('.controls-item-favorite-selected').addClass('selected');
+            } else {
+              this_subitem_elm.find('.controls-item-favorite').show();
+              this_subitem_elm.find('.controls-item-favorite-selected').removeClass('selected');
+            }
+            this_subitem_elm.find('.controls-item-status option[value="' + subitem.status + '"]').prop('selected', true);
+            this_subitem_elm.find('.controls-item-condition option[value="' + subitem.condition + '"]').prop('selected', true);
+            this_notepad = this_subitem_elm.find('.controls-item-note .notepad');
+            this_notepad.html(subitem.note);
+          });
+        }
+
+        // Modalize the menu if it isn't already open
+        if (open_modal) {
+          menu.remodal().open();
+        }
       }
     },
 

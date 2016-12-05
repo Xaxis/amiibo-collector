@@ -84,10 +84,10 @@
     h2 {
       display: inline-block;
       @include breakpoint($max: $fg-col-14) {
-        font-size: 1.2rem;
+        font-size: 1.4rem;
       }
       @include breakpoint($max: $fg-col-10) {
-        font-size: 1.0rem;
+        font-size: 1.2rem;
       }
       .group-control {
         cursor: pointer;
@@ -156,6 +156,9 @@
     opacity: 1;
     .control-settings {
       display: inline-block;
+    }
+    .item-title {
+      color: $blue;
     }
   }
 }

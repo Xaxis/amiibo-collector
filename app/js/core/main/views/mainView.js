@@ -16,6 +16,8 @@
  * @todo - Add amiibo bundles to list
  *
  * @todo - It is nearly impossible to accurately click per item settings menu icons
+ *
+ * @todo - On iOS simulator, scrolling in the menus don't work. Fix.
  */
 define([
   'jquery',

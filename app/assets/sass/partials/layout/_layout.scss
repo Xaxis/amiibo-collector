@@ -248,7 +248,7 @@
         border-bottom: 33px solid $dark-border;
         .control {
           font-family: "FontAwesome";
-          margin-right: 6px;
+          margin-right: 35px;
           &:last-child {
             margin-right: 0;
           }
@@ -332,9 +332,9 @@
       background-color: rgba($black-hex, 0.5);
       margin-bottom: 20px;
       &:first-child {
-        border: 1px dashed $green;
+        border: 1px dashed $blue;
         &.complete {
-          border: 1px solid $green;
+          border: 1px solid $blue;
           .completed-icon {
             display: block;
           }
@@ -352,7 +352,7 @@
         top: 10px;
         font-family: "FontAwesome";
         font-size: 1.2rem;
-        color: $green;
+        color: $blue;
         display: none;
       }
       .group-title {
@@ -413,7 +413,7 @@
     }
   }
 
-  // Menu share
+  // Share menu
   &.menu-share {
     .control {
       margin-bottom: 20px;
@@ -431,29 +431,9 @@
         max-width: 400px;
       }
     }
-    .control-generate-share-image {
-      display: none;
-      .info {
-        .download {
-          display: none;
-        }
-        canvas {
-          display: none;
-        }
-      }
-    }
-    .control-generate-stats-file {
-      display: none;
-      .info {
-        .download {
-          display: none;
-        }
-      }
-    }
     .control-generate-json-config {
       .info {
         .download {
-          display: none;
         }
       }
     }
@@ -464,24 +444,28 @@
         }
       }
     }
-
-
-    //.image-share-info {
-    //  margin-bottom: 20px;
-    //}
-    //.image-canvas {
-    //  margin-bottom: 40px;
-    //  canvas {
-    //    display: block;
-    //    width: 400px;
-    //    height: 500px;
-    //    background: $white;
-    //  }
-    //  img {
-    //    width: 100%;
-    //    height: auto;
-    //  }
-    //}
+    .control-generate-share-image {
+      margin-bottom: 20px;
+      .info {
+        .download {
+          display: none;
+        }
+        .none {
+          display: none;
+        }
+        canvas {
+          display: none;
+          background: $white;
+          width: 400px;
+          height: 500px;
+        }
+        img {
+          margin-top: 20px;
+          width: 100%;
+          height: auto;
+        }
+      }
+    }
   }
 
   // Menu restart

@@ -1,15 +1,11 @@
 /**
  * Meat and potatoes of this app.
- *
- * @todo - Add functionality so that you can tap once to add to your COLLECTED list, tap twice to add to your WANT/WISH list, tap three times to uncheck.
- *
+ **
  * @todo - Add in all animal crossing card amiibos
  *
  * @todo - Write deployment script.
  *
  * @todo - Create "working" animation when loading menus (such as when the share menu is creating an image).
- *
- * @todo - Research if mega man is part of the SSB series and if he should have his own group
  *
  * @todo - Convert local storage object check/test to utility method
  *
@@ -18,6 +14,8 @@
  * @todo - Create minimalistic logo with corresponding favicon
  *
  * @todo - Add amiibo bundles to list
+ *
+ * @todo - It is nearly impossible to accurately click per item settings menu icons
  */
 define([
   'jquery',
@@ -80,15 +78,16 @@ define([
       'click .control[data-control-id="sort-alpha-desc"]': 'sortAlphaDesc',
       'click .control[data-control-id="sort-total-asc"]': 'sortTotalAsc',
       'click .control[data-control-id="sort-total-desc"]': 'sortTotalDesc',
-      'click .control-share': 'toggleShareMenu',
-      'click .menu-share .control-generate-share-image .button': 'generateShareImage',
-      'click .menu-share .control-generate-stats-file .button': 'generateStatsFile',
-      'click .menu-share .control-generate-json-config .button': 'generateJSONConfig',
-      'click .menu-share .control-upload-json-config .button': 'uploadJSONConfig',
       'click .control-restart': 'toggleRestartMenu',
       'click .grid-item': 'toggleSelectedAmiibo',
       'click .amiibo-grid h2 .group-select-toggle': 'toggleSelectedGroup',
       'click .amiibo-grid h2 .group-expando-toggle': 'toggleExpandGroup',
+
+      // @todo - Refactor share menu into own view
+      'click .control-share': 'toggleShareMenu',
+      'click .menu-share .control-generate-share-image .button': 'generateShareImage',
+      'click .menu-share .control-generate-json-config .button': 'generateJSONConfig',
+      'click .menu-share .control-upload-json-config .button': 'uploadJSONConfig',
       
       // @todo - Refactor each "item compoenent" into own view (out of main view)
       'click .grid-item .control-settings': 'toggleItemSettingsMenu',
@@ -617,15 +616,16 @@ define([
         'sortAlphaDesc',
         'sortTotalAsc',
         'sortTotalDesc',
-        'toggleShareMenu',
-        'generateShareImage',
-        'generateStatsFile',
-        'generateJSONConfig',
-        'uploadJSONConfig',
         'toggleRestartMenu',
         'toggleSelectedAmiibo',
         'toggleSelectedGroup',
         'toggleExpandGroup',
+
+        // @todo - Refactor share menu into own view
+        'toggleShareMenu',
+        'generateShareImage',
+        'generateJSONConfig',
+        'uploadJSONConfig',
 
         // @todo - Refactor collection items into own view
         'toggleItemSettingsMenu',
@@ -1117,296 +1117,6 @@ define([
 
 
     /**
-     * Toggle and load the share menu
-     * Load the share menu with a dynamically generated share URL and collection image.
-     */
-    toggleShareMenu: function() {
-
-      // Add the modal menu
-      if (!this.menus.share) {
-        this.menus.share = $(this.templates.menuShare()).remodal();
-        this.$el.append(this.menus.share);
-      }
-
-      // Reset configuration generation
-      $('.control-generate-json-config').find('.message').show();
-      $('.control-generate-json-config').find('.download').hide();
-
-      // Reset stats generation
-      $('.control-generate-stats-file').find('.message').show();
-      $('.control-generate-stats-file').find('.download').hide();
-
-      // Toggle menu open
-      this.menus.share.open();
-    },
-
-
-    /**
-     * Generates an image of a user's collection.
-     * @todo - This is broken. Isn't generating properly sized images.
-     */
-    generateShareImage: function() {
-      var
-        container       = $('.control-generate-share-image'),
-        canvas          = $('<canvas class="share-image"></canvas>'),
-        c_w             = 0,
-        c_h             = 0,
-        ctx             = null,
-        items_to_draw   = 0,
-        max_per_row     = 4,
-        max_w           = 0,
-        max_h           = 0,
-        total_rows      = 1,
-        row_w           = 0,
-        row_h           = 0,
-        items_drawn     = 0,
-        rows_drawn      = 0,
-        group_title_h   = 50,
-        last_row_h      = 0,
-        is_collected    = false,
-        collection_img  = null;
-
-      // Remove any previous canvas elements
-      container.find('.share-image').remove();
-
-      // Append the new share image
-      container.find('.info').append(canvas);
-
-      // Create canvas image size from items that need to be drawn
-      _.each(this.amiibos, function(group) {
-        var
-          inc_row         = true,
-          collected       = _.filter(group.amiibos, function(am) {
-            return am.collected;
-          }).length;
-
-        // Update collected flag
-        if (collected) is_collected = true;
-
-        // Proceed if one or more in group is collected
-        if (collected) {
-          _.each(group.amiibos, function(amiibo, amiibo_name) {
-            if (amiibo.collected) {
-              var
-                img       = $('.grid-item[data-amiibo-name="' + amiibo_name + '"] img')[0];
-
-              // Update current maximum width if it's greater
-              if (img.width > max_w) max_w = img.width;
-
-              // Update current maximum height if it's greater
-              if (img.height > max_h) max_h = img.height;
-
-              // Increment the total items to draw
-              items_to_draw += 1;
-
-              // Increment total rows
-              if (!(items_to_draw % max_per_row)) {
-                total_rows += 1;
-                inc_row = false;
-              } else {
-                inc_row = true;
-              }
-            }
-          });
-          if (!inc_row) total_rows += 1;
-        }
-      });
-
-      // Proceed when at least one thing has been collected
-      if (is_collected) {
-        $('.not-collected-message').remove();
-
-        // Update and set dimension values
-        // total_rows = total_rows - _.size(this.amiibos);
-        row_w = max_w * max_per_row;
-        row_h = max_h;
-        canvas[0].width = (row_w);
-        canvas[0].height = (max_h * total_rows);
-        canvas.width(canvas[0].width);
-        canvas.height(canvas[0].height);
-        c_w = canvas[0].width;
-        c_h = canvas[0].height;
-        ctx = canvas[0].getContext("2d", {alpha: true});
-
-        // Set the canvas background color
-        ctx.fillStyle = "white";
-        ctx.fillRect(0, 0, c_w, c_h);
-
-        // Draw the amiibos
-        _.each(this.amiibos, function(group, group_name) {
-          var
-            collected       = _.filter(group.amiibos, function(am) {
-              return am.collected;
-            }).length;
-
-          // Proceed if one or more in group has been collected
-          if (collected) {
-
-            // Draw group title text
-            ctx.font = "28px Sans-Serif";
-            ctx.fillStyle = "black";
-            // ctx.fillText(group.title, 20, last_row_h + group_title_h);
-
-            // Iterate over items in group
-            _.each(group.amiibos, function(amiibo, amiibo_name) {
-              if (amiibo.collected) {
-                var
-                  img       = $('.grid-item[data-amiibo-name="' + amiibo_name + '"] img')[0],
-                  dx        = (max_w * items_drawn),
-                  dy        = (max_h * rows_drawn);
-
-                // Increment which item is being drawn in a given row
-                items_drawn += 1;
-
-                // Increment row being drawn
-                if (items_drawn >= max_per_row) {
-                  items_drawn = 0;
-                  rows_drawn += 1;
-                }
-
-                // Update the height of the last row drawn
-                last_row_h = dy + max_h;
-
-                // Draw the image
-                ctx.drawImage(img, dx, dy, img.width, img.height);
-              }
-            });
-
-            // Update number of rows drawn
-            if (items_drawn > 0) rows_drawn += 1;
-            items_drawn = 0;
-          }
-        });
-
-        // Convert canvas to image element
-        collection_img = new Image();
-        collection_img.src = canvas[0].toDataURL("image/png");
-        $('.control-generate-share-image .info .message')
-          .hide();
-        $('.control-generate-share-image .info .download')
-          .show()
-          .find('a')
-          .attr('href', collection_img.src);
-
-        // $('.image-link-wrapper').remove();
-        // var link_wrapper = $('<a class="image-link-wrapper" href="' + collection_img.src + '" download="AmiiboCollection.png"></a>');
-        // link_wrapper.html(collection_img);
-        // canvas.after(link_wrapper);
-        // canvas.hide();
-
-        // Update the image download link
-        // $('.image-share-info a').attr('href', collection_img.src);
-      }
-
-      // Update with nothing collected message
-      else {
-        $('.not-collected-message').remove();
-        $('.image-canvas').prepend('<div class="not-collected-message">It appears you have not collected anything yet!</div>');
-        $('.image-canvas').find('img').remove();
-        canvas.hide();
-      }
-    },
-
-
-    /**
-     * Generates a stats text file of a user's collection.
-     */
-    generateStatsFile: function() {
-      var
-        container     = $('.control-generate-json-config'),
-        file          = '';
-
-      // Iterate collection, creating stats "file" string
-      // ...
-
-      // Revoke previously generated files to prevent memory leaks
-      if (this.collection_stats_file !== null) {
-        window.URL.revokeObjectURL(this.collection_stats_file);
-      }
-
-      // Create new collection configuration file
-      this.collection_stats_file = window.URL.createObjectURL(file);
-
-      // Hide info message show download message
-      container.find('.message').hide();
-      container.find('.download').show().find('a').attr('href', this.stats_file).click();
-    },
-
-
-    /**
-     * Generates a JSON configuration file of a user's collection.
-     */
-    generateJSONConfig: function() {
-      var
-        container     = $('.control-generate-json-config'),
-        json          = JSON.stringify(this.amiibos),
-        file          = new Blob([json], {type: "text/plain"});
-
-      // Revoke previously generated files to prevent memory leaks
-      if (this.collection_configuration_file !== null) {
-        window.URL.revokeObjectURL(this.collection_configuration_file);
-      }
-
-      // Create new collection configuration file
-      this.collection_configuration_file = window.URL.createObjectURL(file);
-
-      // Hide info message show download message
-      container.find('.message').hide();
-      container.find('.download').show().find('a').attr('href', this.collection_configuration_file).click();
-    },
-
-
-    /**
-     * Handles the uploading and parsing of a user's configuration file.
-     */
-    uploadJSONConfig: function() {
-      var
-        self        = this,
-        input       = $('.collection-configuration-input');
-
-      // Trigger input click
-      input.click();
-
-      // Attach handling event once
-      if (!input.data('event-attached')) {
-        input.data('event-attached', true);
-        input.change(function (e){
-          var
-            reader      = new FileReader(),
-            input_elm   = input.get(0),
-            text_file   = null;
-
-          // Proceed when file selected
-          if (input_elm.files.length) {
-            text_file = input_elm.files[0];
-            reader.readAsText(text_file);
-
-            // Attach handler to process file
-            $(reader).on('load', function(e) {
-              var
-                file        = e.target.result,
-                config      = null;
-
-              // Proceed if file exists
-              if (file && file.length) {
-                config = JSON.parse(file);
-
-                // Load the new configuration file
-                self.amiibos = config;
-                if (self.storage_settings.is_local && !self.storage_settings.dont_use_local) {
-                  window.localStorage.setItem(self.storage_settings.id, JSON.stringify(self.amiibos));
-                }
-                self.loadAmiibos();
-                self.menus.share.close();
-              }
-            });
-          }
-        });
-      }
-    },
-
-
-    /**
      * Toggle and load the restart menu.
      */
     toggleRestartMenu: function() {
@@ -1538,6 +1248,266 @@ define([
       // Update local storage
       window.localStorage.setItem(this.storage_settings.id, JSON.stringify(this.amiibos));
     },
+
+
+
+
+    //
+    // !!!!!!!
+    // @todo - Refactor Share menu into own view
+    // !!!!!!!
+    //
+
+    /**
+     * Toggle and load the share menu
+     * Load the share menu with a dynamically generated share URL and collection image.
+     */
+    toggleShareMenu: function() {
+
+      // Add the modal menu
+      if (!this.menus.share) {
+        this.menus.share = $(this.templates.menuShare()).remodal();
+        this.$el.append(this.menus.share);
+      }
+
+      // Reset configuration generation
+      var generate_json_config_container = $('.control-generate-json-config');
+      generate_json_config_container.find('.message').show();
+      generate_json_config_container.find('.download').hide();
+
+      // Reset share image messages and elements
+      var generate_share_image_container = $('.control-generate-share-image');
+      generate_share_image_container.find('.message').show();
+      generate_share_image_container.find('.download').hide();
+      generate_share_image_container.find('.none').hide();
+      generate_share_image_container.find('img').remove();
+      generate_share_image_container.find('.share-image').remove();
+
+      // Toggle menu open
+      this.menus.share.open();
+    },
+
+
+    /**
+     * Generates an image of a user's collection.
+     */
+    generateShareImage: function() {
+      var
+        container       = $('.control-generate-share-image'),
+        canvas          = $('<canvas class="share-image" width="400" height="600"></canvas>'),
+        c_w             = 0,                // Canvas width
+        c_h             = 0,                // Canvas height
+        ctx             = null,             // Canvas context
+        total_rows      = 0,                // Total number of rows
+        max_per_row     = 4,                // Maximum number of images to draw in a row
+        max_w           = 0,                // Maximum width to draw an image
+        max_h           = 0,                // Maximum height to draw an image
+        items_drawn     = 0,                // Number of images that have been drawn
+        rows_drawn      = 0,                // Number of rows that have been drawn
+        is_collected    = false,            // Flag set if any group has a collected item
+        collection_img  = null;             // Placeholder for the generated image
+
+      // Remove any previous canvas/image elements and a new canvas
+      container.find('.share-image').remove();
+      container.find('.true-share-image').remove();
+      container.find('.info').append(canvas);
+
+      // Determine the dimensions of the canvas based on the number of items to be drawn
+      _.each(this.amiibos, function(group, group_id) {
+        var
+          group_elm                   = $('.amiibo-grid[data-group-name="' + group_id + '"]'),
+          total_to_draw_in_group      = 0,
+          collected                   = _.filter(group.amiibos, function(item) {
+            return item.collected;
+          }).length;
+
+        // Update collected flag
+        if (collected) is_collected = true;
+
+        // Proceed if one or more in group is collected
+        if (is_collected) {
+
+          // Iterate over collection items
+          _.each(group.amiibos, function(amiibo, amiibo_name) {
+            if (amiibo.collected) {
+              var
+                img         = group_elm.find('.grid-item[data-amiibo-name="' + amiibo_name + '"] img')[0],
+                img_clone   = $(img).clone(),
+                img_w       = 0,
+                img_h       = 0;
+
+              // Temporarily place the image in the DOM so we can measure the actual dimensions of
+              // potentially hidden image elements.
+              $('body').append(img_clone.css({position: 'absolute', display: 'block', left: '-10000px'}));
+              img_w = img_clone.width();
+              img_h = img_clone.height();
+              img_clone.remove();
+
+              // Update current maximum width if it's greater
+              if (img_w > max_w) max_w = img_w;
+
+              // Update current maximum height if it's greater
+              if (img_h > max_h) max_h = img_h;
+
+              // Increment the total number of items to drawn in this group
+              total_to_draw_in_group += 1;
+
+              // Add another row to draw every 'max_per_row' items or when we've reached the group's last row
+              if ((total_to_draw_in_group % max_per_row) == 0 || (total_to_draw_in_group == collected)) {
+                total_rows += 1;
+              }
+            }
+          });
+        }
+      });
+
+      // Proceed when at least one thing has been collected
+      if (is_collected) {
+
+        // Set dimension values of the canvas before we draw on it
+        c_w = canvas[0].width = max_w * max_per_row;
+        c_h = canvas[0].height = (max_h * total_rows);
+        canvas.width(canvas[0].width);
+        canvas.height(canvas[0].height);
+        ctx = canvas[0].getContext("2d", {alpha: true});
+
+        // Fill the canvas background
+        ctx.fillStyle = "white";
+        ctx.fillRect(0, 0, c_w, c_h);
+
+        // Draw the collection items to the canvas
+        _.each(this.amiibos, function(group) {
+          var
+            collected       = _.filter(group.amiibos, function(am) {
+              return am.collected;
+            }).length;
+
+          // Draw if one or more in group has been collected
+          if (collected) {
+
+            // Iterate over items in group
+            _.each(group.amiibos, function(amiibo, amiibo_name) {
+              if (amiibo.collected) {
+                var
+                  img       = $('.grid-item[data-amiibo-name="' + amiibo_name + '"] img')[0],
+                  dx        = (max_w * items_drawn),
+                  dy        = (max_h * rows_drawn);
+
+                // Increment which item is being drawn in a given row
+                items_drawn += 1;
+
+                // Increment row being drawn
+                if (items_drawn >= max_per_row) {
+                  items_drawn = 0;
+                  rows_drawn += 1;
+                }
+
+                // Draw the image
+                ctx.drawImage(img, dx, dy, max_w, max_h);
+              }
+            });
+
+            // Update number of rows drawn
+            if (items_drawn > 0) rows_drawn += 1;
+            items_drawn = 0;
+          }
+        });
+
+        // Create image element from canvas and link wrapper and then add the image
+        collection_img = new Image();
+        collection_img.src = canvas[0].toDataURL("image/png");
+        canvas.before($(collection_img).addClass('true-share-image'));
+        canvas.hide();
+
+        // Give download link source of new image
+        $('.control-generate-share-image .info .message')
+          .hide();
+        $('.control-generate-share-image .info .download')
+          .show()
+          .find('a')
+          .attr('href', collection_img.src);
+      }
+
+      // Display message if nothing has yet been collected
+      else {
+        container.find('.message').hide();
+        container.find('.none').show();
+      }
+    },
+
+
+    /**
+     * Generates a JSON configuration file of a user's collection.
+     */
+    generateJSONConfig: function() {
+      var
+        container     = $('.control-generate-json-config'),
+        json          = JSON.stringify(this.amiibos),
+        file          = new Blob([json], {type: "text/plain"});
+
+      // Revoke previously generated files to prevent memory leaks
+      if (this.collection_configuration_file !== null) {
+        window.URL.revokeObjectURL(this.collection_configuration_file);
+      }
+
+      // Create new collection configuration file
+      this.collection_configuration_file = window.URL.createObjectURL(file);
+
+      // Hide info message show download message
+      container.find('.message').hide();
+      container.find('.download').show().find('a').attr('href', this.collection_configuration_file).click();
+    },
+
+
+    /**
+     * Handles the uploading and parsing of a user's configuration file.
+     */
+    uploadJSONConfig: function() {
+      var
+        self        = this,
+        input       = $('.collection-configuration-input');
+
+      // Trigger input click
+      input.click();
+
+      // Attach handling event once
+      if (!input.data('event-attached')) {
+        input.data('event-attached', true);
+        input.change(function (e){
+          var
+            reader      = new FileReader(),
+            input_elm   = input.get(0),
+            text_file   = null;
+
+          // Proceed when file selected
+          if (input_elm.files.length) {
+            text_file = input_elm.files[0];
+            reader.readAsText(text_file);
+
+            // Attach handler to process file
+            $(reader).on('load', function(e) {
+              var
+                file        = e.target.result,
+                config      = null;
+
+              // Proceed if file exists
+              if (file && file.length) {
+                config = JSON.parse(file);
+
+                // Load the new configuration file
+                self.amiibos = config;
+                if (self.storage_settings.is_local && !self.storage_settings.dont_use_local) {
+                  window.localStorage.setItem(self.storage_settings.id, JSON.stringify(self.amiibos));
+                }
+                self.loadAmiibos();
+                self.menus.share.close();
+              }
+            });
+          }
+        });
+      }
+    },
+
 
 
 

@@ -7672,7 +7672,7 @@ em {
         border-bottom: 33px solid #4c4c4c; }
         .menu.menu-item-settings .item .item-tab-controls .control {
           font-family: "FontAwesome";
-          margin-right: 6px; }
+          margin-right: 35px; }
           .menu.menu-item-settings .item .item-tab-controls .control:last-child {
             margin-right: 0; }
         .menu.menu-item-settings .item .item-tab-controls .controls-item-favorite-selected {
@@ -7724,9 +7724,9 @@ em {
     background-color: rgba(34, 34, 34, 0.5);
     margin-bottom: 20px; }
     .menu.menu-stats .stat-group:first-child {
-      border: 1px dashed #00d87b; }
+      border: 1px dashed #3880ff; }
       .menu.menu-stats .stat-group:first-child.complete {
-        border: 1px solid #00d87b; }
+        border: 1px solid #3880ff; }
         .menu.menu-stats .stat-group:first-child.complete .completed-icon {
           display: block; }
     .menu.menu-stats .stat-group.complete {
@@ -7739,7 +7739,7 @@ em {
       top: 10px;
       font-family: "FontAwesome";
       font-size: 1.2rem;
-      color: #00d87b;
+      color: #3880ff;
       display: none; }
     .menu.menu-stats .stat-group .group-title {
       font-weight: bolder;
@@ -7781,20 +7781,23 @@ em {
       margin-top: 6px;
       font-size: .8rem;
       max-width: 400px; }
-  .menu.menu-share .control-generate-share-image {
-    display: none; }
-    .menu.menu-share .control-generate-share-image .info .download {
-      display: none; }
-    .menu.menu-share .control-generate-share-image .info canvas {
-      display: none; }
-  .menu.menu-share .control-generate-stats-file {
-    display: none; }
-    .menu.menu-share .control-generate-stats-file .info .download {
-      display: none; }
-  .menu.menu-share .control-generate-json-config .info .download {
-    display: none; }
   .menu.menu-share .control-upload-json-config .info .collection-configuration-input {
     display: none; }
+  .menu.menu-share .control-generate-share-image {
+    margin-bottom: 20px; }
+    .menu.menu-share .control-generate-share-image .info .download {
+      display: none; }
+    .menu.menu-share .control-generate-share-image .info .none {
+      display: none; }
+    .menu.menu-share .control-generate-share-image .info canvas {
+      display: none;
+      background: white;
+      width: 400px;
+      height: 500px; }
+    .menu.menu-share .control-generate-share-image .info img {
+      margin-top: 20px;
+      width: 100%;
+      height: auto; }
   .menu.menu-restart .restart-info {
     margin-bottom: 30px; }
 

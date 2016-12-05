@@ -7655,28 +7655,36 @@ em {
         width: 100%;
         background-color: rgba(34, 34, 34, 0.5); }
         .menu.menu-item-settings .item .item-tab-label .subitem-title {
-          position: relative;
+          display: inline-block;
+          max-width: 150px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
           line-height: 1.8rem;
-          padding-left: 15px;
+          padding-left: 10px;
           color: #989898; }
-          .menu.menu-item-settings .item .item-tab-label .subitem-title:after {
+          .menu.menu-item-settings .item .item-tab-label .subitem-title:before {
             counter-increment: item;
-            content: " " counter(item); }
+            content: counter(item) ". "; }
       .menu.menu-item-settings .item .item-tab-controls {
-        cursor: pointer;
         position: absolute;
         height: 0;
         bottom: 100%;
         right: -1px;
-        padding: 4px 14px 4px 7px;
-        line-height: 2.35rem;
+        padding: 4px 16px 4px 12px;
+        line-height: 0.15rem;
         border-left: 33px solid transparent;
         border-bottom: 33px solid #4c4c4c; }
         .menu.menu-item-settings .item .item-tab-controls .control {
+          display: inline-block;
+          cursor: pointer;
+          padding: 4px 15px;
           font-family: "FontAwesome";
-          margin-right: 35px; }
-          .menu.menu-item-settings .item .item-tab-controls .control:last-child {
-            margin-right: 0; }
+          font-size: 1.2rem; }
+          .menu.menu-item-settings .item .item-tab-controls .control.controls-item-favorite, .menu.menu-item-settings .item .item-tab-controls .control.controls-item-favorite-selected {
+            padding-left: 0; }
+          .menu.menu-item-settings .item .item-tab-controls .control.controls-item-remove {
+            padding-right: 0; }
         .menu.menu-item-settings .item .item-tab-controls .controls-item-favorite-selected {
           display: none;
           color: #ffd86e; }
@@ -7787,6 +7795,11 @@ em {
     display: none; }
   .menu.menu-share .control-generate-share-image {
     margin-bottom: 20px; }
+    .menu.menu-share .control-generate-share-image .button .fa-spinner {
+      color: white;
+      visibility: hidden; }
+    .menu.menu-share .control-generate-share-image .button:active .fa-spinner {
+      visibility: visible; }
     .menu.menu-share .control-generate-share-image .info .download {
       display: none; }
     .menu.menu-share .control-generate-share-image .info .none {
@@ -8124,19 +8137,19 @@ html.remodal-is-locked {
   color: #3880ff;
   border: 0;
   outline: 0;
-  background: transparent; }
+  background: transparent;
+  font-size: 1.6rem; }
 
 .remodal-close:hover,
 .remodal-close:focus {
-  color: #dedede; }
+  color: #59a1f7; }
 
 .remodal-close:before {
-  font-family: "Calibre Web Regular" !important;
-  font-size: 25px;
+  font-size: 40px;
   line-height: 35px;
   position: absolute;
-  top: 0;
-  left: 0;
+  top: 5px;
+  left: -5px;
   display: block;
   width: 35px;
   content: "\00d7";

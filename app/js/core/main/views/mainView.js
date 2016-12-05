@@ -5,19 +5,17 @@
  *
  * @todo - Write deployment script.
  *
- * @todo - Create "working" animation when loading menus (such as when the share menu is creating an image).
- *
  * @todo - Convert local storage object check/test to utility method
  *
  * @todo - Add "infinity scrolling" functionality so all collection images don't load at once.
  *
  * @todo - Create minimalistic logo with corresponding favicon
  *
- * @todo - Add amiibo bundles to list
+ * @todo - Add amiibo bundles (yarn yoshi w/ games, etc) to list
  *
- * @todo - It is nearly impossible to accurately click per item settings menu icons
+ * @todo - Refactor sorting mechanics to work with arrays.
  *
- * @todo - On iOS simulator, scrolling in the menus don't work. Fix.
+ * @todo - Create "working" animation when loading menus (such as when the share menu is creating an image).
  */
 define([
   'jquery',
@@ -1536,7 +1534,7 @@ define([
 
       // Open settings menu only for collected items
       if (grid_item.length) {
-        
+
         // Make sure further events aren't triggered
         e.stopPropagation();
 

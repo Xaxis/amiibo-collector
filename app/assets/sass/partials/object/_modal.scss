@@ -183,20 +183,20 @@ html.remodal-is-locked {
   border: 0;
   outline: 0;
   background: transparent;
+  font-size: 1.6rem;
 }
 
 .remodal-close:hover,
 .remodal-close:focus {
-  color: $gray;
+  color: $azure;
 }
 
 .remodal-close:before {
-  font-family: "Calibre Web Regular" !important;
-  font-size: 25px;
+  font-size: 40px;
   line-height: 35px;
   position: absolute;
-  top: 0;
-  left: 0;
+  top: 5px;
+  left: -5px;
   display: block;
   width: 35px;
   content: "\00d7";

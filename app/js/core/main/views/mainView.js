@@ -13,9 +13,7 @@
  *
  * @todo - Add amiibo bundles (yarn yoshi w/ games, etc) to list
  *
- * @todo - Refactor sorting mechanics to work with arrays.
- *
- * @todo - Create "working" animation when loading menus (such as when the share menu is creating an image).
+ * @todo - Image generation may not be working in safari
  */
 define([
   'jquery',
@@ -73,15 +71,17 @@ define([
     events: {
       'click .control-stats': 'toggleStatsMenu',
       'click .control-group': 'toggleGroupMenu',
-      'click .control-sort': 'toggleSortMenu',
-      'click .control[data-control-id="sort-alpha-asc"]': 'sortAlphaAsc',
-      'click .control[data-control-id="sort-alpha-desc"]': 'sortAlphaDesc',
-      'click .control[data-control-id="sort-total-asc"]': 'sortTotalAsc',
-      'click .control[data-control-id="sort-total-desc"]': 'sortTotalDesc',
       'click .control-restart': 'toggleRestartMenu',
       'click .grid-item': 'toggleSelectedAmiibo',
       'click .amiibo-grid h2 .group-select-toggle': 'toggleSelectedGroup',
       'click .amiibo-grid h2 .group-expando-toggle': 'toggleExpandGroup',
+
+      // @todo - Possibly refactor sort menu unti own view
+      'click .control-sort': 'toggleSortMenu',
+      'click .control[data-control-id="sort-alpha-asc"]': 'handleSort',
+      'click .control[data-control-id="sort-alpha-desc"]': 'handleSort',
+      'click .control[data-control-id="sort-total-asc"]': 'handleSort',
+      'click .control[data-control-id="sort-total-desc"]': 'handleSort',
 
       // @todo - Refactor share menu into own view
       'click .control-share': 'toggleShareMenu',
@@ -591,7 +591,8 @@ define([
       id: "amiibo-collection",
       dont_use_local: false,
       is_local: window.localStorage ? true : false,
-      loaded: false
+      loaded: false,
+      asset_path: 'app/assets/images/amiibos/'
     },
 
     // Placeholder for collection configuration file
@@ -599,6 +600,7 @@ define([
 
     // Placeholder for collection stats file
     collection_stats_file: null,
+
 
     /**
      * Initialize the application.
@@ -611,15 +613,18 @@ define([
         'storageDiffUpdate',
         'toggleStatsMenu',
         'toggleGroupMenu',
-        'toggleSortMenu',
-        'sortAlphaAsc',
-        'sortAlphaDesc',
-        'sortTotalAsc',
-        'sortTotalDesc',
         'toggleRestartMenu',
         'toggleSelectedAmiibo',
         'toggleSelectedGroup',
         'toggleExpandGroup',
+
+        // @todo - Possibly refactor sort menu into own view
+        'toggleSortMenu',
+        'handleSort',
+        'sortAlphaAsc',
+        'sortAlphaDesc',
+        'sortTotalAsc',
+        'sortTotalDesc',
 
         // @todo - Refactor share menu into own view
         'toggleShareMenu',
@@ -677,10 +682,10 @@ define([
     /**
      * Load collector's collection groups.
      */
-    loadAmiibos: function( dont_load ) {
+    loadAmiibos: function() {
       var
         self        = this,
-        path        = 'app/assets/images/amiibos/',
+        path        = this.storage_settings.asset_path,
         grid        = $('.grid-container');
 
       // Make sure the grid container is cleared out
@@ -706,47 +711,69 @@ define([
         }
       }
 
+      // Convert collection to sortable array while populating meta properties
+      var collection = _.map(JSON.parse(JSON.stringify(this.amiibos)), function(group, group_id) {
+        group.id = group_id;
+        group.size = _.size(group.amiibos);
+        group.amiibos = _.map(group.amiibos, function(item, item_id) {
+          item.id = item_id;
+          return item;
+        });
+        return group;
+      });
+
+      // Sort groups based on collection settings
+      switch (this.collection_settings.sort_by) {
+        case 'alpha-asc' :
+          collection = this.sortAlphaAsc(collection);
+          break;
+        case 'alpha-desc' :
+          collection = this.sortAlphaDesc(collection);
+          break;
+        case 'total-asc' :
+          collection = this.sortTotalAsc(collection);
+          break;
+        case 'total-desc' :
+          collection = this.sortTotalDesc(collection);
+          break;
+      }
+
       // Iterate over collection
-      _.each(this.amiibos, function(group, group_name) {
+      _.each(collection, function(group) {
         var
+          group_id          = group.id,
           grid_group        = self.templates.amiiboGroup({
-            group_name: group_name,
+            group_name: group_id,
             group_title: group.title,
             group_collected: _.filter(group.amiibos, 'collected').length,
             group_total: _.size(group.amiibos)
           }),
           group_elm         = null;
 
-        // Update meta properties
-        group.id = group_name;
-        group.size = _.size(group.amiibos);
-
         // Add group only if it hasn't been set to not load
         if (!group.unchecked) {
 
           // Add new group container
           grid.append(grid_group);
-          group_elm = $('.amiibo-grid[data-group-name="' + group_name + '"]');
+          group_elm = $('.amiibo-grid[data-group-name="' + group_id + '"]');
 
           // Create new group container
-          _.each(group.amiibos, function(amiibo, amiibo_name) {
+          _.each(group.amiibos, function(item) {
             var
-              amiibo_path        = path + group_name + '-' + amiibo_name + '.png';
-
-            // Add collection item id
-            amiibo.id = amiibo_name;
+              item_id             = item.id,
+              amiibo_path         = path + group_id + '-' + item_id + '.png';
 
             // Create new grid object
-            grid.find('.' + group_name + ' .group').append(self.templates.amiiboGridItem({
-              amiibo_name: amiibo_name,
+            grid.find('.' + group_id + ' .group').append(self.templates.amiiboGridItem({
+              amiibo_name: item_id,
               amiibo_path: amiibo_path,
-              amiibo_title: amiibo.title || '',
-              amiibo_class: ((amiibo.collected) ? 'collected' : '')
+              amiibo_title: item.title || '',
+              amiibo_class: ((item.collected) ? 'collected' : '')
             }));
           });
 
           // Add appropriate class on group to indicate whether or not a group has been collected
-          if (_.size(group.amiibos) == _.filter(group.amiibos, 'collected').length) {
+          if (group.size == _.filter(group.amiibos, 'collected').length) {
             group_elm
               .data('group-collected', 'yes')
               .addClass('group-collected');
@@ -764,24 +791,6 @@ define([
           }
         }
       });
-
-      // Sort groups based on collection settings
-      if (!dont_load) {
-        switch (this.collection_settings.sort_by) {
-          case 'alpha-asc' :
-            this.sortAlphaAsc();
-            break;
-          case 'alpha-desc' :
-            this.sortAlphaDesc();
-            break;
-          case 'total-asc' :
-            this.sortTotalAsc();
-            break;
-          case 'total-desc' :
-            this.sortTotalDesc();
-            break;
-        }
-      }
     },
 
 
@@ -1004,119 +1013,6 @@ define([
 
 
     /**
-     * Toggle and load the sort menu
-     */
-    toggleSortMenu: function() {
-      if (!this.menus.sort) {
-        this.menus.sort = $(this.templates.menuSort()).remodal();
-        this.$el.append(this.menus.sort);
-      }
-
-      // Toggle menu open/closed
-      if (this.menus.sort) this.menus.sort.open();
-    },
-
-    /**
-     * Sort groups alpha ascending.
-     */
-    sortAlphaAsc: function() {
-
-      // Sort the collection groups
-     this.amiibos =  _.reduce(_.sortBy(this.amiibos, 'id'), function(o, v) {
-        o[v.id] = v;
-        return o;
-      }, {});
-
-      // Sort each collection groups items
-      _.each(this.amiibos, function(group) {
-        group.amiibos = _.reduce(_.sortBy(group.amiibos, 'id'), function(o, v) {
-          o[v.id] = v;
-          return o;
-        }, {});
-      });
-
-      // Update collection settings object
-      this.collection_settings.sort_by = 'alpha-asc';
-      window.localStorage.setItem(this.storage_settings.id + '_settings', JSON.stringify(this.collection_settings));
-
-      // Reload the collection
-      this.loadAmiibos(true);
-      if (this.menus.sort) this.menus.sort.close();
-    },
-
-
-    /**
-     * Sort groups alpha descending.
-     */
-    sortAlphaDesc: function() {
-
-      // Sort the collection groups
-      this.amiibos =  _.reduce(_.sortBy(this.amiibos, 'id').reverse(), function(o, v) {
-        o[v.id] = v;
-        return o;
-      }, {});
-
-      // Sort each collection groups items
-      _.each(this.amiibos, function(group) {
-        group.amiibos = _.reduce(_.sortBy(group.amiibos, 'id').reverse(), function(o, v) {
-          o[v.id] = v;
-          return o;
-        }, {});
-      });
-
-      // Update collection settings object
-      this.collection_settings.sort_by = 'alpha-desc';
-      window.localStorage.setItem(this.storage_settings.id + '_settings', JSON.stringify(this.collection_settings));
-
-      // Reload the collection
-      this.loadAmiibos(true);
-      if (this.menus.sort) this.menus.sort.close();
-    },
-
-
-    /**
-     * Sort by total number ascending.
-     */
-    sortTotalAsc: function() {
-
-      // Sort the collection groups
-      this.amiibos =  _.reduce(_.sortBy(this.amiibos, 'size'), function(o, v) {
-        o[v.id] = v;
-        return o;
-      }, {});
-
-      // Update collection settings object
-      this.collection_settings.sort_by = 'total-asc';
-      window.localStorage.setItem(this.storage_settings.id + '_settings', JSON.stringify(this.collection_settings));
-
-      // Reload the collection
-      this.loadAmiibos(true);
-      if (this.menus.sort) this.menus.sort.close();
-    },
-
-
-    /**
-     * Sort by total number descending.
-     */
-    sortTotalDesc: function() {
-
-      // Sort the collection groups
-      this.amiibos =  _.reduce(_.sortBy(this.amiibos, 'size').reverse(), function(o, v) {
-        o[v.id] = v;
-        return o;
-      }, {});
-
-      // Update collection settings object
-      this.collection_settings.sort_by = 'total-desc';
-      window.localStorage.setItem(this.storage_settings.id + '_settings', JSON.stringify(this.collection_settings));
-
-      // Reload the collection
-      this.loadAmiibos(true);
-      if (this.menus.sort) this.menus.sort.close();
-    },
-
-
-    /**
      * Toggle and load the restart menu.
      */
     toggleRestartMenu: function() {
@@ -1248,6 +1144,86 @@ define([
       // Update local storage
       window.localStorage.setItem(this.storage_settings.id, JSON.stringify(this.amiibos));
     },
+
+
+
+
+    //
+    // !!!!!!!
+    // @todo - Possibly refactor the Sort Menu into it's own view. That said the sort methods are fairly well
+    // integrated into the loading of the collection so perhaps not.
+    // !!!!!!!
+    //
+
+    /**
+     * Toggle and load the sort menu
+     */
+    toggleSortMenu: function() {
+      if (!this.menus.sort) {
+        this.menus.sort = $(this.templates.menuSort()).remodal();
+        this.$el.append(this.menus.sort);
+      }
+
+      // Toggle menu open/closed
+      if (this.menus.sort) this.menus.sort.open();
+    },
+
+
+    /**
+     * Event handler attached to sort controls reloads collection listings.
+     */
+    handleSort: function(e) {
+      var
+        target        = $(e.currentTarget),
+        sort_by       = target.attr('data-control-id').replace('sort-', '');
+
+      // Update collection settings object
+      this.collection_settings.sort_by = sort_by;
+      window.localStorage.setItem(this.storage_settings.id + '_settings', JSON.stringify(this.collection_settings));
+
+      // Reload the collection & close the menu
+      this.loadAmiibos();
+      this.menus.sort.close();
+    },
+
+
+    /**
+     * Sort groups alpha ascending.
+     */
+    sortAlphaAsc: function( collection ) {
+      return  _.map(_.sortBy(collection, 'title'), function(group) {
+        group.amiibos = _.sortBy(group.amiibos, 'title');
+        return group;
+      });
+    },
+
+
+    /**
+     * Sort groups alpha descending.
+     */
+    sortAlphaDesc: function( collection ) {
+      return  _.map(_.sortBy(collection, 'title').reverse(), function(group) {
+        group.amiibos = _.sortBy(group.amiibos, 'title').reverse();
+        return group;
+      });
+    },
+
+
+    /**
+     * Sort by total number ascending.
+     */
+    sortTotalAsc: function( collection ) {
+      return  _.sortBy(collection, 'size');
+    },
+
+
+    /**
+     * Sort by total number descending.
+     */
+    sortTotalDesc: function( collection ) {
+      return  _.sortBy(collection, 'size').reverse();
+    },
+
 
 
 

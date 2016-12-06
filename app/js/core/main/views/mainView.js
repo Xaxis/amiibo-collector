@@ -5,9 +5,7 @@
  *
  * @todo - Write deployment script.
  *
- * @todo - Convert local storage object check/test to utility method
- *
- * @todo - Add "infinity scrolling" functionality so all collection images don't load at once.
+ * @todo - Consider adding "infinity scrolling" functionality so all collection images don't load at once.
  *
  * @todo - Create minimalistic logo with corresponding favicon
  *
@@ -69,14 +67,16 @@ define([
     },
 
     events: {
-      'click .control-stats': 'toggleStatsMenu',
-      'click .control-group': 'toggleGroupMenu',
-      'click .control-restart': 'toggleRestartMenu',
-      'click .grid-item': 'toggleSelectedAmiibo',
-      'click .amiibo-grid h2 .group-select-toggle': 'toggleSelectedGroup',
-      'click .amiibo-grid h2 .group-expando-toggle': 'toggleExpandGroup',
 
-      // @todo - Possibly refactor sort menu unti own view
+      // @todo - Possibly refactor stats menu into own view
+      'click .control-stats': 'toggleStatsMenu',
+
+      // @todo - Possibly refactor group menu into own view
+      'click .control-group': 'toggleGroupMenu',
+      'click .menu-group .checkbox-icon': 'toggleGroupOnOff',
+      'click .menu-group .group-title': 'loadSelectedGroup',
+
+      // @todo - Possibly refactor sort menu into own view
       'click .control-sort': 'toggleSortMenu',
       'click .control[data-control-id="sort-alpha-asc"]': 'handleSort',
       'click .control[data-control-id="sort-alpha-desc"]': 'handleSort',
@@ -88,8 +88,17 @@ define([
       'click .menu-share .control-generate-share-image .button': 'generateShareImage',
       'click .menu-share .control-generate-json-config .button': 'generateJSONConfig',
       'click .menu-share .control-upload-json-config .button': 'uploadJSONConfig',
-      
-      // @todo - Refactor each "item compoenent" into own view (out of main view)
+
+      // @todo - Possibly refactor restart menu into own view
+      'click .control-restart': 'toggleRestartMenu',
+      'click .menu-restart .restart-continue': 'handleCollectionRestart',
+
+      // @todo - Possibly refactor group controls into own view
+      'click .amiibo-grid h2 .group-select-toggle': 'toggleSelectedGroup',
+      'click .amiibo-grid h2 .group-expando-toggle': 'toggleExpandGroup',
+
+      // @todo - Possibly refactor item controls/menu into own view
+      'click .grid-item': 'toggleSelectedItem',
       'click .grid-item .grid-item-title .button': 'toggleItemSettingsMenu',
       'click .menu-item-settings .controls-item-add': 'itemSettingsAddSubitem',
       'click .menu-item-settings .controls-item-up': 'itemSettingsUpSubitem',
@@ -581,6 +590,9 @@ define([
       }
     },
 
+    // Copy of collection initialization object as a sortable array
+    collection_sorted: null,
+
     // Collection settings initialization object
     collection_settings: {
       sort_by: 'alpha-asc'
@@ -611,12 +623,14 @@ define([
       _.bindAll(this,
         'loadAmiibos',
         'storageDiffUpdate',
+
+        // @todo - Possibly refactor stats menu into own view
         'toggleStatsMenu',
+
+        // @todo - Possibly refactor group menu into own view
         'toggleGroupMenu',
-        'toggleRestartMenu',
-        'toggleSelectedAmiibo',
-        'toggleSelectedGroup',
-        'toggleExpandGroup',
+        'toggleGroupOnOff',
+        'loadSelectedGroup',
 
         // @todo - Possibly refactor sort menu into own view
         'toggleSortMenu',
@@ -632,7 +646,16 @@ define([
         'generateJSONConfig',
         'uploadJSONConfig',
 
-        // @todo - Refactor collection items into own view
+        // @todo - Possibly refactor restart menu into own view
+        'toggleRestartMenu',
+        'handleCollectionRestart',
+
+        // @todo - Possibly refactor group controls into own view
+        'toggleSelectedGroup',
+        'toggleExpandGroup',
+
+        // @todo - Possibly refactor collection items into own view
+        'toggleSelectedItem',
         'toggleItemSettingsMenu',
         'itemSettingsAddSubitem',
         'itemSettingsUpSubitem',
@@ -712,7 +735,7 @@ define([
       }
 
       // Convert collection to sortable array while populating meta properties
-      var collection = _.map(JSON.parse(JSON.stringify(this.amiibos)), function(group, group_id) {
+      this.collection_sorted = _.map(JSON.parse(JSON.stringify(this.amiibos)), function(group, group_id) {
         group.id = group_id;
         group.size = _.size(group.amiibos);
         group.amiibos = _.map(group.amiibos, function(item, item_id) {
@@ -725,21 +748,21 @@ define([
       // Sort groups based on collection settings
       switch (this.collection_settings.sort_by) {
         case 'alpha-asc' :
-          collection = this.sortAlphaAsc(collection);
+          this.collection_sorted = this.sortAlphaAsc(this.collection_sorted);
           break;
         case 'alpha-desc' :
-          collection = this.sortAlphaDesc(collection);
+          this.collection_sorted = this.sortAlphaDesc(this.collection_sorted);
           break;
         case 'total-asc' :
-          collection = this.sortTotalAsc(collection);
+          this.collection_sorted = this.sortTotalAsc(this.collection_sorted);
           break;
         case 'total-desc' :
-          collection = this.sortTotalDesc(collection);
+          this.collection_sorted = this.sortTotalDesc(this.collection_sorted);
           break;
       }
 
       // Iterate over collection
-      _.each(collection, function(group) {
+      _.each(this.collection_sorted, function(group) {
         var
           group_id          = group.id,
           grid_group        = self.templates.amiiboGroup({
@@ -854,6 +877,15 @@ define([
     },
 
 
+
+
+
+    //
+    // !!!!!!!
+    // @todo - Possibly refactor the Stats Menu into its own view
+    // !!!!!!!
+    //
+
     /**
      * Toggle and populate the stats menu.
      */
@@ -931,6 +963,15 @@ define([
     },
 
 
+
+
+
+    //
+    // !!!!!!!
+    // @todo - Possibly refactor the Group Menu into its own view
+    // !!!!!!!
+    //
+
     /**
      * Toggle and load the group menu.
      */
@@ -948,202 +989,73 @@ define([
       // Reference the group container
       groups_container = $('.groups-container');
 
-      // Proceed to load menu if it hasn't already been loaded
-      if (!groups_container.children().length) {
-        _.each(this.amiibos, function(group, group_name) {
+      // Re-add the group controls each time the menu is opened
+      groups_container.children().remove();
+      _.each(this.collection_sorted, function(group) {
 
-          // Add the group controls
-          groups_container.append(self.templates.menuGroupGroup({
-            group_name: group_name,
-            group_title: group.title,
-            checked: group.unchecked ? '' : 'checked'
-          }));
-        });
+        // Add the group controls
+        groups_container.append(self.templates.menuGroupGroup({
+          group_name: group.id,
+          group_title: group.title,
+          checked: group.unchecked ? '' : 'checked'
+        }));
+      });
 
-        // Attach event handler to inputs
-        $('.menu-group .checkbox-icon').on('click', function(e) {
-          var
-            target        = $(e.currentTarget),
-            group         = target.closest('.group-group'),
-            group_name    = target.data('id');
-
-          // Toggle checked class on group
-          group.toggleClass('checked');
-
-          // Update whether the group is selected
-          self.amiibos[group_name].unchecked = target.hasClass('unchecked') ? false : true;
-
-          // Update the local storage object
-          if (self.storage_settings.is_local && !self.storage_settings.dont_use_local) {
-            window.localStorage.setItem(self.storage_settings.id, JSON.stringify(self.amiibos));
-          }
-
-          // Reload the amiibos
-          self.loadAmiibos();
-        });
-
-        // Attach event handler to titles
-        $('.group-title').on('click', function(e) {
-          var
-            target        = $(e.currentTarget),
-            target_id     = target.data('id');
-
-          // Iterate through groups
-          _.each(self.amiibos, function(group, group_name) {
-            var
-              input       = $('.checkbox-icon[data-id="' + group_name + '"]');
-            if (target_id != group_name) {
-              self.amiibos[group_name].unchecked = true;
-              input.closest('.group-group').removeClass('checked');
-              self.loadAmiibos();
-            } else {
-              self.amiibos[group_name].unchecked = false;
-              input.closest('.group-group').addClass('checked');
-            }
-          });
-
-          // Close the modal
-          self.menus.group.close();
-        });
-      }
-
-      // Toggle menu open/closed
+      // Open the menu
       this.menus.group.open();
     },
 
 
     /**
-     * Toggle and load the restart menu.
+     * Toggles a collection group on or off (whether or not it is to be displayed in the collection listing).
      */
-    toggleRestartMenu: function() {
-      var
-        self        = this;
-
-      // Add the modal menu
-      if (!this.menus.restart) {
-        this.menus.restart = $(this.templates.menuRestart()).remodal();
-        this.$el.append(this.menus.restart);
-        $('.menu-restart .restart-continue').on('click', function() {
-          window.localStorage.removeItem(self.storage_settings.id);
-          window.location.href = '/';
-          self.menus.restart.close();
-        });
-      }
-
-      // Toggle menu open/closed
-      this.menus.restart.open();
-    },
-
-
-    /**
-     * Toggle whether or not an amiibo has been collected.
-     */
-    toggleSelectedAmiibo: function(e) {
-      var
-        target                  = $(e.currentTarget),
-        amiibo_group_container  = target.closest('.amiibo-grid'),
-        amiibo_group            = amiibo_group_container .data('group-name'),
-        amiibo_name             = target.data('amiibo-name');
-
-      // Stop propagation so group isn't clicked
-      e.stopPropagation();
-
-      // Toggle the UI
-      target.toggleClass('collected');
-
-      // Update the collection object
-      if (target.hasClass('collected')) {
-        this.amiibos[amiibo_group].amiibos[amiibo_name].collected = true;
-      } else {
-        this.amiibos[amiibo_group].amiibos[amiibo_name].collected = false;
-      }
-      
-      // Update the local storage object
-      if (this.storage_settings.is_local && !this.storage_settings.dont_use_local) {
-        window.localStorage.setItem(this.storage_settings.id, JSON.stringify(this.amiibos));
-      }
-
-      // Update the group stats
-      target
-        .closest('.amiibo-grid')
-        .find('.group-stat-collected')
-        .html(_.filter(this.amiibos[amiibo_group].amiibos, 'collected').length);
-
-      // Add appropriate class on group
-      if (_.size(this.amiibos[amiibo_group].amiibos) == _.filter(this.amiibos[amiibo_group].amiibos, 'collected').length) {
-        amiibo_group_container
-          .data('group-collected', 'yes')
-          .addClass('group-collected');
-      } else {
-        amiibo_group_container
-          .data('group-collected', 'no')
-          .removeClass('group-collected');
-      }
-    },
-
-
-    /**
-     * Allows user to select/deselect an entire group at once.
-     */
-    toggleSelectedGroup: function(e) {
-      var
-        target        = $(e.currentTarget).closest('.amiibo-grid');
-
-      // Stop click propagation from h2's events
-      e.stopPropagation();
-
-      // Iterate through groups selecting or unselecting items based on group data flag
-      if (target.data('group-collected') == 'no' || !target.data('group-collected')) {
-        target
-          .addClass('group-collected')
-          .find('.grid-item')
-          .each(function(idx, item) {
-            if (!$(item).hasClass('collected')) {
-              $(item).click();
-            }
-          });
-        target.data('group-collected', 'yes');
-      }
-      else if (target.data('group-collected') == 'yes') {
-        target
-          .removeClass('group-collected')
-          .find('.grid-item')
-          .each(function(idx, item) {
-            if ($(item).hasClass('collected')) {
-                $(item).click();
-          }
-          });
-        target.data('group-collected', 'no');
-      }
-    },
-
-
-    /**
-     * Toggles a group open and closed.
-     */
-    toggleExpandGroup: function(e) {
+    toggleGroupOnOff: function(e) {
       var
         target        = $(e.currentTarget),
-        parent        = target.closest('.amiibo-grid'),
-        group_name    = parent.attr('data-group-name'),
-        group         = parent.find('.group');
+        group         = target.closest('.group-group'),
+        group_id      = target.data('id');
 
-      // Stop click propagation from h2's events
-      e.stopPropagation();
+      // Toggle checked class on group
+      group.toggleClass('checked');
 
-      // Add indicator class to target
-      parent.toggleClass('group-closed');
-      
-      // Switch icon in control and update collection object
-      if (parent.hasClass('group-closed')) {
-        this.amiibos[group_name].closed = true;
-      } else {
-        this.amiibos[group_name].closed = false;
-      }
+      // Update whether the group is selected
+      this.amiibos[group_id].unchecked = target.hasClass('unchecked') ? false : true;
 
-      // Update local storage
+      // Save to local storage
       window.localStorage.setItem(this.storage_settings.id, JSON.stringify(this.amiibos));
+
+      // Reload the amiibos
+      this.loadAmiibos();
     },
+
+
+    /**
+     * Handles the loading of only a single group.
+     */
+    loadSelectedGroup: function(e) {
+      var
+        self          = this,
+        target        = $(e.currentTarget),
+        target_id     = target.data('id');
+
+      // Iterate through collection groups, setting only target to be displayed
+      _.each(this.amiibos, function(group, group_id) {
+        var
+          input       = $('.checkbox-icon[data-id="' + group_id + '"]');
+        if (target_id != group_id) {
+          self.amiibos[group_id].unchecked = true;
+          input.closest('.group-group').removeClass('checked');
+          self.loadAmiibos();
+        } else {
+          self.amiibos[group_id].unchecked = false;
+          input.closest('.group-group').addClass('checked');
+        }
+      });
+
+      // Close the menu
+      this.menus.group.close();
+    },
+
 
 
 
@@ -1487,6 +1399,117 @@ define([
 
 
 
+
+    //
+    // !!!!!!!
+    // @todo - Possibly refactor restart menu into own view
+    // !!!!!!!
+    //
+
+    /**
+     * Toggle and load the restart menu.
+     */
+    toggleRestartMenu: function() {
+
+      // Add the modal menu
+      if (!this.menus.restart) {
+        this.menus.restart = $(this.templates.menuRestart()).remodal();
+        this.$el.append(this.menus.restart);
+      }
+
+      // Toggle menu open/closed
+      this.menus.restart.open();
+    },
+
+
+    /**
+     * Handle restarting/resetting the collection to its default state.
+     */
+    handleCollectionRestart: function() {
+      window.localStorage.removeItem(this.storage_settings.id);
+      window.location.href = '/';
+      this.menus.restart.close();
+    },
+
+
+
+
+
+
+    //
+    // !!!!!!!
+    // @todo - Possibly refactor below into own view
+    // !!!!!!!
+    //
+
+    /**
+     * Allows user to select/deselect an entire group at once.
+     */
+    toggleSelectedGroup: function(e) {
+      var
+        target        = $(e.currentTarget).closest('.amiibo-grid');
+
+      // Stop click propagation from h2's events
+      e.stopPropagation();
+
+      // Iterate through groups selecting or unselecting items based on group data flag
+      if (target.data('group-collected') == 'no' || !target.data('group-collected')) {
+        target
+          .addClass('group-collected')
+          .find('.grid-item')
+          .each(function(idx, item) {
+            if (!$(item).hasClass('collected')) {
+              $(item).click();
+            }
+          });
+        target.data('group-collected', 'yes');
+      }
+      else if (target.data('group-collected') == 'yes') {
+        target
+          .removeClass('group-collected')
+          .find('.grid-item')
+          .each(function(idx, item) {
+            if ($(item).hasClass('collected')) {
+              $(item).click();
+            }
+          });
+        target.data('group-collected', 'no');
+      }
+    },
+
+
+    /**
+     * Toggles a group open and closed.
+     */
+    toggleExpandGroup: function(e) {
+      var
+        target        = $(e.currentTarget),
+        parent        = target.closest('.amiibo-grid'),
+        group_name    = parent.attr('data-group-name'),
+        group         = parent.find('.group');
+
+      // Stop click propagation from h2's events
+      e.stopPropagation();
+
+      // Add indicator class to target
+      parent.toggleClass('group-closed');
+
+      // Switch icon in control and update collection object
+      if (parent.hasClass('group-closed')) {
+        this.amiibos[group_name].closed = true;
+      } else {
+        this.amiibos[group_name].closed = false;
+      }
+
+      // Update local storage
+      window.localStorage.setItem(this.storage_settings.id, JSON.stringify(this.amiibos));
+    },
+
+
+
+
+
+
     //
     // !!!!!!!
     // @todo - Refactor below collection item functionality into own view
@@ -1494,8 +1517,53 @@ define([
     //
 
     /**
+     * Toggle whether or not an item has been collected.
+     */
+    toggleSelectedItem: function(e) {
+      var
+        target                  = $(e.currentTarget),
+        amiibo_group_container  = target.closest('.amiibo-grid'),
+        amiibo_group            = amiibo_group_container .data('group-name'),
+        amiibo_name             = target.data('amiibo-name');
+
+      // Stop propagation so group isn't clicked
+      e.stopPropagation();
+
+      // Toggle the UI
+      target.toggleClass('collected');
+
+      // Update the collection object
+      if (target.hasClass('collected')) {
+        this.amiibos[amiibo_group].amiibos[amiibo_name].collected = true;
+      } else {
+        this.amiibos[amiibo_group].amiibos[amiibo_name].collected = false;
+      }
+
+      // Update the local storage object
+      if (this.storage_settings.is_local && !this.storage_settings.dont_use_local) {
+        window.localStorage.setItem(this.storage_settings.id, JSON.stringify(this.amiibos));
+      }
+
+      // Update the group stats
+      target
+        .closest('.amiibo-grid')
+        .find('.group-stat-collected')
+        .html(_.filter(this.amiibos[amiibo_group].amiibos, 'collected').length);
+
+      // Add appropriate class on group
+      if (_.size(this.amiibos[amiibo_group].amiibos) == _.filter(this.amiibos[amiibo_group].amiibos, 'collected').length) {
+        amiibo_group_container
+          .data('group-collected', 'yes')
+          .addClass('group-collected');
+      } else {
+        amiibo_group_container
+          .data('group-collected', 'no')
+          .removeClass('group-collected');
+      }
+    },
+
+    /**
      * Opens/initializes the settings modal for a given collection item.
-     * @todo - Enable functionality // menuItemSettingsTpl
      */
     toggleItemSettingsMenu: function(e) {
       var

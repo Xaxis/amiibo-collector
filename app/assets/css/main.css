@@ -7484,7 +7484,9 @@ em {
 .intro {
   margin: 0 auto;
   max-width: 960px;
-  padding: 20px; }
+  background-color: #2f5b9f;
+  padding: 20px;
+  color: white; }
   .intro:before, .intro:after {
     content: "";
     display: table; }
@@ -7500,48 +7502,153 @@ em {
   @media only screen and (min-width: 840px) and (min-width: 1440px) {
     .intro {
       max-width: 1440px; } }
+  .intro .intro-table {
+    display: table;
+    width: 100%;
+    height: 80px; }
+    @media only screen and (max-width: 600px) {
+      .intro .intro-table {
+        display: block;
+        height: auto; } }
+    .intro .intro-table .col {
+      display: table-cell;
+      vertical-align: middle; }
+      @media only screen and (max-width: 600px) {
+        .intro .intro-table .col {
+          display: block; } }
+      .intro .intro-table .col.logo {
+        width: 20%; }
+        .intro .intro-table .col.logo img {
+          width: 100%;
+          height: auto;
+          min-width: 250px;
+          max-width: 400px; }
+      .intro .intro-table .col.tagline {
+        text-align: right;
+        padding-left: 40px; }
+        @media only screen and (max-width: 600px) {
+          .intro .intro-table .col.tagline {
+            text-align: left;
+            padding-left: 0;
+            margin-top: 10px; } }
+        .intro .intro-table .col.tagline em {
+          color: white;
+          font-size: 1.6rem; }
+          @media only screen and (max-width: 960px) {
+            .intro .intro-table .col.tagline em {
+              font-size: 1.2rem; } }
+          @media only screen and (max-width: 840px) {
+            .intro .intro-table .col.tagline em {
+              font-size: 1.0rem; } }
 
 .controls {
   margin-bottom: 20px;
-  padding: 20px;
   background-color: #3880ff;
   z-index: 999;
-  transition: padding 350ms ease;
-  text-align: center; }
+  padding: 0 20px;
+  text-align: center;
+  height: 90px; }
   .controls:before, .controls:after {
     content: "";
     display: table; }
   .controls:after {
     clear: both; }
+  @media only screen and (max-width: 900px) {
+    .controls {
+      height: 70px; } }
+  @media only screen and (max-width: 600px) {
+    .controls {
+      padding: 0 10px; } }
+  .controls .controls-table {
+    display: table;
+    width: 100%;
+    height: 100%; }
+    .controls .controls-table .cell {
+      display: table-cell;
+      vertical-align: middle;
+      height: 100%; }
+  .controls .col1 {
+    display: none;
+    text-align: left; }
+    .controls .col1 .logo img {
+      height: auto;
+      width: 0;
+      opacity: 0;
+      transition: width 350ms ease, opacity 350ms ease; }
+  .controls .col2 {
+    width: 100%; }
+    .controls .col2 a {
+      font-family: "FontAwesome";
+      font-weight: lighter;
+      font-size: 45px;
+      color: white;
+      margin-left: 20%;
+      transition: margin-left 350ms ease; }
+      .controls .col2 a:first-child {
+        margin-left: 0 !important; }
+      @media only screen and (max-width: 1200px) {
+        .controls .col2 a {
+          margin-left: 18%;
+          transition: margin-left 0ms ease; } }
+      @media only screen and (max-width: 900px) {
+        .controls .col2 a {
+          margin-left: 17%;
+          transition: margin-left 0ms ease;
+          font-size: 35px; } }
+      @media only screen and (max-width: 600px) {
+        .controls .col2 a {
+          margin-left: 12%;
+          transition: margin-left 0ms ease; } }
+      @media only screen and (max-width: 480px) {
+        .controls .col2 a {
+          margin-left: 11%;
+          transition: margin-left 0ms ease;
+          font-size: 30px; } }
   .controls.stuck {
     width: 100%;
-    padding: 0 20px;
-    transition: padding 350ms ease; }
-    .controls.stuck a {
-      font-size: 1.4em;
-      transition: font-size 350ms ease; }
-      @media only screen and (min-width: 600px) {
-        .controls.stuck a {
-          font-size: 1.2em; } }
-    .controls.stuck a + a {
-      margin-left: 15%; }
-      @media only screen and (max-width: 600px) {
-        .controls.stuck a + a {
-          margin-left: 12%; } }
-  .controls a {
-    font-family: "FontAwesome";
-    font-weight: lighter;
-    font-size: 2.0em;
-    color: white;
-    transition: font-size 350ms ease; }
-    @media only screen and (max-width: 600px) {
-      .controls a {
-        font-size: 1.4em; } }
-  .controls a + a {
-    margin-left: 15%; }
-    @media only screen and (max-width: 600px) {
-      .controls a + a {
-        margin-left: 12%; } }
+    border-top: 6px solid #2f5b9f; }
+    .controls.stuck .col1 {
+      display: table-cell;
+      width: 15%; }
+      .controls.stuck .col1 .logo img {
+        width: 58px;
+        opacity: 1;
+        transition: width 350ms ease, opacity 350ms ease; }
+        @media only screen and (max-width: 900px) {
+          .controls.stuck .col1 .logo img {
+            width: 48px; } }
+        @media only screen and (max-width: 900px) {
+          .controls.stuck .col1 .logo img {
+            width: 45px; } }
+    .controls.stuck .col2 {
+      width: auto;
+      text-align: right; }
+      .controls.stuck .col2 a {
+        margin-left: 18%;
+        transition: margin-left 350ms ease; }
+        @media only screen and (max-width: 1200px) {
+          .controls.stuck .col2 a {
+            margin-left: 16%;
+            transition: margin-left 0ms ease; } }
+        @media only screen and (max-width: 1020px) {
+          .controls.stuck .col2 a {
+            margin-left: 15%;
+            transition: margin-left 0ms ease;
+            font-size: 35px; } }
+        @media only screen and (max-width: 900px) {
+          .controls.stuck .col2 a {
+            margin-left: 13%;
+            transition: margin-left 0ms ease; } }
+        @media only screen and (max-width: 600px) {
+          .controls.stuck .col2 a {
+            margin-left: 12%;
+            transition: margin-left 0ms ease;
+            font-size: 30px; } }
+        @media only screen and (max-width: 420px) {
+          .controls.stuck .col2 a {
+            margin-left: 9%;
+            transition: margin-left 0ms ease;
+            font-size: 25px; } }
 
 .grid-container {
   margin: 0 auto;
@@ -7817,35 +7924,25 @@ em {
     margin-bottom: 30px; }
 
 .footer {
-  background: #3880ff;
-  color: white; }
-  .footer .col {
-    position: relative;
-    float: left; }
-    .footer .col {
-      box-sizing: border-box; }
-    .footer .col:before, .footer .col:after {
-      content: " ";
-      display: table; }
-    .footer .col:after {
-      clear: both; }
-    html.csscalc .footer .col {
-      margin-left: 20px; }
-    html:not(.csscalc) .footer .col {
-      margin-left: 1.6%; }
-    html.csscalc .footer .col:first-child, html:not(.csscalc) .footer .col:first-child {
-      margin-left: 0; }
-    html.csscalc .footer .col {
-      width: -webkit-calc(((100% / 2) - 20px) + (10px));
-      width: calc(((100% / 2) - 20px) + (10px)); }
-    html:not(.csscalc) .footer .col {
-      width: 49.2%; }
-  .footer .links {
+  background-color: #2f5b9f;
+  color: white;
+  margin-top: 40px; }
+  .footer .footer-table {
+    display: table;
+    width: 100%;
+    height: 100%; }
+    .footer .footer-table .col {
+      display: table-cell;
+      height: 100%;
+      vertical-align: middle;
+      padding: 10px 20px; }
+  .footer .col1 {
     text-align: left; }
-  .footer .github {
+  .footer .col2 {
     text-align: right; }
-    .footer .github a {
-      font-family: "FontAwesome"; }
+    .footer .col2 a {
+      font-family: "FontAwesome";
+      font-size: 2.0rem; }
   .footer a {
     color: white;
     cursor: pointer;

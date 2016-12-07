@@ -115,12 +115,12 @@ define([
     menus: {},
 
     // Collection initialization object
-    amiibos: {
+    collection: {
 
       // Animal Crossing
       animalcrossing: {
         title: "Animal Crossing",
-        amiibos: {
+        collection: {
           blathers: {
             title: "Blathers"
           },
@@ -175,7 +175,7 @@ define([
       // Chibi robo
       chibi: {
         title: "Chibi Robo",
-        amiibos: {
+        collection: {
           robo: {
             title: "Chibi Robo"
           }
@@ -185,7 +185,7 @@ define([
       // Kirby
       kirby: {
         title: "Kirby",
-        amiibos: {
+        collection: {
           kingdedede: {
             title: "King Dedede"
           },
@@ -204,7 +204,7 @@ define([
       // Legend of zelda
       loz: {
         title: "Legend of Zelda",
-        amiibos: {
+        collection: {
           anniversarylink: {
             title: "Link - 30th Anniversary"
           },
@@ -235,7 +235,7 @@ define([
       // Mega man
       megaman: {
         title: "Mega Man - Legacy Collection",
-        amiibos: {
+        collection: {
           gold: {
             title: "Mega Man - Gold Edition"
           }
@@ -245,7 +245,7 @@ define([
       // Monster hunter
       monsterhunter: {
         title: "Monster Hunter",
-        amiibos: {
+        collection: {
           beriorosuaiola: {
             title: "Beriorosu & Avuria"
           },
@@ -270,7 +270,7 @@ define([
       // Shovel knight
       shovelknight: {
         title: "Shovel Knight",
-        amiibos: {
+        collection: {
           shovelknight: {
             title: "Shovel Knight"
           }
@@ -280,7 +280,7 @@ define([
       // Skylanders
       skylanders: {
         title: "Skylanders Superchargers",
-        amiibos: {
+        collection: {
           hammerslambowser: {
             title: "Hammer Slam Bowser"
           },
@@ -299,7 +299,7 @@ define([
       // Splatoons
       splatoons: {
         title: "Splatoons",
-        amiibos: {
+        collection: {
           callie: {
             title: "Callie"
           },
@@ -330,7 +330,7 @@ define([
       // Super smash brothers
       ssb: {
         title: "Super Smash Brothers",
-        amiibos: {
+        collection: {
           bowser: {
             title: "Bowser"
           },
@@ -505,7 +505,7 @@ define([
       // Super Mario
       supermario: {
         title: "Super Mario",
-        amiibos: {
+        collection: {
           boo: {
             title: "Boo"
           },
@@ -557,7 +557,7 @@ define([
       // Super Mario Bros. 30th
       supermario30th: {
         title: "Super Mario Bros. 30th",
-        amiibos: {
+        collection: {
           classiccolor: {
             title: "30th Anniversary Mario - Classic Color"
           },
@@ -570,7 +570,7 @@ define([
       // Yoshi
       yoshi: {
         title: "Yoshi",
-        amiibos: {
+        collection: {
           blueyarnyoshi: {
             title: "Blue Yarn Yoshi"
           },
@@ -593,6 +593,11 @@ define([
     // Copy of collection initialization object as a sortable array
     collection_sorted: null,
 
+    // Generalized app settings object
+    app_settings: {
+      name: 'Amiibo Collector'
+    },
+
     // Collection settings initialization object
     collection_settings: {
       sort_by: 'alpha-asc'
@@ -604,7 +609,7 @@ define([
       dont_use_local: false,
       is_local: window.localStorage ? true : false,
       loaded: false,
-      asset_path: 'app/assets/images/amiibos/'
+      asset_path: 'app/assets/images/collection/'
     },
 
     // Placeholder for collection configuration file
@@ -621,7 +626,7 @@ define([
 
       // Bind methods
       _.bindAll(this,
-        'loadAmiibos',
+        'loadCollection',
         'storageDiffUpdate',
 
         // @todo - Possibly refactor stats menu into own view
@@ -691,21 +696,21 @@ define([
       // Trigger not supported message if user browser doesn't support localStorage
       if (!this.storage_settings.is_local) {
         var modal = $(this.templates.messageBrowserCompat({
-          app_name: "Amiibo Collector"
+          app_name: this.app_settings.name
         })).remodal();
         this.$el.append(modal);
         modal.open();
       }
 
-      // Load the amiibos
-      this.loadAmiibos();
+      // Load the collection
+      this.loadCollection();
     },
 
 
     /**
-     * Load collector's collection groups.
+     * Load and built the collection.
      */
-    loadAmiibos: function() {
+    loadCollection: function() {
       var
         self        = this,
         path        = this.storage_settings.asset_path,
@@ -723,7 +728,7 @@ define([
         // Proceed to load collection object when it exists
         if (window.localStorage.getItem(this.storage_settings.id)) {
           this.storageDiffUpdate();
-          this.amiibos = JSON.parse(window.localStorage.getItem(this.storage_settings.id));
+          this.collection = JSON.parse(window.localStorage.getItem(this.storage_settings.id));
         }
 
         // Load the collection settings object when it exists otherwise set it
@@ -735,10 +740,10 @@ define([
       }
 
       // Convert collection to sortable array while populating meta properties
-      this.collection_sorted = _.map(JSON.parse(JSON.stringify(this.amiibos)), function(group, group_id) {
+      this.collection_sorted = _.map(JSON.parse(JSON.stringify(this.collection)), function(group, group_id) {
         group.id = group_id;
-        group.size = _.size(group.amiibos);
-        group.amiibos = _.map(group.amiibos, function(item, item_id) {
+        group.size = _.size(group.collection);
+        group.collection = _.map(group.collection, function(item, item_id) {
           item.id = item_id;
           return item;
         });
@@ -768,8 +773,8 @@ define([
           grid_group        = self.templates.amiiboGroup({
             group_name: group_id,
             group_title: group.title,
-            group_collected: _.filter(group.amiibos, 'collected').length,
-            group_total: _.size(group.amiibos)
+            group_collected: _.filter(group.collection, 'collected').length,
+            group_total: _.size(group.collection)
           }),
           group_elm         = null;
 
@@ -781,7 +786,7 @@ define([
           group_elm = $('.amiibo-grid[data-group-name="' + group_id + '"]');
 
           // Create new group container
-          _.each(group.amiibos, function(item) {
+          _.each(group.collection, function(item) {
             var
               item_id             = item.id,
               amiibo_path         = path + group_id + '-' + item_id + '.png';
@@ -796,7 +801,7 @@ define([
           });
 
           // Add appropriate class on group to indicate whether or not a group has been collected
-          if (group.size == _.filter(group.amiibos, 'collected').length) {
+          if (group.size == _.filter(group.collection, 'collected').length) {
             group_elm
               .data('group-collected', 'yes')
               .addClass('group-collected');
@@ -823,7 +828,7 @@ define([
      */
     storageDiffUpdate: function() {
       var
-        initObj         = this.amiibos,
+        initObj         = this.collection,
         localObj        = JSON.parse(window.localStorage.getItem(this.storage_settings.id));
 
       // Add new groups to local object
@@ -835,9 +840,9 @@ define([
         }
 
         // Add collection item to the group
-        _.each(initObj[v].amiibos, function(item, key) {
-          if (!(key in localObj[v].amiibos)) {
-            localObj[v].amiibos[key] = initObj[v].amiibos[key];
+        _.each(initObj[v].collection, function(item, key) {
+          if (!(key in localObj[v].collection)) {
+            localObj[v].collection[key] = initObj[v].collection[key];
           }
         });
       });
@@ -846,9 +851,9 @@ define([
       _.each(_.keys(localObj), function(l) {
 
         // Remove old collection item from group
-        _.each(localObj[l].amiibos, function(item, key) {
-          if (!(key in initObj[l].amiibos)) {
-            delete localObj[l].amiibos[key];
+        _.each(localObj[l].collection, function(item, key) {
+          if (!(key in initObj[l].collection)) {
+            delete localObj[l].collection[key];
           }
         });
 
@@ -865,9 +870,9 @@ define([
         }
 
         // Iterate over the collection object checking simple things like titles
-        _.each(initObj[key].amiibos, function(cObj, id) {
-          if (localObj[key].amiibos[id].title != cObj.title) {
-            localObj[key].amiibos[id].title = initObj[key].amiibos[id].title;
+        _.each(initObj[key].collection, function(cObj, id) {
+          if (localObj[key].collection[id].title != cObj.title) {
+            localObj[key].collection[id].title = initObj[key].collection[id].title;
           }
         });
       });
@@ -911,11 +916,11 @@ define([
       stats_container.empty();
 
       // Populate the statistics object
-      _.each(this.amiibos, function(group, group_name) {
+      _.each(this.collection, function(group, group_name) {
         stats[group_name] = {
-          total: _.size(group.amiibos),
-          owned: _.size(_.filter(group.amiibos, function(amiibo) {
-            return amiibo.collected;
+          total: _.size(group.collection),
+          owned: _.size(_.filter(group.collection, function(item) {
+            return item.collected;
           }))
         };
 
@@ -1019,13 +1024,13 @@ define([
       group.toggleClass('checked');
 
       // Update whether the group is selected
-      this.amiibos[group_id].unchecked = target.hasClass('unchecked') ? false : true;
+      this.collection[group_id].unchecked = target.hasClass('unchecked') ? false : true;
 
       // Save to local storage
-      window.localStorage.setItem(this.storage_settings.id, JSON.stringify(this.amiibos));
+      window.localStorage.setItem(this.storage_settings.id, JSON.stringify(this.collection));
 
-      // Reload the amiibos
-      this.loadAmiibos();
+      // Reload the collection
+      this.loadCollection();
     },
 
 
@@ -1039,15 +1044,15 @@ define([
         target_id     = target.data('id');
 
       // Iterate through collection groups, setting only target to be displayed
-      _.each(this.amiibos, function(group, group_id) {
+      _.each(this.collection, function(group, group_id) {
         var
           input       = $('.checkbox-icon[data-id="' + group_id + '"]');
         if (target_id != group_id) {
-          self.amiibos[group_id].unchecked = true;
+          self.collection[group_id].unchecked = true;
           input.closest('.group-group').removeClass('checked');
-          self.loadAmiibos();
+          self.loadCollection();
         } else {
-          self.amiibos[group_id].unchecked = false;
+          self.collection[group_id].unchecked = false;
           input.closest('.group-group').addClass('checked');
         }
       });
@@ -1094,7 +1099,7 @@ define([
       window.localStorage.setItem(this.storage_settings.id + '_settings', JSON.stringify(this.collection_settings));
 
       // Reload the collection & close the menu
-      this.loadAmiibos();
+      this.loadCollection();
       this.menus.sort.close();
     },
 
@@ -1104,7 +1109,7 @@ define([
      */
     sortAlphaAsc: function( collection ) {
       return  _.map(_.sortBy(collection, 'title'), function(group) {
-        group.amiibos = _.sortBy(group.amiibos, 'title');
+        group.collection = _.sortBy(group.collection, 'title');
         return group;
       });
     },
@@ -1115,7 +1120,7 @@ define([
      */
     sortAlphaDesc: function( collection ) {
       return  _.map(_.sortBy(collection, 'title').reverse(), function(group) {
-        group.amiibos = _.sortBy(group.amiibos, 'title').reverse();
+        group.collection = _.sortBy(group.collection, 'title').reverse();
         return group;
       });
     },
@@ -1201,11 +1206,11 @@ define([
       container.find('.info').append(canvas);
 
       // Determine the dimensions of the canvas based on the number of items to be drawn
-      _.each(this.amiibos, function(group, group_id) {
+      _.each(this.collection, function(group, group_id) {
         var
           group_elm                   = $('.amiibo-grid[data-group-name="' + group_id + '"]'),
           total_to_draw_in_group      = 0,
-          collected                   = _.filter(group.amiibos, function(item) {
+          collected                   = _.filter(group.collection, function(item) {
             return item.collected;
           }).length;
 
@@ -1216,7 +1221,7 @@ define([
         if (is_collected) {
 
           // Iterate over collection items
-          _.each(group.amiibos, function(amiibo, amiibo_name) {
+          _.each(group.collection, function(amiibo, amiibo_name) {
             if (amiibo.collected) {
               var
                 img         = group_elm.find('.grid-item[data-amiibo-name="' + amiibo_name + '"] img')[0],
@@ -1264,9 +1269,9 @@ define([
         ctx.fillRect(0, 0, c_w, c_h);
 
         // Draw the collection items to the canvas
-        _.each(this.amiibos, function(group) {
+        _.each(this.collection, function(group) {
           var
-            collected       = _.filter(group.amiibos, function(am) {
+            collected       = _.filter(group.collection, function(am) {
               return am.collected;
             }).length;
 
@@ -1274,7 +1279,7 @@ define([
           if (collected) {
 
             // Iterate over items in group
-            _.each(group.amiibos, function(amiibo, amiibo_name) {
+            _.each(group.collection, function(amiibo, amiibo_name) {
               if (amiibo.collected) {
                 var
                   img       = $('.grid-item[data-amiibo-name="' + amiibo_name + '"] img')[0],
@@ -1330,7 +1335,7 @@ define([
     generateJSONConfig: function() {
       var
         container     = $('.control-generate-json-config'),
-        json          = JSON.stringify(this.amiibos),
+        json          = JSON.stringify(this.collection),
         file          = new Blob([json], {type: "text/plain"});
 
       // Revoke previously generated files to prevent memory leaks
@@ -1383,11 +1388,11 @@ define([
                 config = JSON.parse(file);
 
                 // Load the new configuration file
-                self.amiibos = config;
+                self.collection = config;
                 if (self.storage_settings.is_local && !self.storage_settings.dont_use_local) {
-                  window.localStorage.setItem(self.storage_settings.id, JSON.stringify(self.amiibos));
+                  window.localStorage.setItem(self.storage_settings.id, JSON.stringify(self.collection));
                 }
-                self.loadAmiibos();
+                self.loadCollection();
                 self.menus.share.close();
               }
             });
@@ -1496,13 +1501,13 @@ define([
 
       // Switch icon in control and update collection object
       if (parent.hasClass('group-closed')) {
-        this.amiibos[group_name].closed = true;
+        this.collection[group_name].closed = true;
       } else {
-        this.amiibos[group_name].closed = false;
+        this.collection[group_name].closed = false;
       }
 
       // Update local storage
-      window.localStorage.setItem(this.storage_settings.id, JSON.stringify(this.amiibos));
+      window.localStorage.setItem(this.storage_settings.id, JSON.stringify(this.collection));
     },
 
 
@@ -1534,24 +1539,24 @@ define([
 
       // Update the collection object
       if (target.hasClass('collected')) {
-        this.amiibos[amiibo_group].amiibos[amiibo_name].collected = true;
+        this.collection[amiibo_group].collection[amiibo_name].collected = true;
       } else {
-        this.amiibos[amiibo_group].amiibos[amiibo_name].collected = false;
+        this.collection[amiibo_group].collection[amiibo_name].collected = false;
       }
 
       // Update the local storage object
       if (this.storage_settings.is_local && !this.storage_settings.dont_use_local) {
-        window.localStorage.setItem(this.storage_settings.id, JSON.stringify(this.amiibos));
+        window.localStorage.setItem(this.storage_settings.id, JSON.stringify(this.collection));
       }
 
       // Update the group stats
       target
         .closest('.amiibo-grid')
         .find('.group-stat-collected')
-        .html(_.filter(this.amiibos[amiibo_group].amiibos, 'collected').length);
+        .html(_.filter(this.collection[amiibo_group].collection, 'collected').length);
 
       // Add appropriate class on group
-      if (_.size(this.amiibos[amiibo_group].amiibos) == _.filter(this.amiibos[amiibo_group].amiibos, 'collected').length) {
+      if (_.size(this.collection[amiibo_group].collection) == _.filter(this.collection[amiibo_group].collection, 'collected').length) {
         amiibo_group_container
           .data('group-collected', 'yes')
           .addClass('group-collected');
@@ -1573,7 +1578,7 @@ define([
         grid_item   = target.closest('.grid-item.collected'),
         group_name  = target.closest('.amiibo-grid').attr('data-group-name'),
         item_name   = target.closest('[data-amiibo-name]').attr('data-amiibo-name'),
-        item_obj    = this.amiibos[group_name].amiibos[item_name],
+        item_obj    = this.collection[group_name].collection[item_name],
         open_modal  = true;
 
       // Open settings menu only for collected items
@@ -1657,7 +1662,7 @@ define([
         group_name      = container.attr('data-item-group'),
         item_name       = container.attr('data-item-name'),
         sub_item_elm    = null,
-        item_obj        = this.amiibos[group_name].amiibos[item_name],
+        item_obj        = this.collection[group_name].collection[item_name],
         sub_item        = {
           favorite: false,
           note: ''
@@ -1684,7 +1689,7 @@ define([
       item_obj.subitems.push(sub_item);
 
       // Save to local storage
-      window.localStorage.setItem(this.storage_settings.id, JSON.stringify(this.amiibos));
+      window.localStorage.setItem(this.storage_settings.id, JSON.stringify(this.collection));
     },
 
 
@@ -1699,7 +1704,7 @@ define([
         item_name       = container.attr('data-item-name'),
         sub_item_elm    = target.closest('.item'),
         sub_item_id     = parseInt(sub_item_elm.attr('data-sub-item-id')),
-        item_obj        = this.amiibos[group_name].amiibos[item_name];
+        item_obj        = this.collection[group_name].collection[item_name];
 
       // Shift array element up one position
       if (sub_item_id > 0) {
@@ -1716,7 +1721,7 @@ define([
         item_obj.subitems.splice(sub_item_id-1, 0, item_obj.subitems.splice(sub_item_id, 1)[0]);
 
         // Save to local storage
-        window.localStorage.setItem(this.storage_settings.id, JSON.stringify(this.amiibos));
+        window.localStorage.setItem(this.storage_settings.id, JSON.stringify(this.collection));
 
         // Reload
         this.menus.item_settings.data('trigger_source').click();
@@ -1736,7 +1741,7 @@ define([
         item_name       = container.attr('data-item-name'),
         sub_item_elm    = target.closest('.item'),
         sub_item_id     = parseInt(sub_item_elm.attr('data-sub-item-id')),
-        item_obj        = this.amiibos[group_name].amiibos[item_name];
+        item_obj        = this.collection[group_name].collection[item_name];
       
       // Set the selected
       sub_item_elm.find('.controls-item-favorite').toggle();
@@ -1744,7 +1749,7 @@ define([
 
       // Save in local storage
       item_obj.subitems[sub_item_id].favorite = sub_item_elm.find('.controls-item-favorite-selected').hasClass('selected');
-      window.localStorage.setItem(this.storage_settings.id, JSON.stringify(this.amiibos));
+      window.localStorage.setItem(this.storage_settings.id, JSON.stringify(this.collection));
     },
 
 
@@ -1759,13 +1764,13 @@ define([
         item_name       = container.attr('data-item-name'),
         sub_item_elm    = target.closest('.item'),
         sub_item_id     = parseInt(sub_item_elm.attr('data-sub-item-id')),
-        item_obj        = this.amiibos[group_name].amiibos[item_name];
+        item_obj        = this.collection[group_name].collection[item_name];
 
       // Remove from local storage
       item_obj.subitems = _.without(item_obj.subitems, _.findWhere(item_obj.subitems, {
         id: sub_item_id
       }));
-      window.localStorage.setItem(this.storage_settings.id, JSON.stringify(this.amiibos));
+      window.localStorage.setItem(this.storage_settings.id, JSON.stringify(this.collection));
 
       // Remove sub-item element from item's setting page
       sub_item_elm.remove();
@@ -1783,12 +1788,12 @@ define([
         item_name       = container.attr('data-item-name'),
         sub_item_elm    = target.closest('.item'),
         sub_item_id     = sub_item_elm.attr('data-sub-item-id'),
-        item_obj        = this.amiibos[group_name].amiibos[item_name],
+        item_obj        = this.collection[group_name].collection[item_name],
         selected        = target.find('option:selected');
 
       // Update local storage
       item_obj.subitems[sub_item_id].status = selected.attr("value");
-      window.localStorage.setItem(this.storage_settings.id, JSON.stringify(this.amiibos));
+      window.localStorage.setItem(this.storage_settings.id, JSON.stringify(this.collection));
     },
 
 
@@ -1803,12 +1808,12 @@ define([
         item_name       = container.attr('data-item-name'),
         sub_item_elm    = target.closest('.item'),
         sub_item_id     = sub_item_elm.attr('data-sub-item-id'),
-        item_obj        = this.amiibos[group_name].amiibos[item_name],
+        item_obj        = this.collection[group_name].collection[item_name],
         selected        = target.find('option:selected');
 
       // Update local storage
       item_obj.subitems[sub_item_id].condition = selected.attr("value");
-      window.localStorage.setItem(this.storage_settings.id, JSON.stringify(this.amiibos));
+      window.localStorage.setItem(this.storage_settings.id, JSON.stringify(this.collection));
     },
 
 
@@ -1824,7 +1829,7 @@ define([
         control         = target.closest('.controls-item-note'),
         sub_item_elm    = target.closest('.item'),
         sub_item_id     = sub_item_elm.attr('data-sub-item-id'),
-        item_obj        = this.amiibos[group_name].amiibos[item_name],
+        item_obj        = this.collection[group_name].collection[item_name],
         notepad         = control.find('.notepad'),
         note            = notepad.html().replace('<br>', '');
 
@@ -1843,7 +1848,7 @@ define([
 
         // Update local storage
         item_obj.subitems[sub_item_id].note = note;
-        window.localStorage.setItem(this.storage_settings.id, JSON.stringify(this.amiibos));
+        window.localStorage.setItem(this.storage_settings.id, JSON.stringify(this.collection));
       }
     }
 

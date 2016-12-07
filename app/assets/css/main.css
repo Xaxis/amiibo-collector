@@ -7485,6 +7485,7 @@ em {
   margin: 0 auto;
   max-width: 960px;
   background-color: #2f5b9f;
+  border-top: 6px solid #2f5b9f;
   padding: 20px;
   color: white; }
   .intro:before, .intro:after {
@@ -7547,7 +7548,8 @@ em {
   z-index: 999;
   padding: 0 20px;
   text-align: center;
-  height: 90px; }
+  height: 90px;
+  border-top: 6px solid #2f5b9f; }
   .controls:before, .controls:after {
     content: "";
     display: table; }
@@ -7605,8 +7607,7 @@ em {
           transition: margin-left 0ms ease;
           font-size: 30px; } }
   .controls.stuck {
-    width: 100%;
-    border-top: 6px solid #2f5b9f; }
+    width: 100%; }
     .controls.stuck .col1 {
       display: table-cell;
       width: 15%; }

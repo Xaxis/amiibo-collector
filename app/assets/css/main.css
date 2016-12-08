@@ -7927,7 +7927,8 @@ em {
 .footer {
   background-color: #2f5b9f;
   color: white;
-  margin-top: 40px; }
+  margin-top: 40px;
+  border-top: 6px solid #3880ff; }
   .footer .footer-table {
     display: table;
     width: 100%;

@@ -191,6 +191,9 @@ define([
           mariopartybowser: {
             title: "Mario Party 10 (Bowser)"
           },
+          mariopartymario: {
+            title: "Mario Party 10 (Mario)"
+          },
           mariopartypeach: {
             title: "Mario Party 10 (Peach)"
           },

@@ -5,13 +5,13 @@
  *
  * @todo - Write deployment script.
  *
- * @todo - Consider adding "infinity scrolling" functionality so all collection images don't load at once.
- *
  * @todo - Create minimalistic logo with corresponding favicon
  *
  * @todo - Add amiibo bundles (yarn yoshi w/ games, etc) to list
  *
  * @todo - Image generation may not be working in safari
+ *
+ *  * @todo - Consider adding "infinity scrolling" functionality so all collection images don't load at once.
  */
 define([
   'jquery',
@@ -117,7 +117,7 @@ define([
     // Collection initialization object
     collection: {
 
-      // Animal Crossing
+      // Animal crossing
       animalcrossing: {
         title: "Animal Crossing",
         collection: {
@@ -168,6 +168,43 @@ define([
           },
           tomnook: {
             title: "Tom Nook"
+          }
+        }
+      },
+
+      // Amiibo bundles
+      bundles: {
+        title: "Amiibo Bundles",
+        collection: {
+          animalcrossing: {
+            title: "Animal Crossing: Amiibo Festival"
+          },
+          captaintoad: {
+            title: "Captain Toad: Treasure Tracker"
+          },
+          chibirobo: {
+            title: "Chibi-Robo! Zip Lash"
+          },
+          goldmegaman: {
+            title: "Mega Man: Legacy Collection"
+          },
+          mariopartybowser: {
+            title: "Mario Party 10 (Bowser)"
+          },
+          mariopartypeach: {
+            title: "Mario Party 10 (Peach)"
+          },
+          twilightprincess: {
+            title: "Zelda: Twilight Princess HD"
+          },
+          yoshiswollyworldblue: {
+            title: "Yoshi's Wolly World (Blue)"
+          },
+          yoshiswollyworldgreen: {
+            title: "Yoshi's Wolly World (Green)"
+          },
+          yoshiswollyworldpink: {
+            title: "Yoshi's Wolly World (Pink)"
           }
         }
       },

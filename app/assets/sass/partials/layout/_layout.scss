@@ -50,7 +50,7 @@
       }
       &.tagline {
         text-align: right;
-        padding-left: 40px;
+        padding-left: 20px;
         @include site-mq($fg-col-10) {
           text-align: left;
           padding-left: 0;
@@ -271,21 +271,26 @@
   .amiibo-grid + .amiibo-grid {
     margin-top: 4%;
   }
+
+  // Grid item
   .grid-item {
     opacity: 0.3;
     text-align: center;
     cursor: pointer;
+    img {
+      height: auto;
+      width: 100%;
+      max-width: 100%;
+    }
     .control-settings {
       font-family: "FontAwesome";
       margin-right: 5px;
       color: $blue;
       display: none;
     }
-    img {
-      width: 100%;
-      height: auto;
-    }
   }
+
+  // Collected grid item
   .grid-item.collected {
     opacity: 1;
     .control-settings {

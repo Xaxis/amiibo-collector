@@ -7,11 +7,11 @@
  *
  * @todo - Create minimalistic logo with corresponding favicon
  *
- * @todo - Add amiibo bundles (yarn yoshi w/ games, etc) to list
- *
  * @todo - Image generation may not be working in safari
  *
- *  * @todo - Consider adding "infinity scrolling" functionality so all collection images don't load at once.
+ * @todo - Make sure the stats listing goes through the collection sorting algors
+ *
+ * @todo - Consider adding "infinity scrolling" functionality so all collection images don't load at once.
  */
 define([
   'jquery',

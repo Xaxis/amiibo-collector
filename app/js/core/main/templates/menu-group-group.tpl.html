@@ -1,5 +1,7 @@
-<div class="group-group <%= checked %>">
-    <span class="checkbox-icon checked" data-id="<%= group_name %>">&#xf205;</span>
-    <span class="checkbox-icon unchecked" data-id="<%= group_name %>">&#xf204;</span>
-    <a href="#" class="group-title" data-id="<%= group_name %>"><%= group_title %></a>
+<div class="group-group <%= group_active %>">
+    <span class="control toggle-on-off toggle-on-off-active" data-id="<%= group_id %>" title="Toggle Off">&#xf205;</span>
+    <span class="control toggle-on-off toggle-on-off-inactive" data-id="<%= group_id %>" title="Toggle On">&#xf204;</span>
+    <span class="control toggle-only-on-off toggle-only-on-off-active" data-id="<%= group_id %>" title="All Else Off">&#xf111;</span>
+    <span class="control toggle-only-on-off toggle-only-on-off-inactive" data-id="<%= group_id %>" title="All Else On">&#xf10c;</span>
+    <a class="group-title" data-id="<%= group_id %>"><%= group_title %></a>
 </div>

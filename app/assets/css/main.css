@@ -7868,18 +7868,28 @@ em {
       font-size: 0.9rem; }
   .menu.menu-group .group-group {
     margin-bottom: 20px; }
-    .menu.menu-group .group-group .checkbox-icon {
+    .menu.menu-group .group-group .control {
       display: inline-block;
       font-family: "FontAwesome";
       margin-right: 15px;
       cursor: pointer; }
-    .menu.menu-group .group-group:not(.checked) .checkbox-icon.checked {
+    .menu.menu-group .group-group .group-title {
+      cursor: pointer; }
+    .menu.menu-group .group-group:not(.toggle-on-off-active) .control.toggle-on-off-active {
       display: none; }
-    .menu.menu-group .group-group:not(.checked) .checkbox-icon.unchecked {
+    .menu.menu-group .group-group:not(.toggle-on-off-active) .control.toggle-on-off-inactive {
       display: inline-block; }
-    .menu.menu-group .group-group.checked .checkbox-icon.checked {
+    .menu.menu-group .group-group.toggle-on-off-active .control.toggle-on-off-active {
       display: inline-block; }
-    .menu.menu-group .group-group.checked .checkbox-icon.unchecked {
+    .menu.menu-group .group-group.toggle-on-off-active .control.toggle-on-off-inactive {
+      display: none; }
+    .menu.menu-group .group-group:not(.toggle-only-on-off-active) .control.toggle-only-on-off-active {
+      display: none; }
+    .menu.menu-group .group-group:not(.toggle-only-on-off-active) .control.toggle-only-on-off-inactive {
+      display: inline-block; }
+    .menu.menu-group .group-group.toggle-only-on-off-active .control.toggle-only-on-off-active {
+      display: inline-block; }
+    .menu.menu-group .group-group.toggle-only-on-off-active .control.toggle-only-on-off-inactive {
       display: none; }
   .menu.menu-sort .sort-controls .control {
     margin-bottom: 20px;

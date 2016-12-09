@@ -12,6 +12,8 @@
  * @todo - Make sure the stats listing goes through the collection sorting algors
  *
  * @todo - Consider adding "infinity scrolling" functionality so all collection images don't load at once.
+ **
+ * @todo - Create message/template for when no groups are being displayed.
  */
 define([
   'jquery',
@@ -73,8 +75,9 @@ define([
 
       // @todo - Possibly refactor group menu into own view
       'click .control-group': 'toggleGroupMenu',
-      'click .menu-group .checkbox-icon': 'toggleGroupOnOff',
-      'click .menu-group .group-title': 'loadSelectedGroup',
+      'click .menu-group .control.toggle-on-off': 'toggleGroupOnOff',
+      'click .menu-group .control.toggle-only-on-off': 'toggleOnlySelectedGroup',
+      'click .menu-group .group-title': 'toggleOnlySelectedGroup',
 
       // @todo - Possibly refactor sort menu into own view
       'click .control-sort': 'toggleSortMenu',
@@ -1900,7 +1903,7 @@ define([
         // @todo - Possibly refactor group menu into own view
         'toggleGroupMenu',
         'toggleGroupOnOff',
-        'loadSelectedGroup',
+        'toggleOnlySelectedGroup',
 
         // @todo - Possibly refactor sort menu into own view
         'toggleSortMenu',
@@ -2265,9 +2268,9 @@ define([
 
         // Add the group controls
         groups_container.append(self.templates.menuGroupGroup({
-          group_name: group.id,
+          group_id: group.id,
           group_title: group.title,
-          checked: group.unchecked ? '' : 'checked'
+          group_active: group.unchecked ? '' : 'toggle-on-off-active'
         }));
       });
 
@@ -2285,11 +2288,21 @@ define([
         group         = target.closest('.group-group'),
         group_id      = target.data('id');
 
-      // Toggle checked class on group
-      group.toggleClass('checked');
+      // Toggle active class on group
+      group.toggleClass('toggle-on-off-active');
+
+      // Deactivate any "only-on" controls of neighboring groups
+      group.prevAll('.group-group').add(group.nextAll('.group-group')).each(function(id, gp) {
+        $(gp).removeClass('toggle-only-on-off-active');
+      });
+
+      // Deactivate "only-on" control on target group when turning group switch off
+      if (group.hasClass('toggle-only-on-off-active')) {
+        group.removeClass('toggle-only-on-off-active');
+      }
 
       // Update whether the group is selected
-      this.collection[group_id].unchecked = target.hasClass('unchecked') ? false : true;
+      this.collection[group_id].unchecked = target.hasClass('toggle-on-off-inactive') ? false : true;
 
       // Save to local storage
       window.localStorage.setItem(this.storage_settings.id, JSON.stringify(this.collection));
@@ -2300,30 +2313,39 @@ define([
 
 
     /**
-     * Handles the loading of only a single group.
+     * Handles the toggling of only a single group on/off. Off would be turns off selected group and all others
+     * on.
      */
-    loadSelectedGroup: function(e) {
+    toggleOnlySelectedGroup: function(e) {
       var
         self          = this,
         target        = $(e.currentTarget),
+        group         = target.closest('.group-group'),
         target_id     = target.data('id');
+
+      // Toggle "only on" status of other groups
+      if (!group.hasClass('toggle-only-on-off-active')) {
+        group.addClass('toggle-only-on-off-active toggle-on-off-active');
+        group.prevAll('.group-group').add(group.nextAll('.group-group')).each(function(id, gp) {
+          $(gp).removeClass('toggle-only-on-off-active');
+          if ($(gp).hasClass('toggle-on-off-active')) {
+            $(gp).removeClass('toggle-on-off-active');
+          }
+        });
+      }
 
       // Iterate through collection groups, setting only target to be displayed
       _.each(this.collection, function(group, group_id) {
-        var
-          input       = $('.checkbox-icon[data-id="' + group_id + '"]');
         if (target_id != group_id) {
           self.collection[group_id].unchecked = true;
-          input.closest('.group-group').removeClass('checked');
           self.loadCollection();
         } else {
           self.collection[group_id].unchecked = false;
-          input.closest('.group-group').addClass('checked');
         }
       });
 
-      // Close the menu
-      this.menus.group.close();
+      // Save to local storage
+      window.localStorage.setItem(this.storage_settings.id, JSON.stringify(this.collection));
     },
 
 

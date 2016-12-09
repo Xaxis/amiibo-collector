@@ -427,19 +427,922 @@ define([
       // Animal crossing cards (Series 2)
       animcalcrossingcards_series2: {
         title: "Animal Crossing Cards - Series 2",
-        collection: {}
+        collection: {
+          1: {
+            title: "K.K."
+          },
+          2: {
+            title: "Reese"
+          },
+          3: {
+            title: "Kicks"
+          },
+          4: {
+            title: "Labelle"
+          },
+          5: {
+            title: "Copper"
+          },
+          6: {
+            title: "Booker"
+          },
+          7: {
+            title: "Katie"
+          },
+          8: {
+            title: "Tommy"
+          },
+          9: {
+            title: "Porter"
+          },
+          10: {
+            title: "Leila"
+          },
+          11: {
+            title: "Shrunk"
+          },
+          12: {
+            title: "Don"
+          },
+          13: {
+            title: "Isabelle"
+          },
+          14: {
+            title: "Blanca"
+          },
+          15: {
+            title: "Nat"
+          },
+          16: {
+            title: "Chip"
+          },
+          17: {
+            title: "Jack"
+          },
+          18: {
+            title: "Poncho"
+          },
+          19: {
+            title: "Felicity"
+          },
+          20: {
+            title: "Ozzie"
+          },
+          21: {
+            title: "Tia"
+          },
+          22: {
+            title: "Lucha"
+          },
+          23: {
+            title: "Fuchsia"
+          },
+          24: {
+            title: "Harry"
+          },
+          25: {
+            title: "Gwen"
+          },
+          26: {
+            title: "Coach"
+          },
+          27: {
+            title: "Kitt"
+          },
+          28: {
+            title: "Tom"
+          },
+          29: {
+            title: "Tipper"
+          },
+          30: {
+            title: "Prince"
+          },
+          31: {
+            title: "Pate"
+          },
+          32: {
+            title: "Vladimir"
+          },
+          33: {
+            title: "Savannah"
+          },
+          34: {
+            title: "Kid"
+          },
+          35: {
+            title: "Phoebe"
+          },
+          36: {
+            title: "Egbert"
+          },
+          37: {
+            title: "Cookie"
+          },
+          38: {
+            title: "Sly"
+          },
+          39: {
+            title: "Blaire"
+          },
+          40: {
+            title: "Avery"
+          },
+          41: {
+            title: "Nana"
+          },
+          42: {
+            title: "Peck"
+          },
+          43: {
+            title: "Olivia"
+          },
+          44: {
+            title: "Cesar"
+          },
+          45: {
+            title: "Carmen"
+          },
+          46: {
+            title: "Rodney"
+          },
+          47: {
+            title: "Scoot"
+          },
+          48: {
+            title: "Whitney"
+          },
+          49: {
+            title: "Broccolo"
+          },
+          50: {
+            title: "Coco"
+          },
+          51: {
+            title: "Groucho"
+          },
+          52: {
+            title: "Wendy"
+          },
+          53: {
+            title: "Alfonso"
+          },
+          54: {
+            title: "Rhonda"
+          },
+          55: {
+            title: "Butch"
+          },
+          56: {
+            title: "Gabi"
+          },
+          57: {
+            title: "Moose"
+          },
+          58: {
+            title: "Timbra"
+          },
+          59: {
+            title: "Zell"
+          },
+          60: {
+            title: "Pekoe"
+          },
+          61: {
+            title: "Teddy"
+          },
+          62: {
+            title: "Mathilda"
+          },
+          63: {
+            title: "Ed"
+          },
+          64: {
+            title: "Bianca"
+          },
+          65: {
+            title: "Filbert"
+          },
+          66: {
+            title: "Kitty"
+          },
+          67: {
+            title: "Beau"
+          },
+          68: {
+            title: "Nan"
+          },
+          69: {
+            title: "Bud"
+          },
+          70: {
+            title: "Ruby"
+          },
+          71: {
+            title: "Benedict"
+          },
+          72: {
+            title: "Agnes"
+          },
+          73: {
+            title: "Julian"
+          },
+          74: {
+            title: "Bettina"
+          },
+          75: {
+            title: "Jay"
+          },
+          76: {
+            title: "Sprinkle"
+          },
+          77: {
+            title: "Flip"
+          },
+          78: {
+            title: "Hugh"
+          },
+          79: {
+            title: "Hopper"
+          },
+          80: {
+            title: "Pecan"
+          },
+          81: {
+            title: "Drake"
+          },
+          82: {
+            title: "Alice"
+          },
+          83: {
+            title: "Camofrog"
+          },
+          84: {
+            title: "Anicotti"
+          },
+          85: {
+            title: "Chops"
+          },
+          86: {
+            title: "Charlise"
+          },
+          87: {
+            title: "Vic"
+          },
+          88: {
+            title: "Ankha"
+          },
+          89: {
+            title: "Drift"
+          },
+          90: {
+            title: "Vesta"
+          },
+          91: {
+            title: "Marcel"
+          },
+          92: {
+            title: "Pango"
+          },
+          93: {
+            title: "Keaton"
+          },
+          94: {
+            title: "Gladys"
+          },
+          95: {
+            title: "Hamphrey"
+          },
+          96: {
+            title: "Freya"
+          },
+          97: {
+            title: "Kid Cat"
+          },
+          98: {
+            title: "Agent S"
+          },
+          99: {
+            title: "Big Top"
+          },
+          100: {
+            title: "Rocket"
+          }
+        }
       },
 
       // Animal crossing cards (Series 3)
       animcalcrossingcards_series3: {
         title: "Animal Crossing Cards - Series 3",
-        collection: {}
+        collection: {
+          1: {
+            title: "Rover"
+          },
+          2: {
+            title: "Blathers"
+          },
+          3: {
+            title: "Tom Nook"
+          },
+          4: {
+            title: "Pelly"
+          },
+          5: {
+            title: "Phyllis"
+          },
+          6: {
+            title: "Pete"
+          },
+          7: {
+            title: "Mabel"
+          },
+          8: {
+            title: "Leif"
+          },
+          9: {
+            title: "Wendell"
+          },
+          10: {
+            title: "Cyrus"
+          },
+          11: {
+            title: "Grams"
+          },
+          12: {
+            title: "Timmy"
+          },
+          13: {
+            title: "Digby"
+          },
+          14: {
+            title: "Don"
+          },
+          15: {
+            title: "Isabelle"
+          },
+          16: {
+            title: "Franklin"
+          },
+          17: {
+            title: "Jingle"
+          },
+          18: {
+            title: "Lily"
+          },
+          19: {
+            title: "Anchovy"
+          },
+          20: {
+            title: "Tabby"
+          },
+          21: {
+            title: "Kody"
+          },
+          22: {
+            title: "Miranda"
+          },
+          23: {
+            title: "Del"
+          },
+          24: {
+            title: "Paula"
+          },
+          25: {
+            title: "Ken"
+          },
+          26: {
+            title: "Mitzi"
+          },
+          27: {
+            title: "Rodeo"
+          },
+          28: {
+            title: "Bubbles"
+          },
+          29: {
+            title: "Cousteau"
+          },
+          30: {
+            title: "Velma"
+          },
+          31: {
+            title: "Elvis"
+          },
+          32: {
+            title: "Canberra"
+          },
+          33: {
+            title: "Colton"
+          },
+          34: {
+            title: "Marina"
+          },
+          35: {
+            title: "Spork"
+          },
+          36: {
+            title: "Freckles"
+          },
+          37: {
+            title: "Bam"
+          },
+          38: {
+            title: "Friga"
+          },
+          39: {
+            title: "Ricky"
+          },
+          40: {
+            title: "Deirdre"
+          },
+          41: {
+            title: "Hans"
+          },
+          42: {
+            title: "Chevre"
+          },
+          43: {
+            title: "Drago"
+          },
+          44: {
+            title: "Tangy"
+          },
+          45: {
+            title: "Mac"
+          },
+          46: {
+            title: "Eloise"
+          },
+          47: {
+            title: "Wart Jr."
+          },
+          48: {
+            title: "Hazel"
+          },
+          49: {
+            title: "Beardo"
+          },
+          50: {
+            title: "Ava"
+          },
+          51: {
+            title: "Chester"
+          },
+          52: {
+            title: "Merry"
+          },
+          53: {
+            title: "Genji"
+          },
+          54: {
+            title: "Greta"
+          },
+          55: {
+            title: "Wolfgang"
+          },
+          56: {
+            title: "Diva"
+          },
+          57: {
+            title: "Klaus"
+          },
+          58: {
+            title: "Daisy"
+          },
+          59: {
+            title: "Stinky"
+          },
+          60: {
+            title: "Tammi"
+          },
+          61: {
+            title: "Tucker"
+          },
+          62: {
+            title: "Blanche"
+          },
+          63: {
+            title: "Gaston"
+          },
+          64: {
+            title: "Marshal"
+          },
+          65: {
+            title: "Gala"
+          },
+          66: {
+            title: "Joey"
+          },
+          67: {
+            title: "Pippy"
+          },
+          68: {
+            title: "Buck"
+          },
+          69: {
+            title: "Bree"
+          },
+          70: {
+            title: "Rooney"
+          },
+          71: {
+            title: "Curlos"
+          },
+          72: {
+            title: "Skye"
+          },
+          73: {
+            title: "Moe"
+          },
+          74: {
+            title: "Flora"
+          },
+          75: {
+            title: "Hamlet"
+          },
+          76: {
+            title: "Astrid"
+          },
+          77: {
+            title: "Monty"
+          },
+          78: {
+            title: "Dora"
+          },
+          79: {
+            title: "Biskit"
+          },
+          80: {
+            title: "Victoria"
+          },
+          81: {
+            title: "Lyman"
+          },
+          82: {
+            title: "Violet"
+          },
+          83: {
+            title: "Frank"
+          },
+          84: {
+            title: "Chadder"
+          },
+          85: {
+            title: "Merengue"
+          },
+          86: {
+            title: "Cube"
+          },
+          87: {
+            title: "Claudia"
+          },
+          88: {
+            title: "Curly"
+          },
+          89: {
+            title: "Boomer"
+          },
+          90: {
+            title: "Caroline"
+          },
+          91: {
+            title: "Sparro"
+          },
+          92: {
+            title: "Baabara"
+          },
+          93: {
+            title: "Rolf"
+          },
+          94: {
+            title: "Maple"
+          },
+          95: {
+            title: "Antonio"
+          },
+          96: {
+            title: "Soleil"
+          },
+          97: {
+            title: "Apollo"
+          },
+          98: {
+            title: "Derwin"
+          },
+          99: {
+            title: "Francine"
+          },
+          100: {
+            title: "Chrissy"
+          }
+        }
       },
 
       // Animal crossing cards (Series 4)
       animcalcrossingcards_series4: {
         title: "Animal Crossing Cards - Series 4",
-        collection: {}
+        collection: {
+          1: {
+            title: "Isabelle"
+          },
+          2: {
+            title: "Brewster"
+          },
+          3: {
+            title: "Katrina"
+          },
+          4: {
+            title: "Phineas"
+          },
+          5: {
+            title: "Celeste"
+          },
+          6: {
+            title: "Tommy"
+          },
+          7: {
+            title: "Gracie"
+          },
+          8: {
+            title: "Leilani"
+          },
+          9: {
+            title: "Resetti"
+          },
+          10: {
+            title: "Timmy"
+          },
+          11: {
+            title: "Lottie"
+          },
+          12: {
+            title: "Shrunk"
+          },
+          13: {
+            title: "Pave"
+          },
+          14: {
+            title: "Gulliver"
+          },
+          15: {
+            title: "Redd"
+          },
+          16: {
+            title: "Zipper"
+          },
+          17: {
+            title: "Goldie"
+          },
+          18: {
+            title: "Stitches"
+          },
+          19: {
+            title: "Pinky"
+          },
+          20: {
+            title: "Mott"
+          },
+          21: {
+            title: "Mallary"
+          },
+          22: {
+            title: "Rocco"
+          },
+          23: {
+            title: "Katt"
+          },
+          24: {
+            title: "Graham"
+          },
+          25: {
+            title: "Peaches"
+          },
+          26: {
+            title: "Dizzy"
+          },
+          27: {
+            title: "Penelope"
+          },
+          28: {
+            title: "Boone"
+          },
+          29: {
+            title: "Broffina"
+          },
+          30: {
+            title: "Croque"
+          },
+          31: {
+            title: "Pashmina"
+          },
+          32: {
+            title: "Shep"
+          },
+          33: {
+            title: "Lolly"
+          },
+          34: {
+            title: "Erik"
+          },
+          35: {
+            title: "Dotty"
+          },
+          36: {
+            title: "Pierce"
+          },
+          37: {
+            title: "Queenie"
+          },
+          38: {
+            title: "Fang"
+          },
+          39: {
+            title: "Frita"
+          },
+          40: {
+            title: "Tex"
+          },
+          41: {
+            title: "Melba"
+          },
+          42: {
+            title: "Bones"
+          },
+          43: {
+            title: "Anabelle"
+          },
+          44: {
+            title: "Rudy"
+          },
+          45: {
+            title: "Naomi"
+          },
+          46: {
+            title: "Peewee"
+          },
+          47: {
+            title: "Tammy"
+          },
+          48: {
+            title: "Olaf"
+          },
+          49: {
+            title: "Lucy"
+          },
+          50: {
+            title: "Elmer"
+          },
+          51: {
+            title: "Puddles"
+          },
+          52: {
+            title: "Rory"
+          },
+          53: {
+            title: "Elise"
+          },
+          54: {
+            title: "Walt"
+          },
+          55: {
+            title: "Mira"
+          },
+          56: {
+            title: "Pietro"
+          },
+          57: {
+            title: "Aurora"
+          },
+          58: {
+            title: "Papi"
+          },
+          59: {
+            title: "Apple"
+          },
+          60: {
+            title: "Rod"
+          },
+          61: {
+            title: "Purrl"
+          },
+          62: {
+            title: "Static"
+          },
+          63: {
+            title: "Celia"
+          },
+          64: {
+            title: "Zucker"
+          },
+          65: {
+            title: "Peggy"
+          },
+          66: {
+            title: "Ribbot"
+          },
+          67: {
+            title: "Annalise"
+          },
+          68: {
+            title: "Chow"
+          },
+          69: {
+            title: "Sylvia"
+          },
+          70: {
+            title: "Jacques"
+          },
+          71: {
+            title: "Sally"
+          },
+          72: {
+            title: "Doc"
+          },
+          73: {
+            title: "Pompom"
+          },
+          74: {
+            title: "Tank"
+          },
+          75: {
+            title: "Becky"
+          },
+          76: {
+            title: "Rizzo"
+          },
+          77: {
+            title: "Sydney"
+          },
+          78: {
+            title: "Barold"
+          },
+          79: {
+            title: "Nibbles"
+          },
+          80: {
+            title: "Kevin"
+          },
+          81: {
+            title: "Gloria"
+          },
+          82: {
+            title: "Lobo"
+          },
+          83: {
+            title: "Hippeux"
+          },
+          84: {
+            title: "Margie"
+          },
+          85: {
+            title: "Lucky"
+          },
+          86: {
+            title: "Rosie"
+          },
+          87: {
+            title: "Rowan"
+          },
+          88: {
+            title: "Maelle"
+          },
+          89: {
+            title: "Bruce"
+          },
+          90: {
+            title: "O'Hare"
+          },
+          91: {
+            title: "Gayle"
+          },
+          92: {
+            title: "Cranston"
+          },
+          93: {
+            title: "Frobert"
+          },
+          94: {
+            title: "Grizzly"
+          },
+          95: {
+            title: "Cally"
+          },
+          96: {
+            title: "Simon"
+          },
+          97: {
+            title: "Iggly"
+          },
+          98: {
+            title: "Angus"
+          },
+          99: {
+            title: "Twiggy"
+          },
+          100: {
+            title: "Robin"
+          }
+        }
       },
 
       // Animal crossing

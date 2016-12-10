@@ -11,8 +11,6 @@
  *
  * @todo - Make sure the stats listing goes through the collection sorting algors
  *
- * @todo - Consider adding "infinity scrolling" functionality so all collection images don't load at once.
- **
  * @todo - Create message/template for when no groups are being displayed.
  */
 define([
@@ -20,6 +18,7 @@ define([
   'underscore',
   'backbone',
   'jquery.sticky',
+  'jquery.lazyload',
   'text!core/main/templates/amiibo-group.tpl.html',
   'text!core/main/templates/amiibo-grid-item.tpl.html',
   'text!core/main/templates/message-browser-compat.tpl.html',
@@ -37,6 +36,7 @@ define([
   _,
   Backbone,
   Sticky,
+  LazyLoad,
   amiiboGroupTpl,
   amiiboGridItemTpl,
   messageBrowserCompatTpl,
@@ -2085,6 +2085,14 @@ define([
           } else {
             group_elm.removeClass('group-closed');
           }
+        }
+      });
+
+      // Initialize lazy loading of grid item images
+      $('.grid-item img').show().lazyload({
+        effect: "fadeIn",
+        load: function() {
+          $(this).prev('.fa-spinner').remove();
         }
       });
     },

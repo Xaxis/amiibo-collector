@@ -5,8 +5,6 @@
  *
  * @todo - Write deployment script.
  *
- * @todo - Create minimalistic logo with corresponding favicon
- *
  * @todo - Image generation may not be working in safari
  *
  * @todo - Make sure the stats listing goes through the collection sorting algors
@@ -2195,8 +2193,8 @@ define([
       stats_container.empty();
 
       // Populate the statistics object
-      _.each(this.collection, function(group, group_name) {
-        stats[group_name] = {
+      _.each(this.collection_sorted, function(group) {
+        stats[group.id] = {
           total: _.size(group.collection),
           owned: _.size(_.filter(group.collection, function(item) {
             return item.collected;
@@ -2204,24 +2202,24 @@ define([
         };
 
         // Update overall totals
-        stats.total += stats[group_name].total;
-        stats.owned += stats[group_name].owned;
+        stats.total += stats[group.id].total;
+        stats.owned += stats[group.id].owned;
 
         // Determine percentage
-        var group_perc = ((stats[group_name].owned / stats[group_name].total) * 100).toFixed(2);
+        var group_perc = ((stats[group.id].owned / stats[group.id].total) * 100).toFixed(2);
 
         // Add a stat group to the container
         stats_container.append(self.templates.menuStatsGroup({
-          group_id: group_name,
+          group_id: group.id,
           group_title: group.title,
-          group_total: stats[group_name].total,
-          group_owned: stats[group_name].owned,
+          group_total: stats[group.id].total,
+          group_owned: stats[group.id].owned,
           group_perc: group_perc
         }));
 
         // Add the completed class if a group is completed
         if (group_perc >= 100) {
-          $('[data-group-id="' + group_name + '"]').addClass('complete');
+          $('[data-group-id="' + group.id + '"]').addClass('complete');
         }
       });
 

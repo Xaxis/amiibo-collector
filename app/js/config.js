@@ -14,6 +14,7 @@
       jquery:               'libs/vendor/jquery/dist/jquery.min',
       'jquery.devgrid':     'libs/vendor/jquery.devgrid/dist/jquery.devgrid.min',
       'jquery.sticky':      'libs/vendor/jquery.sticky/dist/jquery.sticky.min',
+      'jquery.lazyload':    'libs/vendor/jquery-lazyload/jquery.lazyload',
       text:                 'libs/vendor/requirejs-text/text',
       underscore:           'libs/vendor/underscore/underscore',
       backbone:             'libs/vendor/backbone/backbone',
@@ -27,9 +28,9 @@
       modal:                'libs/native/modal/modal'
     },
     shim: {
-      'jquery.eye': ['jquery'],
       'jquery.devgrid': ['jquery'],
-      'jquery.sticky': ['jquery']
+      'jquery.sticky': ['jquery'],
+      'jquery.lazyload': ['jquery']
     }
   });
 

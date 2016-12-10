@@ -282,6 +282,9 @@
       width: 100%;
       max-width: 100%;
     }
+    .item-image {
+      display: none;
+    }
     .control-settings {
       font-family: "FontAwesome";
       margin-right: 5px;
@@ -522,25 +525,48 @@
   &.menu-group {
     .group-group {
       margin-bottom: 20px;
-      .checkbox-icon {
+      .control {
         display: inline-block;
         font-family: "FontAwesome";
         margin-right: 15px;
         cursor: pointer;
       }
-      &:not(.checked) {
-        .checkbox-icon.checked {
+      .group-title {
+        cursor: pointer;
+      }
+
+      // Control for toggling group on/off
+      &:not(.toggle-on-off-active) {
+        .control.toggle-on-off-active {
           display: none;
         }
-        .checkbox-icon.unchecked {
+        .control.toggle-on-off-inactive {
           display: inline-block;
         }
       }
-      &.checked {
-        .checkbox-icon.checked {
+      &.toggle-on-off-active {
+        .control.toggle-on-off-active {
           display: inline-block;
         }
-        .checkbox-icon.unchecked {
+        .control.toggle-on-off-inactive {
+          display: none;
+        }
+      }
+
+      // Control for toggling only selected group on/off
+      &:not(.toggle-only-on-off-active) {
+        .control.toggle-only-on-off-active {
+          display: none;
+        }
+        .control.toggle-only-on-off-inactive {
+          display: inline-block;
+        }
+      }
+      &.toggle-only-on-off-active {
+        .control.toggle-only-on-off-active {
+          display: inline-block;
+        }
+        .control.toggle-only-on-off-inactive {
           display: none;
         }
       }

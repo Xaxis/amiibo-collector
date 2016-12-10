@@ -120,7 +120,7 @@ define([
 
       // Animal crossing cards (Series 1)
       animcalcrossingcards_series1: {
-        title: "Animal Crossing Cards - Series 1",
+        title: "AC Cards - Series 1",
         collection: {
           1: {
             title: "Isabelle"
@@ -427,7 +427,7 @@ define([
 
       // Animal crossing cards (Series 2)
       animcalcrossingcards_series2: {
-        title: "Animal Crossing Cards - Series 2",
+        title: "AC Cards - Series 2",
         collection: {
           1: {
             title: "K.K."
@@ -734,7 +734,7 @@ define([
 
       // Animal crossing cards (Series 3)
       animcalcrossingcards_series3: {
-        title: "Animal Crossing Cards - Series 3",
+        title: "AC Cards - Series 3",
         collection: {
           1: {
             title: "Rover"
@@ -1041,7 +1041,7 @@ define([
 
       // Animal crossing cards (Series 4)
       animcalcrossingcards_series4: {
-        title: "Animal Crossing Cards - Series 4",
+        title: "AC Cards - Series 4",
         collection: {
           1: {
             title: "Isabelle"
@@ -2728,6 +2728,7 @@ define([
      */
     handleCollectionRestart: function() {
       window.localStorage.removeItem(this.storage_settings.id);
+      window.localStorage.removeItem(this.storage_settings.id + '_settings');
       window.location.href = '/';
       this.menus.restart.close();
     },

@@ -7,18 +7,13 @@
  *
  * @todo - Create message/template for when no groups are being displayed.
  *
- * @todo - Figure out why the group menu meethods are taking so long and speed them up if possible. ... It may be that
- * I'll have to refactor everything so that instead of reloading the elements everytime I'm just moving things around.
- *
  * @todo - Add an unobtrusive "Donate" blurb/button in the footer linked with my paypal acct.
  *
  * @todo - Create filter to allow users to now show/load pictures.
  *
- * @todo - Add function to switch a group off without going to the menu (it will need a message that says "you can turn
- * this group back on by going to the Groups menu" before fading away. -- Decided to just make the functionality in the
- * Groups menu the same as the functionailty above each group.
- *
  * @todo - Create a bug reporting app/menu so people can email me problems/bugs, with captcha.
+ *
+ * @todo - Refactor sorting so that the item grids aren't reloaded but instead the elements are re-organized.
  */
 define([
   'jquery',
@@ -2087,6 +2082,7 @@ define([
 
       // Bind methods
       _.bindAll(this,
+        'lazyLoadCollectionImages',
         'loadCollection',
         'storageDiffUpdate',
 
@@ -2166,6 +2162,19 @@ define([
 
       // Load the collection
       this.loadCollection();
+    },
+
+
+    /**
+     * Initialize lazy loading of grid item images
+     */
+    lazyLoadCollectionImages: function() {
+      $('.grid-item img[src=""]').show().lazyload({
+        effect: "fadeIn",
+        load: function() {
+          $(this).prev('.fa-spinner').remove();
+        }
+      });
     },
 
 
@@ -2281,13 +2290,8 @@ define([
         }
       });
 
-      // Initialize lazy loading of grid item images
-      $('.grid-item img').show().lazyload({
-        effect: "fadeIn",
-        load: function() {
-          $(this).prev('.fa-spinner').remove();
-        }
-      });
+      // Initialize lazy loading of collection images
+      this.lazyLoadCollectionImages();
     },
 
 
@@ -2471,9 +2475,9 @@ define([
         groups_container.append(self.templates.menuGroupGroup({
           group_id: group.id,
           group_title: group.title,
-          group_closed: group.closed ? '' : 'toggle-group-expando-active',
+          group_closed: self.collection[group.id].closed ? '' : 'toggle-group-expando-active',
           group_collected: (group.size == _.filter(self.collection[group.id].collection, 'collected').length) ? 'toggle-all-collected-active' : '',
-          group_active: group.unchecked ? '' : 'toggle-on-off-active'
+          group_active: self.collection[group.id].unchecked ? '' : 'toggle-on-off-active'
         }));
       });
 
@@ -2960,6 +2964,9 @@ define([
 
       // Update local storage
       window.localStorage.setItem(this.storage_settings.id, JSON.stringify(this.collection));
+
+      // Reinit lazy load of collection images
+      this.lazyLoadCollectionImages();
     },
 
 
@@ -3001,7 +3008,6 @@ define([
 
     /**
      * Toggles group on/off (whether or not it displays in the collection)
-     * @todo
      */
     groupToggleOnOff: function(e) {
       var
@@ -3033,6 +3039,9 @@ define([
 
       // Save to local storage
       window.localStorage.setItem(this.storage_settings.id, JSON.stringify(this.collection));
+
+      // Reinit lazy load of collection images
+      this.lazyLoadCollectionImages();
     },
 
 

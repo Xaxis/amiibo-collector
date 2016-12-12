@@ -204,7 +204,7 @@
 }
 
 
-// Styles for collection grid
+// Styles for collection grid and grid items
 .grid-container {
   @include clearfix();
   @include site-width('md', true, false);
@@ -214,6 +214,12 @@
   min-height: 800px;
   padding: $fg-gutter;
   margin-bottom: 20px;
+  .amiibo-grid-message {
+    padding: $fg-gutter;
+    background: $yellow;
+    border-radius: 4px;
+    display: none;
+  }
   .amiibo-grid {
     h2 {
       display: inline-block;
@@ -237,6 +243,11 @@
       }
       .group-expando-toggle {
         &.toggle-closed {
+          display: none;
+        }
+      }
+      .group-toggle-on-off {
+        &.toggle-off {
           display: none;
         }
       }
@@ -266,6 +277,9 @@
       .group {
         display: none;
       }
+    }
+    &.group-off {
+      display: none;
     }
   }
   .amiibo-grid + .amiibo-grid {
@@ -535,8 +549,45 @@
         cursor: pointer;
       }
 
-      // Control for toggling group on/off
+      // Toggle a group open/closed
+      &:not(.toggle-group-expando-active) {
+        .control.toggle-group-expando.toggle-opened {
+          display: none;
+        }
+        .control.toggle-group-expando.toggle-closed {
+          display: inline-block;
+        }
+      }
+      &.toggle-group-expando-active {
+        .control.toggle-group-expando.toggle-opened {
+          display: inline-block;
+        }
+        .control.toggle-group-expando.toggle-closed {
+          display: none;
+        }
+      }
+
+      // Toggle a group's items as all collected
+      &:not(.toggle-all-collected-active) {
+        .control.toggle-all-collected.toggle-collected-on {
+          display: none;
+        }
+        .control.toggle-all-collected.toggle-collected-off {
+          display: inline-block;
+        }
+      }
+      &.toggle-all-collected-active {
+        .control.toggle-all-collected.toggle-collected-on {
+          display: inline-block;
+        }
+        .control.toggle-all-collected.toggle-collected-off {
+          display: none;
+        }
+      }
+
+      // Toggles whether or not a group is on/off (displayed in a collection or not)
       &:not(.toggle-on-off-active) {
+        opacity: 0.5;
         .control.toggle-on-off-active {
           display: none;
         }
@@ -549,24 +600,6 @@
           display: inline-block;
         }
         .control.toggle-on-off-inactive {
-          display: none;
-        }
-      }
-
-      // Control for toggling only selected group on/off
-      &:not(.toggle-only-on-off-active) {
-        .control.toggle-only-on-off-active {
-          display: none;
-        }
-        .control.toggle-only-on-off-inactive {
-          display: inline-block;
-        }
-      }
-      &.toggle-only-on-off-active {
-        .control.toggle-only-on-off-active {
-          display: inline-block;
-        }
-        .control.toggle-only-on-off-inactive {
           display: none;
         }
       }

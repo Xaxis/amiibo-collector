@@ -1,7 +1,9 @@
-<div class="group-group <%= group_active %>">
-    <span class="control toggle-on-off toggle-on-off-active" data-id="<%= group_id %>" title="Toggle Off">&#xf205;</span>
-    <span class="control toggle-on-off toggle-on-off-inactive" data-id="<%= group_id %>" title="Toggle On">&#xf204;</span>
-    <span class="control toggle-only-on-off toggle-only-on-off-active" data-id="<%= group_id %>" title="All Else Off">&#xf111;</span>
-    <span class="control toggle-only-on-off toggle-only-on-off-inactive" data-id="<%= group_id %>" title="All Else On">&#xf10c;</span>
-    <a class="group-title" data-id="<%= group_id %>"><%= group_title %></a>
+<div class="group-group <%= group_closed %> <%= group_collected %> <%= group_active %>">
+    <span class="control toggle-group-expando toggle-closed" data-id="<%= group_id %>" title="Toggle group open">&#xf0fe;</span>
+    <span class="control toggle-group-expando toggle-opened" data-id="<%= group_id %>" title="Toggle group closed">&#xf146;</span>
+    <span class="control toggle-all-collected toggle-collected-on" data-id="<%= group_id %>" title="Set all as not collected">&#xf111;</span>
+    <span class="control toggle-all-collected toggle-collected-off" data-id="<%= group_id %>" title="Set all as collected">&#xf10c;</span>
+    <span class="control toggle-on-off toggle-on-off-active" data-id="<%= group_id %>" title="Toggle group off">&#xf205;</span>
+    <span class="control toggle-on-off toggle-on-off-inactive" data-id="<%= group_id %>" title="Toggle group on">&#xf204;</span>
+    <a class="group-title" data-id="<%= group_id %>" title="Jump to group"><%= group_title %></a>
 </div>

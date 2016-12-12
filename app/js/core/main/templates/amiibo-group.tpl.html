@@ -1,9 +1,14 @@
+<div class="amiibo-grid-message amiibo-grid-reactivation-message">
+    You can reactivate this group in the <i class="fa fa-toggle-on"></i> (Groups) menu.
+</div>
 <div class="amiibo-grid <%= group_name %>" data-group-name="<%= group_name %>">
     <h2>
-        <span class="group-control group-expando-toggle toggle-closed">&#xf0fe;</span>
-        <span class="group-control group-expando-toggle toggle-opened">&#xf146;</span>
-        <span class="group-control group-select-toggle toggle-collected">&#xf1db;</span>
-        <span class="group-control group-select-toggle toggle-uncollected">&#xf111;</span>
+        <span class="group-control group-expando-toggle toggle-closed" title="Toggle group open">&#xf0fe;</span>
+        <span class="group-control group-expando-toggle toggle-opened" title="Toggle group closed">&#xf146;</span>
+        <span class="group-control group-select-toggle toggle-collected" title="Set all as collected">&#xf1db;</span>
+        <span class="group-control group-select-toggle toggle-uncollected" title="Set all as not collected">&#xf111;</span>
+        <span class="group-control group-toggle-on-off toggle-on" title="Toggle group off">&#xf205;</span>
+        <span class="group-control group-toggle-on-off toggle-off" title="Toggle group on">&#xf204;</span>
         <span class="group-title-text"><%= group_title %></span>
         (<span class="group-stat-collected"><%= group_collected %></span> of <span class="group-stat-total"><%= group_total %></span>)
     </h2>

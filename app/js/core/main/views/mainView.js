@@ -1,15 +1,24 @@
 /**
  * Meat and potatoes of this app.
- **
- * @todo - Add in all animal crossing card amiibos
  *
  * @todo - Write deployment script.
  *
- * @todo - Image generation may not be working in safari
- *
- * @todo - Make sure the stats listing goes through the collection sorting algors
+ * @todo - Image generation may not be working in safari?
  *
  * @todo - Create message/template for when no groups are being displayed.
+ *
+ * @todo - Figure out why the group menu meethods are taking so long and speed them up if possible. ... It may be that
+ * I'll have to refactor everything so that instead of reloading the elements everytime I'm just moving things around.
+ *
+ * @todo - Add an unobtrusive "Donate" blurb/button in the footer linked with my paypal acct.
+ *
+ * @todo - Create filter to allow users to now show/load pictures.
+ *
+ * @todo - Add function to switch a group off without going to the menu (it will need a message that says "you can turn
+ * this group back on by going to the Groups menu" before fading away. -- Decided to just make the functionality in the
+ * Groups menu the same as the functionailty above each group.
+ *
+ * @todo - Create a bug reporting app/menu so people can email me problems/bugs, with captcha.
  */
 define([
   'jquery',
@@ -73,9 +82,9 @@ define([
 
       // @todo - Possibly refactor group menu into own view
       'click .control-group': 'toggleGroupMenu',
-      'click .menu-group .control.toggle-on-off': 'toggleGroupOnOff',
-      'click .menu-group .control.toggle-only-on-off': 'toggleOnlySelectedGroup',
-      'click .menu-group .group-title': 'toggleOnlySelectedGroup',
+      'click .menu-group .control.toggle-group-expando': 'groupMenuToggleGroupOpenClosed',
+      'click .menu-group .control.toggle-all-collected': 'groupMenuToggleAllCollected',
+      'click .menu-group .control.toggle-on-off': 'groupMenuToggleGroupOnOff',
 
       // @todo - Possibly refactor sort menu into own view
       'click .control-sort': 'toggleSortMenu',
@@ -95,8 +104,9 @@ define([
       'click .menu-restart .restart-continue': 'handleCollectionRestart',
 
       // @todo - Possibly refactor group controls into own view
-      'click .amiibo-grid h2 .group-select-toggle': 'toggleSelectedGroup',
-      'click .amiibo-grid h2 .group-expando-toggle': 'toggleExpandGroup',
+      'click .amiibo-grid h2 .group-expando-toggle': 'groupToggleOpenClosed',
+      'click .amiibo-grid h2 .group-select-toggle': 'groupToggleCollected',
+      'click .amiibo-grid h2 .group-toggle-on-off': 'groupToggleOnOff',
 
       // @todo - Possibly refactor item controls/menu into own view
       'click .grid-item': 'toggleSelectedItem',
@@ -1346,6 +1356,188 @@ define([
         }
       },
 
+      // Animal crossing cards (Welcome Amiibo)
+      animcalcrossingcards_welcome1: {
+        title: "AC Cards - Welcome Amiibo",
+        collection: {
+          1: {
+            title: "Vivian"
+          },
+          2: {
+            title: "Hopkins"
+          },
+          3: {
+            title: "June"
+          },
+          4: {
+            title: "Piper"
+          },
+          5: {
+            title: "Paolo"
+          },
+          6: {
+            title: "Hornsby"
+          },
+          7: {
+            title: "Stella"
+          },
+          8: {
+            title: "Tybalt"
+          },
+          9: {
+            title: "Huck"
+          },
+          10: {
+            title: "Sylvana"
+          },
+          11: {
+            title: "Boris"
+          },
+          12: {
+            title: "Wade"
+          },
+          13: {
+            title: "Carrie"
+          },
+          14: {
+            title: "Ketchup"
+          },
+          15: {
+            title: "Rex"
+          },
+          16: {
+            title: "Stu"
+          },
+          17: {
+            title: "Ursala"
+          },
+          18: {
+            title: "Jacob"
+          },
+          19: {
+            title: "Maddie"
+          },
+          20: {
+            title: "Billy"
+          },
+          21: {
+            title: "Boyd"
+          },
+          22: {
+            title: "Bitty"
+          },
+          23: {
+            title: "Maggie"
+          },
+          24: {
+            title: "Murphy"
+          },
+          25: {
+            title: "Plucky"
+          },
+          26: {
+            title: "Sandy"
+          },
+          27: {
+            title: "Claude"
+          },
+          28: {
+            title: "Raddle"
+          },
+          29: {
+            title: "Julia"
+          },
+          30: {
+            title: "Louie"
+          },
+          31: {
+            title: "Bea"
+          },
+          32: {
+            title: "Admiral"
+          },
+          33: {
+            title: "Ellie"
+          },
+          34: {
+            title: "Boots"
+          },
+          35: {
+            title: "Weber"
+          },
+          36: {
+            title: "Candi"
+          },
+          37: {
+            title: "Leopold"
+          },
+          38: {
+            title: "Spike"
+          },
+          39: {
+            title: "Cashmere"
+          },
+          40: {
+            title: "Tad"
+          },
+          41: {
+            title: "Norma"
+          },
+          42: {
+            title: "Gonzo"
+          },
+          43: {
+            title: "Sprocket"
+          },
+          44: {
+            title: "Snooty"
+          },
+          45: {
+            title: "Olive"
+          },
+          46: {
+            title: "Dobie"
+          },
+          47: {
+            title: "Buzz"
+          },
+          48: {
+            title: "Cleo"
+          },
+          49: {
+            title: "Ike"
+          },
+          50: {
+            title: "Tasha"
+          }
+        }
+      },
+
+      // Animal crossing cards (Hello Kitty)
+      animcalcrossingcards_hellotkitty: {
+        title: "AC Cards - Hello Kitty",
+        collection: {
+          1: {
+            title: "Rilla"
+          },
+          2: {
+            title: "Marty"
+          },
+          3: {
+            title: "Etoile"
+          },
+          4: {
+            title: "Chai"
+          },
+          5: {
+            title: "Chelsea"
+          },
+          6: {
+            title: "Toby"
+          }
+        }
+      },
+
       // Animal crossing
       animalcrossing: {
         title: "Animal Crossing",
@@ -1903,8 +2095,8 @@ define([
 
         // @todo - Possibly refactor group menu into own view
         'toggleGroupMenu',
-        'toggleGroupOnOff',
-        'toggleOnlySelectedGroup',
+        'groupMenuToggleAllCollected',
+        'groupMenuToggleGroupOnOff',
 
         // @todo - Possibly refactor sort menu into own view
         'toggleSortMenu',
@@ -1925,8 +2117,9 @@ define([
         'handleCollectionRestart',
 
         // @todo - Possibly refactor group controls into own view
-        'toggleSelectedGroup',
-        'toggleExpandGroup',
+        'groupToggleOpenClosed',
+        'groupToggleCollected',
+        'groupToggleOnOff',
 
         // @todo - Possibly refactor collection items into own view
         'toggleSelectedItem',
@@ -2047,45 +2240,44 @@ define([
           }),
           group_elm         = null;
 
-        // Add group only if it hasn't been set to not load
-        if (!group.unchecked) {
+        // Add new group container
+        grid.append(grid_group);
+        group_elm = $('.amiibo-grid[data-group-name="' + group_id + '"]');
 
-          // Add new group container
-          grid.append(grid_group);
-          group_elm = $('.amiibo-grid[data-group-name="' + group_id + '"]');
+        // Is the group set to display or not?
+        if (group.unchecked) group_elm.addClass('group-off');
 
-          // Create new group container
-          _.each(group.collection, function(item) {
-            var
-              item_id             = item.id,
-              amiibo_path         = path + group_id + '-' + item_id + '.png';
+        // Create new group container
+        _.each(group.collection, function(item) {
+          var
+            item_id             = item.id,
+            amiibo_path         = path + group_id + '-' + item_id + '.png';
 
-            // Create new grid object
-            grid.find('.' + group_id + ' .group').append(self.templates.amiiboGridItem({
-              amiibo_name: item_id,
-              amiibo_path: amiibo_path,
-              amiibo_title: item.title || '',
-              amiibo_class: ((item.collected) ? 'collected' : '')
-            }));
-          });
+          // Create new grid object
+          grid.find('.' + group_id + ' .group').append(self.templates.amiiboGridItem({
+            amiibo_name: item_id,
+            amiibo_path: amiibo_path,
+            amiibo_title: item.title || '',
+            amiibo_class: ((item.collected) ? 'collected' : '')
+          }));
+        });
 
-          // Add appropriate class on group to indicate whether or not a group has been collected
-          if (group.size == _.filter(group.collection, 'collected').length) {
-            group_elm
-              .data('group-collected', 'yes')
-              .addClass('group-collected');
-          } else {
-            group_elm
-              .data('group-collected', 'no')
-              .removeClass('group-collected');
-          }
+        // Add appropriate class on group to indicate whether or not a group has been collected
+        if (group.size == _.filter(group.collection, 'collected').length) {
+          group_elm
+            .data('group-collected', 'yes')
+            .addClass('group-collected');
+        } else {
+          group_elm
+            .data('group-collected', 'no')
+            .removeClass('group-collected');
+        }
 
-          // Toggle show/hide the group based on its user setting
-          if (group.closed) {
-            group_elm.addClass('group-closed');
-          } else {
-            group_elm.removeClass('group-closed');
-          }
+        // Toggle show/hide the group based on its user setting
+        if (group.closed) {
+          group_elm.addClass('group-closed');
+        } else {
+          group_elm.removeClass('group-closed');
         }
       });
 
@@ -2279,6 +2471,8 @@ define([
         groups_container.append(self.templates.menuGroupGroup({
           group_id: group.id,
           group_title: group.title,
+          group_closed: group.closed ? '' : 'toggle-group-expando-active',
+          group_collected: (group.size == _.filter(self.collection[group.id].collection, 'collected').length) ? 'toggle-all-collected-active' : '',
           group_active: group.unchecked ? '' : 'toggle-on-off-active'
         }));
       });
@@ -2289,72 +2483,68 @@ define([
 
 
     /**
-     * Toggles a collection group on or off (whether or not it is to be displayed in the collection listing).
+     * Toggles groups open or closed through the "Groups" menu.
      */
-    toggleGroupOnOff: function(e) {
+    groupMenuToggleGroupOpenClosed: function(e) {
       var
         target        = $(e.currentTarget),
         group         = target.closest('.group-group'),
-        group_id      = target.data('id');
+        target_id     = target.data('id'),
+        target_group  = $('.amiibo-grid[data-group-name="' + target_id + '"]');
 
-      // Toggle active class on group
-      group.toggleClass('toggle-on-off-active');
+      // Toggle group class in menu
+      group.toggleClass('toggle-group-expando-active');
 
-      // Deactivate any "only-on" controls of neighboring groups
-      group.prevAll('.group-group').add(group.nextAll('.group-group')).each(function(id, gp) {
-        $(gp).removeClass('toggle-only-on-off-active');
-      });
-
-      // Deactivate "only-on" control on target group when turning group switch off
-      if (group.hasClass('toggle-only-on-off-active')) {
-        group.removeClass('toggle-only-on-off-active');
+      // Click on the right control based on state
+      if (group.hasClass('toggle-group-expando-active')) {
+        target_group.find('.group-expando-toggle.toggle-opened').click();
+      } else {
+        target_group.find('.group-expando-toggle.toggle-closed').click();
       }
-
-      // Update whether the group is selected
-      this.collection[group_id].unchecked = target.hasClass('toggle-on-off-inactive') ? false : true;
-
-      // Save to local storage
-      window.localStorage.setItem(this.storage_settings.id, JSON.stringify(this.collection));
-
-      // Reload the collection
-      this.loadCollection();
     },
 
 
     /**
-     * Handles the toggling of only a single group on/off. Off would be turns off selected group and all others
-     * on.
+     * Toggles groups has having all of their items collected or not.
      */
-    toggleOnlySelectedGroup: function(e) {
+    groupMenuToggleAllCollected: function(e) {
       var
-        self          = this,
         target        = $(e.currentTarget),
         group         = target.closest('.group-group'),
-        target_id     = target.data('id');
+        target_id     = target.data('id'),
+        target_group  = $('.amiibo-grid[data-group-name="' + target_id + '"]');
 
-      // Toggle "only on" status of other groups
-      if (!group.hasClass('toggle-only-on-off-active')) {
-        group.addClass('toggle-only-on-off-active toggle-on-off-active');
-        group.prevAll('.group-group').add(group.nextAll('.group-group')).each(function(id, gp) {
-          $(gp).removeClass('toggle-only-on-off-active');
-          if ($(gp).hasClass('toggle-on-off-active')) {
-            $(gp).removeClass('toggle-on-off-active');
-          }
-        });
+      // Toggle group class in menu
+      group.toggleClass('toggle-all-collected-active');
+
+      // Click on right control based on state
+      if (group.hasClass('toggle-all-collected-active')) {
+        target_group.find('.group-select-toggle.toggle-collected').click();
+      } else {
+        target_group.find('.group-select-toggle.toggle-uncollected').click();
       }
+    },
 
-      // Iterate through collection groups, setting only target to be displayed
-      _.each(this.collection, function(group, group_id) {
-        if (target_id != group_id) {
-          self.collection[group_id].unchecked = true;
-          self.loadCollection();
-        } else {
-          self.collection[group_id].unchecked = false;
-        }
-      });
 
-      // Save to local storage
-      window.localStorage.setItem(this.storage_settings.id, JSON.stringify(this.collection));
+    /**
+     * Toggles a collection group on or off (whether or not it is to be displayed in the collection listing).
+     */
+    groupMenuToggleGroupOnOff: function(e) {
+      var
+        target        = $(e.currentTarget),
+        group         = target.closest('.group-group'),
+        target_id      = target.data('id'),
+        target_group  = $('.amiibo-grid[data-group-name="' + target_id + '"]');
+
+      // Toggle active class on group
+      group.toggleClass('toggle-on-off-active');
+
+      // Click on right control based on state
+      if (group.hasClass('toggle-on-off-active')) {
+        target_group.find('.group-toggle-on-off.toggle-on').click();
+      } else {
+        target_group.find('.group-toggle-on-off.toggle-off').click();
+      }
     },
 
 
@@ -2744,10 +2934,39 @@ define([
     // !!!!!!!
     //
 
+
+    /**
+     * Toggles a group open and closed.
+     */
+    groupToggleOpenClosed: function(e) {
+      var
+        target        = $(e.currentTarget),
+        parent        = target.closest('.amiibo-grid'),
+        group_name    = parent.attr('data-group-name'),
+        group         = parent.find('.group');
+
+      // Stop click propagation from h2's events
+      e.stopPropagation();
+
+      // Add indicator class to target
+      parent.toggleClass('group-closed');
+
+      // Switch icon in control and update collection object
+      if (parent.hasClass('group-closed')) {
+        this.collection[group_name].closed = true;
+      } else {
+        this.collection[group_name].closed = false;
+      }
+
+      // Update local storage
+      window.localStorage.setItem(this.storage_settings.id, JSON.stringify(this.collection));
+    },
+
+
     /**
      * Allows user to select/deselect an entire group at once.
      */
-    toggleSelectedGroup: function(e) {
+    groupToggleCollected: function(e) {
       var
         target        = $(e.currentTarget).closest('.amiibo-grid');
 
@@ -2781,29 +3000,38 @@ define([
 
 
     /**
-     * Toggles a group open and closed.
+     * Toggles group on/off (whether or not it displays in the collection)
+     * @todo
      */
-    toggleExpandGroup: function(e) {
+    groupToggleOnOff: function(e) {
       var
         target        = $(e.currentTarget),
-        parent        = target.closest('.amiibo-grid'),
-        group_name    = parent.attr('data-group-name'),
-        group         = parent.find('.group');
+        group         = target.closest('.amiibo-grid'),
+        group_msg_elm = group.prev('.amiibo-grid-message.amiibo-grid-reactivation-message'),
+        group_id      = group.attr('data-group-name');
 
-      // Stop click propagation from h2's events
-      e.stopPropagation();
+      // Toggle group on/off class
+      group.toggleClass('group-off');
 
-      // Add indicator class to target
-      parent.toggleClass('group-closed');
-
-      // Switch icon in control and update collection object
-      if (parent.hasClass('group-closed')) {
-        this.collection[group_name].closed = true;
-      } else {
-        this.collection[group_name].closed = false;
+      // Proceed based on group state and display "reactivate" message
+      if (group.hasClass('group-off')) {
+        group_msg_elm
+          .css({opacity: 0})
+          .show()
+          .animate({opacity: 1}, {duration: 350, complete: function() {
+            setTimeout(function() {
+              group_msg_elm
+                .animate({opacity: 0}, {duration: 350, complete: function() {
+                  group_msg_elm.hide();
+                }});
+            }, 3000);
+          }});
       }
 
-      // Update local storage
+      // Update whether the group is selected
+      this.collection[group_id].unchecked = group.hasClass('group-off') ? true : false;
+
+      // Save to local storage
       window.localStorage.setItem(this.storage_settings.id, JSON.stringify(this.collection));
     },
 

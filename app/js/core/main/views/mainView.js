@@ -14,6 +14,16 @@
  * @todo - Create a bug reporting app/menu so people can email me problems/bugs, with captcha.
  *
  * @todo - Refactor sorting so that the item grids aren't reloaded but instead the elements are re-organized.
+ *
+ * @todo - Consider adding functionality that allows users to sort an individual group.
+ *
+ * @todo - Add a "back to top" fixed element that transitions to being visible when the main nav becomes fixed.
+ *
+ * @todo - Image generation functionality still doesn't quite work. Consider removing it all together.
+ *
+ * @todo - Modify Stats Menu to only show and calculate groups that are "on" (not deactivated).
+ *
+ * @todo - Refactor per item settings so that 1 "item" exists if the item has been collected.
  */
 define([
   'jquery',
@@ -80,6 +90,7 @@ define([
       'click .menu-group .control.toggle-group-expando': 'groupMenuToggleGroupOpenClosed',
       'click .menu-group .control.toggle-all-collected': 'groupMenuToggleAllCollected',
       'click .menu-group .control.toggle-on-off': 'groupMenuToggleGroupOnOff',
+      'click .menu-group .group-title': 'groupMenuJumpToGroup',
 
       // @todo - Possibly refactor sort menu into own view
       'click .control-sort': 'toggleSortMenu',
@@ -1752,9 +1763,9 @@ define([
         }
       },
 
-      // Splatoons
-      splatoons: {
-        title: "Splatoons",
+      // Splatoon
+      splatoon: {
+        title: "Splatoon",
         collection: {
           callie: {
             title: "Callie"
@@ -2091,8 +2102,10 @@ define([
 
         // @todo - Possibly refactor group menu into own view
         'toggleGroupMenu',
+        'groupMenuToggleGroupOpenClosed',
         'groupMenuToggleAllCollected',
         'groupMenuToggleGroupOnOff',
+        'groupMenuJumpToGroup',
 
         // @todo - Possibly refactor sort menu into own view
         'toggleSortMenu',
@@ -2147,7 +2160,7 @@ define([
       $(document).on('opening', '.remodal', function () {
         $(this).data('last-scroll-pos', $(window).scrollTop());
       });
-      $(document).on('closed', '.remodal', function () {
+      $(document).on('closing', '.remodal', function () {
         $(window).scrollTop($(this).data('last-scroll-pos'));
       });
 
@@ -2323,16 +2336,18 @@ define([
       // Remove groups to local object
       _.each(_.keys(localObj), function(l) {
 
-        // Remove old collection item from group
-        _.each(localObj[l].collection, function(item, key) {
-          if (!(key in initObj[l].collection)) {
-            delete localObj[l].collection[key];
-          }
-        });
-
         // Remove old group
         if (!(l in initObj)) {
           delete localObj[l];
+        }
+
+        // Remove any old collection items from group
+        else {
+          _.each(localObj[l].collection, function(item, key) {
+            if (!(key in initObj[l].collection)) {
+              delete localObj[l].collection[key];
+            }
+          });
         }
       });
 
@@ -2550,6 +2565,32 @@ define([
         target_group.find('.group-toggle-on-off.toggle-off').click();
       }
     },
+
+
+    /**
+     * Simply closes the menu and jumps to a group (reactivates the group if its off).
+     */
+    groupMenuJumpToGroup: function(e) {
+      var
+        target        = $(e.currentTarget),
+        group         = target.closest('.group-group'),
+        target_id      = target.data('id'),
+        target_group  = $('.amiibo-grid[data-group-name="' + target_id + '"]');
+
+      // Prevent default event
+      e.preventDefault();
+
+      // Proceed if the group is turned on (not deactivated)
+      if (!target_group.hasClass('group-off')) {
+
+        // Close the menu
+        this.menus.group.close();
+
+        // Jump to in page link
+        window.location.href = '#' + target_id;
+      }
+    },
+
 
 
 

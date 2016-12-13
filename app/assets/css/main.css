@@ -7673,10 +7673,14 @@ em {
     .grid-container {
       max-width: 1440px; } }
   .grid-container .amiibo-grid-message {
+    margin-bottom: 10px;
     padding: 20px;
     background: #ffd86e;
     border-radius: 4px;
     display: none; }
+  .grid-container .amiibo-grid .inpage-link {
+    padding-top: 120px;
+    margin-top: -120px; }
   .grid-container .amiibo-grid h2 {
     display: inline-block; }
     @media only screen and (max-width: 840px) {
@@ -7902,12 +7906,16 @@ em {
       display: inline-block; }
     .menu.menu-group .group-group.toggle-all-collected-active .control.toggle-all-collected.toggle-collected-off {
       display: none; }
-    .menu.menu-group .group-group:not(.toggle-on-off-active) {
+    .menu.menu-group .group-group:not(.toggle-on-off-active) .control:not(.toggle-on-off) {
       opacity: 0.5; }
-      .menu.menu-group .group-group:not(.toggle-on-off-active) .control.toggle-on-off-active {
-        display: none; }
-      .menu.menu-group .group-group:not(.toggle-on-off-active) .control.toggle-on-off-inactive {
-        display: inline-block; }
+    .menu.menu-group .group-group:not(.toggle-on-off-active) .group-title {
+      color: white;
+      cursor: default;
+      opacity: 0.5; }
+    .menu.menu-group .group-group:not(.toggle-on-off-active) .control.toggle-on-off-active {
+      display: none; }
+    .menu.menu-group .group-group:not(.toggle-on-off-active) .control.toggle-on-off-inactive {
+      display: inline-block; }
     .menu.menu-group .group-group.toggle-on-off-active .control.toggle-on-off-active {
       display: inline-block; }
     .menu.menu-group .group-group.toggle-on-off-active .control.toggle-on-off-inactive {

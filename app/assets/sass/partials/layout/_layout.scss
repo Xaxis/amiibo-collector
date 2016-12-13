@@ -3,7 +3,9 @@
 //
 // Core/over arching layout structures defining sitewide zones
 
+
 // A page width helper class
+// -------------------------
 .page-width {
   @include clearfix();
   @include site-width('md', true, false);
@@ -15,6 +17,7 @@
 
 
 // Introduction/header element
+// ---------------------------
 .intro {
   @include clearfix();
   @include site-width('md', true, false);
@@ -73,6 +76,7 @@
 
 
 // Main application controls
+// -------------------------
 .controls {
   @include clearfix();
   margin-bottom: 20px;
@@ -205,6 +209,7 @@
 
 
 // Styles for collection grid and grid items
+// -----------------------------------------
 .grid-container {
   @include clearfix();
   @include site-width('md', true, false);
@@ -215,12 +220,17 @@
   padding: $fg-gutter;
   margin-bottom: 20px;
   .amiibo-grid-message {
+    margin-bottom: 10px;
     padding: $fg-gutter;
     background: $yellow;
     border-radius: 4px;
     display: none;
   }
   .amiibo-grid {
+    .inpage-link {
+      padding-top: 120px;
+      margin-top: -120px;
+    }
     h2 {
       display: inline-block;
       @include breakpoint($max: $fg-col-14) {
@@ -320,7 +330,8 @@
 }
 
 
-// Styles for modal menus
+// Styles for menus (modal menus)
+// ------------------------------
 .menu {
   text-align: left;
   overflow-y: scroll;
@@ -587,7 +598,14 @@
 
       // Toggles whether or not a group is on/off (displayed in a collection or not)
       &:not(.toggle-on-off-active) {
-        opacity: 0.5;
+        .control:not(.toggle-on-off) {
+          opacity: 0.5;
+        }
+        .group-title {
+          color: $white;
+          cursor: default;
+          opacity: 0.5;
+        }
         .control.toggle-on-off-active {
           display: none;
         }
@@ -703,6 +721,7 @@
 
 
 // Styles for the footer
+// ---------------------
 .footer {
   background-color: $dark-blue;
   color: $white;

@@ -137,6 +137,7 @@ define([
       // Animal crossing cards (Series 1)
       animcalcrossingcards_series1: {
         title: "AC Cards - Series 1",
+        weight: 2,
         collection: {
           1: {
             title: "Isabelle"
@@ -444,6 +445,7 @@ define([
       // Animal crossing cards (Series 2)
       animcalcrossingcards_series2: {
         title: "AC Cards - Series 2",
+        weight: 2,
         collection: {
           1: {
             title: "K.K."
@@ -751,6 +753,7 @@ define([
       // Animal crossing cards (Series 3)
       animcalcrossingcards_series3: {
         title: "AC Cards - Series 3",
+        weight: 2,
         collection: {
           1: {
             title: "Rover"
@@ -1058,6 +1061,7 @@ define([
       // Animal crossing cards (Series 4)
       animcalcrossingcards_series4: {
         title: "AC Cards - Series 4",
+        weight: 2,
         collection: {
           1: {
             title: "Isabelle"
@@ -1365,6 +1369,7 @@ define([
       // Animal crossing cards (Welcome Amiibo)
       animcalcrossingcards_welcome1: {
         title: "AC Cards - Welcome Amiibo",
+        weight: 2,
         collection: {
           1: {
             title: "Vivian"
@@ -1522,6 +1527,7 @@ define([
       // Animal crossing cards (Hello Kitty)
       animcalcrossingcards_hellotkitty: {
         title: "AC Cards - Hello Kitty",
+        weight: 2,
         collection: {
           1: {
             title: "Rilla"
@@ -1547,6 +1553,7 @@ define([
       // Animal crossing
       animalcrossing: {
         title: "Animal Crossing",
+        weight: 0,
         collection: {
           blathers: {
             title: "Blathers"
@@ -1602,6 +1609,7 @@ define([
       // Amiibo bundles
       bundles: {
         title: "Amiibo Bundles",
+        weight: 1,
         collection: {
           animalcrossing: {
             title: "Animal Crossing: Amiibo Festival"
@@ -1642,6 +1650,7 @@ define([
       // Chibi robo
       chibi: {
         title: "Chibi Robo",
+        weight: 0,
         collection: {
           robo: {
             title: "Chibi Robo"
@@ -1652,6 +1661,7 @@ define([
       // Kirby
       kirby: {
         title: "Kirby",
+        weight: 0,
         collection: {
           kingdedede: {
             title: "King Dedede"
@@ -1671,6 +1681,7 @@ define([
       // Legend of zelda
       loz: {
         title: "Legend of Zelda",
+        weight: 0,
         collection: {
           anniversarylink: {
             title: "Link - 30th Anniversary"
@@ -1702,6 +1713,7 @@ define([
       // Mega man
       megaman: {
         title: "Mega Man - Legacy Collection",
+        weight: 0,
         collection: {
           gold: {
             title: "Mega Man - Gold Edition"
@@ -1712,6 +1724,7 @@ define([
       // Monster hunter
       monsterhunter: {
         title: "Monster Hunter",
+        weight: 0,
         collection: {
           beriorosuaiola: {
             title: "Beriorosu & Avuria"
@@ -1737,6 +1750,7 @@ define([
       // Shovel knight
       shovelknight: {
         title: "Shovel Knight",
+        weight: 0,
         collection: {
           shovelknight: {
             title: "Shovel Knight"
@@ -1747,6 +1761,7 @@ define([
       // Skylanders
       skylanders: {
         title: "Skylanders Superchargers",
+        weight: 0,
         collection: {
           hammerslambowser: {
             title: "Hammer Slam Bowser"
@@ -1766,6 +1781,7 @@ define([
       // Splatoon
       splatoon: {
         title: "Splatoon",
+        weight: 0,
         collection: {
           callie: {
             title: "Callie"
@@ -1797,6 +1813,7 @@ define([
       // Super smash brothers
       ssb: {
         title: "Super Smash Brothers",
+        weight: 0,
         collection: {
           bowser: {
             title: "Bowser"
@@ -1972,6 +1989,7 @@ define([
       // Super Mario
       supermario: {
         title: "Super Mario",
+        weight: 0,
         collection: {
           boo: {
             title: "Boo"
@@ -2024,6 +2042,7 @@ define([
       // Super Mario Bros. 30th
       supermario30th: {
         title: "Super Mario Bros. 30th",
+        weight: 0,
         collection: {
           classiccolor: {
             title: "30th Anniversary Mario - Classic Color"
@@ -2037,6 +2056,7 @@ define([
       // Yoshi
       yoshi: {
         title: "Yoshi",
+        weight: 0,
         collection: {
           blueyarnyoshi: {
             title: "Blue Yarn Yoshi"
@@ -2333,6 +2353,13 @@ define([
           localObj[v] = initObj[v];
         }
 
+        // Add new group property to the group
+        _.each(_.keys(v), function(g) {
+          if (!(g in localObj[v])) {
+            localObj[v][g] = initObj[v][g];
+          }
+        });
+
         // Add collection item to the group
         _.each(initObj[v].collection, function(item, key) {
           if (!(key in localObj[v].collection)) {
@@ -2347,10 +2374,16 @@ define([
         // Remove old group
         if (!(l in initObj)) {
           delete localObj[l];
-        }
+        } else {
 
-        // Remove any old collection items from group
-        else {
+          // Remove any old group properties
+          _.each(_.keys(l), function(g) {
+            if (!(g in initObj[l])) {
+              delete localObj[l][g];
+            }
+          });
+
+          // Remove any old collection items from group
           _.each(localObj[l].collection, function(item, key) {
             if (!(key in initObj[l].collection)) {
               delete localObj[l].collection[key];
@@ -2359,13 +2392,20 @@ define([
         }
       });
 
-      // Update simple properties like titles that may have changed
+      // Update simple properties like 'title' or 'weight' that may have changed
       _.each(initObj, function(vObj, key) {
-        if (vObj.title != localObj[key].title) {
+
+        // Update a changed 'title'
+        if (vObj.title !== localObj[key].title) {
           localObj[key].title = vObj.title;
         }
 
-        // Iterate over the collection object checking simple things like titles
+        // Update a changed 'weight'
+        if (vObj.weight !== localObj[key].weight) {
+          localObj[key].weight = vObj.weight;
+        }
+
+        // Iterate over the collection object checking simple properties like 'title' for changes
         _.each(initObj[key].collection, function(cObj, id) {
           if (localObj[key].collection[id].title != cObj.title) {
             localObj[key].collection[id].title = initObj[key].collection[id].title;
@@ -2650,10 +2690,21 @@ define([
      * Sort groups alpha ascending.
      */
     sortAlphaAsc: function( collection ) {
-      return  _.map(_.sortBy(collection, 'title'), function(group) {
+
+      // Sort the collection by criteria
+      var sorted_collection = _.map(_.sortBy(collection, 'title'), function(group) {
         group.collection = _.sortBy(group.collection, 'title');
         return group;
       });
+
+      // Sort collection into 'weight' groups object
+      var weighted_collection = _.groupBy(sorted_collection, function(w_group) {
+        if (!w_group.weight) w_group.weight = 0;
+        return w_group.weight;
+      });
+
+      // Return the collection after flattening back into array
+      return _.flatten(_.toArray(weighted_collection));
     },
 
 
@@ -2661,10 +2712,21 @@ define([
      * Sort groups alpha descending.
      */
     sortAlphaDesc: function( collection ) {
-      return  _.map(_.sortBy(collection, 'title').reverse(), function(group) {
+
+      // Sort the collection by criteria
+      var sorted_collection = _.map(_.sortBy(collection, 'title').reverse(), function(group) {
         group.collection = _.sortBy(group.collection, 'title').reverse();
         return group;
       });
+
+      // Sort collection into 'weight' groups object
+      var weighted_collection = _.groupBy(sorted_collection, function(w_group) {
+        if (!w_group.weight) w_group.weight = 0;
+        return w_group.weight;
+      });
+
+      // Return the collection after flattening back into array
+      return _.flatten(_.toArray(weighted_collection));
     },
 
 
@@ -2672,7 +2734,18 @@ define([
      * Sort by total number ascending.
      */
     sortTotalAsc: function( collection ) {
-      return  _.sortBy(collection, 'size');
+
+      // Sort the collection by criteria
+      var sorted_collection = _.sortBy(collection, 'size');
+
+      // Sort collection into 'weight' groups object
+      var weighted_collection = _.groupBy(sorted_collection, function(w_group) {
+        if (!w_group.weight) w_group.weight = 0;
+        return w_group.weight;
+      });
+
+      // Return the collection after flattening back into array
+      return _.flatten(_.toArray(weighted_collection));
     },
 
 
@@ -2680,35 +2753,66 @@ define([
      * Sort by total number descending.
      */
     sortTotalDesc: function( collection ) {
-      return  _.sortBy(collection, 'size').reverse();
+
+      // Sort the collection by criteria
+      var sorted_collection = _.sortBy(collection, 'size').reverse();
+
+      // Sort collection into 'weight' groups object
+      var weighted_collection = _.groupBy(sorted_collection, function(w_group) {
+        if (!w_group.weight) w_group.weight = 0;
+        return w_group.weight;
+      });
+
+      // Return the collection after flattening back into array
+      return _.flatten(_.toArray(weighted_collection));
     },
 
 
     /**
      * Sort groups by numeric value of keys
-     * @todo
      */
     sortNumericAsc: function( collection ) {
-      return  _.map(_.sortBy(collection, function(group) { return parseInt(group.id)}), function(group) {
+
+      // Sort the collection by criteria
+      var sorted_collection = _.map(_.sortBy(collection, function(group) { return parseInt(group.id)}), function(group) {
         group.collection = _.sortBy(group.collection, function(item) {
           return parseInt(item.id);
         });
         return group;
       });
+
+      // Sort collection into 'weight' groups object
+      var weighted_collection = _.groupBy(sorted_collection, function(w_group) {
+        if (!w_group.weight) w_group.weight = 0;
+        return w_group.weight;
+      });
+
+      // Return the collection after flattening back into array
+      return _.flatten(_.toArray(weighted_collection));
     },
 
 
     /**
      * Sort groups by numeric value of keys
-     * @todo
      */
     sortNumericDesc: function( collection ) {
-      return  _.map(_.sortBy(collection, function(group) { return parseInt(group.id)}).reverse(), function(group) {
+
+      // Sort the collection by criteria
+      var sorted_collection = _.map(_.sortBy(collection, function(group) { return parseInt(group.id)}).reverse(), function(group) {
         group.collection = _.sortBy(group.collection, function(item) {
           return parseInt(item.id);
         }).reverse();
         return group;
       });
+
+      // Sort collection into 'weight' groups object
+      var weighted_collection = _.groupBy(sorted_collection, function(w_group) {
+        if (!w_group.weight) w_group.weight = 0;
+        return w_group.weight;
+      });
+
+      // Return the collection after flattening back into array
+      return _.flatten(_.toArray(weighted_collection));
     },
 
 

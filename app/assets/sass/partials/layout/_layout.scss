@@ -246,6 +246,10 @@
         margin-right: 15px;
         color: $blue;
       }
+      .group-stat {
+        font-size: .6em;
+        color: $text-ltgrey;
+      }
       .group-select-toggle {
         &.toggle-uncollected {
           display: none;

@@ -7695,6 +7695,9 @@ em {
       font-family: "FontAwesome";
       margin-right: 15px;
       color: #3880ff; }
+    .grid-container .amiibo-grid h2 .group-stat {
+      font-size: .6em;
+      color: #989898; }
     .grid-container .amiibo-grid h2 .group-select-toggle.toggle-uncollected {
       display: none; }
     .grid-container .amiibo-grid h2 .group-expando-toggle.toggle-closed {

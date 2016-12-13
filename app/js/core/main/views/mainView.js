@@ -21,8 +21,6 @@
  *
  * @todo - Image generation functionality still doesn't quite work. Consider removing it all together.
  *
- * @todo - Modify Stats Menu to only show and calculate groups that are "on" (not deactivated).
- *
  * @todo - Refactor per item settings so that 1 "item" exists if the item has been collected.
  */
 define([
@@ -2415,32 +2413,35 @@ define([
 
       // Populate the statistics object
       _.each(this.collection_sorted, function(group) {
-        stats[group.id] = {
-          total: _.size(group.collection),
-          owned: _.size(_.filter(group.collection, function(item) {
-            return item.collected;
-          }))
-        };
+        var live_group = self.collection[group.id];
+        if (!live_group.unchecked) {
+          stats[group.id] = {
+            total: _.size(live_group.collection),
+            owned: _.size(_.filter(live_group.collection, function(item) {
+              return item.collected;
+            }))
+          };
 
-        // Update overall totals
-        stats.total += stats[group.id].total;
-        stats.owned += stats[group.id].owned;
+          // Update overall totals
+          stats.total += stats[group.id].total;
+          stats.owned += stats[group.id].owned;
 
-        // Determine percentage
-        var group_perc = ((stats[group.id].owned / stats[group.id].total) * 100).toFixed(2);
+          // Determine percentage
+          var group_perc = ((stats[group.id].owned / stats[group.id].total) * 100).toFixed(2);
 
-        // Add a stat group to the container
-        stats_container.append(self.templates.menuStatsGroup({
-          group_id: group.id,
-          group_title: group.title,
-          group_total: stats[group.id].total,
-          group_owned: stats[group.id].owned,
-          group_perc: group_perc
-        }));
+          // Add a stat group to the container
+          stats_container.append(self.templates.menuStatsGroup({
+            group_id: group.id,
+            group_title: group.title,
+            group_total: stats[group.id].total,
+            group_owned: stats[group.id].owned,
+            group_perc: group_perc
+          }));
 
-        // Add the completed class if a group is completed
-        if (group_perc >= 100) {
-          $('[data-group-id="' + group.id + '"]').addClass('complete');
+          // Add the completed class if a group is completed
+          if (group_perc >= 100) {
+            $('[data-group-id="' + group.id + '"]').addClass('complete');
+          }
         }
       });
 

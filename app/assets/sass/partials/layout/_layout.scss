@@ -731,6 +731,9 @@
   color: $white;
   margin-top: 40px;
   border-top: 6px solid $blue;
+  @include breakpoint($max: $fg-col-10) {
+    font-size: 0.8rem;
+  }
   .footer-table {
     display: table;
     width: 100%;
@@ -747,9 +750,26 @@
   }
   .col2 {
     text-align: right;
+    min-width: 120px;
     a {
       font-family: "FontAwesome";
-      font-size: 2.0rem;
+      font-size: 2.0em;
+    }
+    a + a {
+      margin-left: 20px;
+    }
+  }
+  .inline {
+    display: inline-block;
+  }
+  .donate {
+    input {
+      background: transparent;
+      border: none;
+      padding: 0;
+      &[type="submit"] {
+        color: $yellow;
+      }
     }
   }
   a {

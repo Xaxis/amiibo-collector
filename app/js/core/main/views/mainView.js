@@ -7,8 +7,6 @@
  *
  * @todo - Create message/template for when no groups are being displayed.
  *
- * @todo - Add an unobtrusive "Donate" blurb/button in the footer linked with my paypal acct.
- *
  * @todo - Create filter to allow users to now show/load pictures.
  *
  * @todo - Create a bug reporting app/menu so people can email me problems/bugs, with captcha.
@@ -20,8 +18,6 @@
  * @todo - Add a "back to top" fixed element that transitions to being visible when the main nav becomes fixed.
  *
  * @todo - Image generation functionality still doesn't quite work. Consider removing it all together.
- *
- * @todo - Refactor per item settings so that 1 "item" exists if the item has been collected.
  */
 define([
   'jquery',

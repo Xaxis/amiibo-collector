@@ -98,6 +98,8 @@ define([
       'click .control[data-control-id="sort-alpha-desc"]': 'handleSort',
       'click .control[data-control-id="sort-total-asc"]': 'handleSort',
       'click .control[data-control-id="sort-total-desc"]': 'handleSort',
+      'click .control[data-control-id="sort-numeric-asc"]': 'handleSort',
+      'click .control[data-control-id="sort-numeric-desc"]': 'handleSort',
 
       // @todo - Refactor share menu into own view
       'click .control-share': 'toggleShareMenu',
@@ -2067,7 +2069,7 @@ define([
 
     // Collection settings initialization object
     collection_settings: {
-      sort_by: 'alpha-asc'
+      sort_by: 'numeric-asc'
     },
 
     // Local Storage configuration
@@ -2114,6 +2116,8 @@ define([
         'sortAlphaDesc',
         'sortTotalAsc',
         'sortTotalDesc',
+        'sortNumericAsc',
+        'sortNumericDesc',
 
         // @todo - Refactor share menu into own view
         'toggleShareMenu',
@@ -2247,6 +2251,12 @@ define([
           break;
         case 'total-desc' :
           this.collection_sorted = this.sortTotalDesc(this.collection_sorted);
+          break;
+        case 'numeric-asc' :
+          this.collection_sorted = this.sortNumericAsc(this.collection_sorted);
+          break;
+        case 'numeric-desc' :
+          this.collection_sorted = this.sortNumericDesc(this.collection_sorted);
           break;
       }
 
@@ -2670,6 +2680,34 @@ define([
      */
     sortTotalDesc: function( collection ) {
       return  _.sortBy(collection, 'size').reverse();
+    },
+
+
+    /**
+     * Sort groups by numeric value of keys
+     * @todo
+     */
+    sortNumericAsc: function( collection ) {
+      return  _.map(_.sortBy(collection, function(group) { return parseInt(group.id)}), function(group) {
+        group.collection = _.sortBy(group.collection, function(item) {
+          return parseInt(item.id);
+        });
+        return group;
+      });
+    },
+
+
+    /**
+     * Sort groups by numeric value of keys
+     * @todo
+     */
+    sortNumericDesc: function( collection ) {
+      return  _.map(_.sortBy(collection, function(group) { return parseInt(group.id)}).reverse(), function(group) {
+        group.collection = _.sortBy(group.collection, function(item) {
+          return parseInt(item.id);
+        }).reverse();
+        return group;
+      });
     },
 
 

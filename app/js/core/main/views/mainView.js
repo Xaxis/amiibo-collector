@@ -7,17 +7,19 @@
  *
  * @todo - Create message/template for when no groups are being displayed.
  *
+ * @todo - Consider adding sort by regions filter
+ *
  * @todo - Create filter to allow users to now show/load pictures.
  *
  * @todo - Create a bug reporting app/menu so people can email me problems/bugs, with captcha.
  *
- * @todo - Refactor sorting so that the item grids aren't reloaded but instead the elements are re-organized.
- *
- * @todo - Consider adding functionality that allows users to sort an individual group.
- *
  * @todo - Add a "back to top" fixed element that transitions to being visible when the main nav becomes fixed.
  *
  * @todo - Image generation functionality still doesn't quite work. Consider removing it all together.
+ *
+ * @todo - Add feature that allows you to resize the collection images (a slider of some sort) ??
+ *
+ * @todo - Add some kind of styling or feedback to indicate Weight Groups
  */
 define([
   'jquery',
@@ -109,6 +111,11 @@ define([
       'click .amiibo-grid h2 .group-expando-toggle': 'groupToggleOpenClosed',
       'click .amiibo-grid h2 .group-select-toggle': 'groupToggleCollected',
       'click .amiibo-grid h2 .group-toggle-on-off': 'groupToggleOnOff',
+      'click .amiibo-grid h2 .group-more': 'groupToggleMoreMenuOpenClosed',
+      'click .amiibo-grid h2 .group-sort-alpha-asc': 'groupHandleSort',
+      'click .amiibo-grid h2 .group-sort-alpha-desc': 'groupHandleSort',
+      'click .amiibo-grid h2 .group-sort-numeric-asc': 'groupHandleSort',
+      'click .amiibo-grid h2 .group-sort-numeric-desc': 'groupHandleSort',
 
       // @todo - Possibly refactor item controls/menu into own view
       'click .grid-item': 'toggleSelectedItem',
@@ -2083,7 +2090,8 @@ define([
 
     // Collection settings initialization object
     collection_settings: {
-      sort_by: 'numeric-asc'
+      sort_by: 'numeric-asc',
+      sort_group_id: ''
     },
 
     // Local Storage configuration
@@ -2110,8 +2118,8 @@ define([
       // Bind methods
       _.bindAll(this,
         'lazyLoadCollectionImages',
-        'loadCollection',
         'storageDiffUpdate',
+        'loadCollection',
 
         // @todo - Possibly refactor stats menu into own view
         'toggleStatsMenu',
@@ -2147,6 +2155,8 @@ define([
         'groupToggleOpenClosed',
         'groupToggleCollected',
         'groupToggleOnOff',
+        'groupToggleMoreMenuOpenClosed',
+        'groupHandleSort',
 
         // @todo - Possibly refactor collection items into own view
         'toggleSelectedItem',
@@ -2206,129 +2216,6 @@ define([
           $(this).prev('.fa-spinner').remove();
         }
       });
-    },
-
-
-    /**
-     * Load and built the collection.
-     */
-    loadCollection: function() {
-      var
-        self        = this,
-        path        = this.storage_settings.asset_path,
-        grid        = $('.grid-container');
-
-      // Make sure the grid container is cleared out
-      grid.empty();
-
-      // Test to see if we should load from local storage
-      if (this.storage_settings.is_local && !this.storage_settings.dont_use_local && !this.loaded) {
-
-        // Indicate local storage has been loaded
-        this.loaded = true;
-
-        // Proceed to load collection object when it exists
-        if (window.localStorage.getItem(this.storage_settings.id)) {
-          this.storageDiffUpdate();
-          this.collection = JSON.parse(window.localStorage.getItem(this.storage_settings.id));
-        }
-
-        // Load the collection settings object when it exists otherwise set it
-        if (window.localStorage.getItem(this.storage_settings.id + '_settings')) {
-          this.collection_settings = JSON.parse(window.localStorage.getItem(this.storage_settings.id + '_settings'));
-        } else {
-          window.localStorage.setItem(this.storage_settings.id + '_settings', JSON.stringify(this.collection_settings));
-        }
-      }
-
-      // Convert collection to sortable array while populating meta properties
-      this.collection_sorted = _.map(JSON.parse(JSON.stringify(this.collection)), function(group, group_id) {
-        group.id = group_id;
-        group.size = _.size(group.collection);
-        group.collection = _.map(group.collection, function(item, item_id) {
-          item.id = item_id;
-          return item;
-        });
-        return group;
-      });
-
-      // Sort groups based on collection settings
-      switch (this.collection_settings.sort_by) {
-        case 'alpha-asc' :
-          this.collection_sorted = this.sortAlphaAsc(this.collection_sorted);
-          break;
-        case 'alpha-desc' :
-          this.collection_sorted = this.sortAlphaDesc(this.collection_sorted);
-          break;
-        case 'total-asc' :
-          this.collection_sorted = this.sortTotalAsc(this.collection_sorted);
-          break;
-        case 'total-desc' :
-          this.collection_sorted = this.sortTotalDesc(this.collection_sorted);
-          break;
-        case 'numeric-asc' :
-          this.collection_sorted = this.sortNumericAsc(this.collection_sorted);
-          break;
-        case 'numeric-desc' :
-          this.collection_sorted = this.sortNumericDesc(this.collection_sorted);
-          break;
-      }
-
-      // Iterate over collection
-      _.each(this.collection_sorted, function(group) {
-        var
-          group_id          = group.id,
-          grid_group        = self.templates.amiiboGroup({
-            group_name: group_id,
-            group_title: group.title,
-            group_collected: _.filter(group.collection, 'collected').length,
-            group_total: _.size(group.collection)
-          }),
-          group_elm         = null;
-
-        // Add new group container
-        grid.append(grid_group);
-        group_elm = $('.amiibo-grid[data-group-name="' + group_id + '"]');
-
-        // Is the group set to display or not?
-        if (group.unchecked) group_elm.addClass('group-off');
-
-        // Create new group container
-        _.each(group.collection, function(item) {
-          var
-            item_id             = item.id,
-            amiibo_path         = path + group_id + '-' + item_id + '.png';
-
-          // Create new grid object
-          grid.find('.' + group_id + ' .group').append(self.templates.amiiboGridItem({
-            amiibo_name: item_id,
-            amiibo_path: amiibo_path,
-            amiibo_title: item.title || '',
-            amiibo_class: ((item.collected) ? 'collected' : '')
-          }));
-        });
-
-        // Add appropriate class on group to indicate whether or not a group has been collected
-        if (group.size == _.filter(group.collection, 'collected').length) {
-          group_elm
-            .data('group-collected', 'yes')
-            .addClass('group-collected');
-        } else {
-          group_elm
-            .data('group-collected', 'no')
-            .removeClass('group-collected');
-        }
-
-        // Toggle show/hide the group based on its user setting
-        if (group.closed) {
-          group_elm.addClass('group-closed');
-        } else {
-          group_elm.removeClass('group-closed');
-        }
-      });
-
-      // Initialize lazy loading of collection images
-      this.lazyLoadCollectionImages();
     },
 
 
@@ -2412,6 +2299,158 @@ define([
       // Update the local storage object
       window.localStorage.setItem(this.storage_settings.id, JSON.stringify(localObj));
     },
+
+
+    /**
+     * Load and built the collection.
+     */
+    loadCollection: function() {
+      var
+        self        = this,
+        path        = this.storage_settings.asset_path,
+        grid        = $('.grid-container');
+
+      // Remove the "collection loading" indicator
+      $('.collection-loading-message').remove();
+
+      // Test to see if we should load from local storage
+      if (this.storage_settings.is_local && !this.storage_settings.dont_use_local && !this.loaded) {
+
+        // Indicate local storage has been loaded
+        this.loaded = true;
+
+        // Proceed to load collection object when it exists
+        if (window.localStorage.getItem(this.storage_settings.id)) {
+          this.storageDiffUpdate();
+          this.collection = JSON.parse(window.localStorage.getItem(this.storage_settings.id));
+        }
+
+        // Load the collection settings object when it exists otherwise set it
+        if (window.localStorage.getItem(this.storage_settings.id + '_settings')) {
+          this.collection_settings = JSON.parse(window.localStorage.getItem(this.storage_settings.id + '_settings'));
+        } else {
+          window.localStorage.setItem(this.storage_settings.id + '_settings', JSON.stringify(this.collection_settings));
+        }
+      }
+
+      // Convert collection to sortable array while populating meta properties
+      this.collection_sorted = this.collection_sorted || _.map(JSON.parse(JSON.stringify(this.collection)), function(group, group_id) {
+        group.id = group_id;
+        group.size = _.size(group.collection);
+        group.collection = _.map(group.collection, function(item, item_id) {
+          item.id = item_id;
+          return item;
+        });
+        return group;
+      });
+
+      // Sort groups based on collection settings
+      switch (this.collection_settings.sort_by) {
+        case 'alpha-asc' :
+          this.collection_sorted = this.sortAlphaAsc(this.collection_sorted, this.collection_settings.sort_group_id);
+          break;
+        case 'alpha-desc' :
+          this.collection_sorted = this.sortAlphaDesc(this.collection_sorted, this.collection_settings.sort_group_id);
+          break;
+        case 'total-asc' :
+          this.collection_sorted = this.sortTotalAsc(this.collection_sorted);
+          break;
+        case 'total-desc' :
+          this.collection_sorted = this.sortTotalDesc(this.collection_sorted);
+          break;
+        case 'numeric-asc' :
+          this.collection_sorted = this.sortNumericAsc(this.collection_sorted, this.collection_settings.sort_group_id);
+          break;
+        case 'numeric-desc' :
+          this.collection_sorted = this.sortNumericDesc(this.collection_sorted, this.collection_settings.sort_group_id);
+          break;
+      }
+
+      // Iterate over collection
+      _.each(this.collection_sorted, function(group, idx) {
+        var
+          group_id          = group.id,
+          group_add         = false,
+          grid_group        = self.templates.amiiboGroup({
+            group_name: group_id,
+            group_title: group.title,
+            group_collected: _.filter(group.collection, 'collected').length,
+            group_total: _.size(group.collection)
+          }),
+          group_elm         = $('.amiibo-grid[data-group-name="' + group_id + '"]');
+
+        // Add group if it doesn't already exist
+        if (!group_elm.length) {
+          grid.append(grid_group);
+          group_elm = $('.amiibo-grid[data-group-name="' + group_id + '"]');
+          group_add = true;
+        }
+
+        // Otherwise swap element
+        else {
+          group_elm.parent().after($('.amiibo-grid-group-container').eq(idx).replaceWith(group_elm.parent()));
+        }
+
+        // Proceed if group items don't yet exist
+        if (group_add || self.collection_settings.sort_group_id) {
+
+          // Is the group set to display or not?
+          if (group.unchecked) group_elm.addClass('group-off');
+
+          // Add appropriate class on group to indicate whether or not a group has been collected
+          if (group.size == _.filter(group.collection, 'collected').length) {
+            group_elm
+              .data('group-collected', 'yes')
+              .addClass('group-collected');
+          } else {
+            group_elm
+              .data('group-collected', 'no')
+              .removeClass('group-collected');
+          }
+
+          // Toggle show/hide the group based on its user setting
+          if (group.closed) {
+            group_elm.addClass('group-closed');
+          } else {
+            group_elm.removeClass('group-closed');
+          }
+
+          // Add new items only if they don't yet exist
+          if (group_add) {
+            _.each(group.collection, function(item) {
+              var
+                item_id             = item.id,
+                item_path         = path + group_id + '-' + item_id + '.png';
+
+              // Create new grid object
+              grid.find('.' + group_id + ' .group').append(self.templates.amiiboGridItem({
+                amiibo_name: item_id,
+                amiibo_path: item_path,
+                amiibo_title: item.title || '',
+                amiibo_class: ((item.collected) ? 'collected' : '')
+              }));
+            });
+          }
+
+          // Otherwise swap group item positions if you're doing a group sort
+          else if (group.id == self.collection_settings.sort_group_id) {
+            _.each(group.collection, function(item, idx) {
+              var
+                item_elm        = group_elm.find('[data-amiibo-name="' + item.id + '"]');
+              item_elm.after(group_elm.find('.grid-item').eq(idx).replaceWith(item_elm));
+            });
+          }
+
+        }
+      });
+
+      // Reset any group sort id to blank
+      this.collection_settings.sort_group_id = '';
+
+      // Initialize lazy loading of collection images
+      this.lazyLoadCollectionImages();
+    },
+
 
 
 
@@ -2685,13 +2724,24 @@ define([
     /**
      * Sort groups alpha ascending.
      */
-    sortAlphaAsc: function( collection ) {
+    sortAlphaAsc: function( collection, group_id ) {
+      var
+        sorted_collection       = null;
 
       // Sort the collection by criteria
-      var sorted_collection = _.map(_.sortBy(collection, 'title'), function(group) {
-        group.collection = _.sortBy(group.collection, 'title');
-        return group;
-      });
+      if (!group_id) {
+        sorted_collection = _.map(_.sortBy(collection, 'title'), function(group) {
+          group.collection = _.sortBy(group.collection, 'title');
+          return group;
+        });
+      } else {
+        sorted_collection = _.filter(collection, function(group) {
+          if (group.id == group_id) {
+            group.collection = _.sortBy(group.collection, 'title');
+          }
+          return true;
+        });
+      }
 
       // Sort collection into 'weight' groups object
       var weighted_collection = _.groupBy(sorted_collection, function(w_group) {
@@ -2707,13 +2757,24 @@ define([
     /**
      * Sort groups alpha descending.
      */
-    sortAlphaDesc: function( collection ) {
+    sortAlphaDesc: function( collection, group_id ) {
+      var
+        sorted_collection       = null;
 
       // Sort the collection by criteria
-      var sorted_collection = _.map(_.sortBy(collection, 'title').reverse(), function(group) {
-        group.collection = _.sortBy(group.collection, 'title').reverse();
-        return group;
-      });
+      if (!group_id) {
+        sorted_collection = _.map(_.sortBy(collection, 'title').reverse(), function(group) {
+          group.collection = _.sortBy(group.collection, 'title').reverse();
+          return group;
+        });
+      } else {
+        sorted_collection = _.filter(collection, function(group) {
+          if (group.id == group_id) {
+            group.collection = _.sortBy(group.collection, 'title').reverse();
+          }
+          return true;
+        });
+      }
 
       // Sort collection into 'weight' groups object
       var weighted_collection = _.groupBy(sorted_collection, function(w_group) {
@@ -2767,15 +2828,28 @@ define([
     /**
      * Sort groups by numeric value of keys
      */
-    sortNumericAsc: function( collection ) {
+    sortNumericAsc: function( collection, group_id ) {
+      var
+        sorted_collection       = null;
 
       // Sort the collection by criteria
-      var sorted_collection = _.map(_.sortBy(collection, function(group) { return parseInt(group.id)}), function(group) {
-        group.collection = _.sortBy(group.collection, function(item) {
-          return parseInt(item.id);
+      if (!group_id) {
+        sorted_collection = _.map(_.sortBy(collection, function(group) { return parseInt(group.id)}), function(group) {
+          group.collection = _.sortBy(group.collection, function(item) {
+            return parseInt(item.id);
+          });
+          return group;
         });
-        return group;
-      });
+      } else {
+        sorted_collection = _.filter(collection, function(group) {
+          if (group.id == group_id) {
+            group.collection = _.sortBy(group.collection, function(item) {
+              return parseInt(item.id);
+            });
+          }
+          return true;
+        });
+      }
 
       // Sort collection into 'weight' groups object
       var weighted_collection = _.groupBy(sorted_collection, function(w_group) {
@@ -2791,15 +2865,28 @@ define([
     /**
      * Sort groups by numeric value of keys
      */
-    sortNumericDesc: function( collection ) {
+    sortNumericDesc: function( collection, group_id ) {
+      var
+        sorted_collection       = null;
 
       // Sort the collection by criteria
-      var sorted_collection = _.map(_.sortBy(collection, function(group) { return parseInt(group.id)}).reverse(), function(group) {
-        group.collection = _.sortBy(group.collection, function(item) {
-          return parseInt(item.id);
-        }).reverse();
-        return group;
-      });
+      if (!group_id) {
+        sorted_collection = _.map(_.sortBy(collection, function(group) { return parseInt(group.id)}).reverse(), function(group) {
+          group.collection = _.sortBy(group.collection, function(item) {
+            return parseInt(item.id);
+          });
+          return group;
+        });
+      } else {
+        sorted_collection = _.filter(collection, function(group) {
+          if (group.id == group_id) {
+            group.collection = _.sortBy(group.collection, function(item) {
+              return parseInt(item.id);
+            }).reverse();
+          }
+          return true;
+        });
+      }
 
       // Sort collection into 'weight' groups object
       var weighted_collection = _.groupBy(sorted_collection, function(w_group) {
@@ -3222,6 +3309,62 @@ define([
 
       // Reinit lazy load of collection images
       this.lazyLoadCollectionImages();
+    },
+
+
+    /**
+     * Toggles a group's more menu open/closed.
+     */
+    groupToggleMoreMenuOpenClosed: function(e) {
+      var
+        target                  = $(e.currentTarget),
+        group                   = target.closest('.amiibo-grid'),
+        group_id                = group.attr('data-group-name'),
+        control_menu_container  = target.closest('.more-controls');
+
+      // Set state of target menu
+      if (!target.data('state')) {
+        target.data('state', 'closed');
+      } else if (target.data('state') == 'closed') {
+        target.data('state', 'open');
+      } else if (target.data('state') == 'open') {
+        target.data('state', 'closed');
+      }
+
+      // Close any other open menus
+      $('.amiibo-grid .more-controls').each(function(idx, elm) {
+        var other_target = $(elm).closest('.more-controls');
+        if (other_target.hasClass('open')) {
+          other_target.removeClass('open');
+          other_target.find('.group-control').data('state', 'open');
+        }
+      });
+
+      // Toggle menu open/closed
+      if (target.data('state') == 'closed') {
+        control_menu_container.addClass('open');
+      } else if (target.data('state') == 'open') {
+        control_menu_container.removeClass('open');
+      }
+    },
+
+
+    /**
+     * Handles routing the appropriate sorting for an individual group.
+     */
+    groupHandleSort: function(e) {
+      var
+        target                  = $(e.currentTarget),
+        group                   = target.closest('.amiibo-grid'),
+        more_control            = target.closest('.more-controls').find('.group-more'),
+        group_id                = group.attr('data-group-name'),
+        sort_by                 = target.closest('.more-controls-control').attr('data-control-id').replace('sort-', '');
+
+      // Sort the group
+      this.collection_settings.sort_by = sort_by;
+      this.collection_settings.sort_group_id = group_id;
+      this.loadCollection();
+      more_control.click();
     },
 
 

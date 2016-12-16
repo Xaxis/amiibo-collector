@@ -7718,7 +7718,7 @@ em {
         display: none;
         position: absolute;
         z-index: 1000;
-        left: -14px;
+        left: -13px;
         border: 1px solid #989898;
         border-radius: 4px;
         background: white;
@@ -8063,6 +8063,24 @@ em {
     color: white;
     cursor: pointer;
     display: inline-block; }
+
+.back-to-top {
+  position: fixed;
+  right: 10px;
+  bottom: 10px;
+  padding: 4px 6px;
+  border: 1px solid #989898;
+  border-radius: 4px;
+  background: white;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 350ms ease; }
+  .back-to-top i {
+    color: #3880ff;
+    display: inline-block; }
+  .back-to-top.stuck {
+    opacity: 1;
+    transition: opacity 350ms ease; }
 
 .btn {
   display: inline-block;

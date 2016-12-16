@@ -284,7 +284,7 @@
           display: none;
           position: absolute;
           z-index: 1000;
-          left: -14px;
+          left: -13px;
           border: 1px solid $text-ltgrey;
           border-radius: 4px;
           background: $white;
@@ -329,7 +329,6 @@
               .group-control {
                 width: 30px;
                 margin-right: 0;
-                //text-align: center;
               }
               .group-control-title {
                 cursor: pointer;
@@ -852,5 +851,29 @@
     color: $white;
     cursor: pointer;
     display: inline-block;
+  }
+}
+
+
+// Styles for "back to top" tool
+// -----------------------------
+.back-to-top {
+  position: fixed;
+  right: 10px;
+  bottom: 10px;
+  padding: 4px 6px;
+  border: 1px solid $text-ltgrey;
+  border-radius: 4px;
+  background: $white;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 350ms ease;
+  i {
+    color: $blue;
+    display: inline-block;
+  }
+  &.stuck {
+    opacity: 1;
+    transition: opacity 350ms ease;
   }
 }

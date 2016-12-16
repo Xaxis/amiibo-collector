@@ -13,8 +13,6 @@
  *
  * @todo - Create a bug reporting app/menu so people can email me problems/bugs, with captcha.
  *
- * @todo - Add a "back to top" fixed element that transitions to being visible when the main nav becomes fixed.
- *
  * @todo - Image generation functionality still doesn't quite work. Consider removing it all together.
  *
  * @todo - Add feature that allows you to resize the collection images (a slider of some sort) ??
@@ -83,9 +81,9 @@ define([
 
       // @todo - Possibly refactor group menu into own view
       'click .control-group': 'toggleGroupMenu',
-      'click .menu-group .control.toggle-group-expando': 'groupMenuToggleGroupOpenClosed',
-      'click .menu-group .control.toggle-all-collected': 'groupMenuToggleAllCollected',
-      'click .menu-group .control.toggle-on-off': 'groupMenuToggleGroupOnOff',
+      'click .menu-group .toggle-group-expando': 'groupMenuToggleGroupOpenClosed',
+      'click .menu-group .toggle-all-collected': 'groupMenuToggleAllCollected',
+      'click .menu-group .toggle-on-off': 'groupMenuToggleGroupOnOff',
       'click .menu-group .group-title': 'groupMenuJumpToGroup',
 
       // @todo - Possibly refactor sort menu into own view
@@ -128,7 +126,10 @@ define([
       'change .menu-item-settings .controls-item-status select': 'itemSettingsSubitemStatusUpdate',
       'change .menu-item-settings .controls-item-condition select': 'itemSettingsSubitemConditionUpdate',
       'click .menu-item-settings .controls-item-note .button': 'itemSettingsSubitemNoteToggle',
-      'click .menu-item-settings .controls-item-note .notepad': 'itemSettingsSubitemNoteToggle'
+      'click .menu-item-settings .controls-item-note .notepad': 'itemSettingsSubitemNoteToggle',
+
+      // @todo - Refactor below global events into own file or view
+      'click .back-to-top': 'scrollViewportBackToTop'
     },
 
     // Stores references to loaded menus
@@ -2091,6 +2092,7 @@ define([
     // Collection settings initialization object
     collection_settings: {
       sort_by: 'numeric-asc',
+      last_sort_by: 'numeric-asc',
       sort_group_id: ''
     },
 
@@ -2167,7 +2169,10 @@ define([
         'itemSettingsRemoveSubitem',
         'itemSettingsSubitemStatusUpdate',
         'itemSettingsSubitemConditionUpdate',
-        'itemSettingsSubitemNoteToggle'
+        'itemSettingsSubitemNoteToggle',
+
+        // @todo - Refactor below global events into own file or view
+        'scrollViewportBackToTop'
       );
       
       // Initialize sticky navigation
@@ -2181,6 +2186,13 @@ define([
         },
         onUnstick: function(elm) {
           $(elm).removeClass('stuck');
+        },
+        onScroll: function(elm) {
+          if ($(window).scrollTop() + $(window).height() >= $(document).height() - 50) {
+            $('.back-to-top').removeClass('stuck');
+          } else if ($(elm).hasClass('stuck')) {
+            $('.back-to-top').addClass('stuck');
+          }
         }
       });
 
@@ -2334,7 +2346,8 @@ define([
       }
 
       // Convert collection to sortable array while populating meta properties
-      this.collection_sorted = this.collection_sorted || _.map(JSON.parse(JSON.stringify(this.collection)), function(group, group_id) {
+      // this.collection_sorted = this.collection_sorted || _.map(JSON.parse(JSON.stringify(this.collection)), function(group, group_id) {
+      this.collection_sorted = _.map(JSON.parse(JSON.stringify(this.collection)), function(group, group_id) {
         group.id = group_id;
         group.size = _.size(group.collection);
         group.collection = _.map(group.collection, function(item, item_id) {
@@ -2370,7 +2383,6 @@ define([
       _.each(this.collection_sorted, function(group, idx) {
         var
           group_id          = group.id,
-          group_add         = false,
           grid_group        = self.templates.amiiboGroup({
             group_name: group_id,
             group_title: group.title,
@@ -2383,66 +2395,65 @@ define([
         if (!group_elm.length) {
           grid.append(grid_group);
           group_elm = $('.amiibo-grid[data-group-name="' + group_id + '"]');
-          group_add = true;
         }
 
         // Otherwise swap element
-        else {
+        else if (!self.collection_settings.sort_group_id) {
           group_elm.parent().after($('.amiibo-grid-group-container').eq(idx).replaceWith(group_elm.parent()));
         }
 
-        // Proceed if group items don't yet exist
-        if (group_add || self.collection_settings.sort_group_id) {
+        // Iterate over a groups items
+        _.each(group.collection, function(item, iidx) {
+          var
+            item_id             = item.id,
+            item_path         = path + group_id + '-' + item_id + '.png',
+            item_elm        = group_elm.find('[data-amiibo-name="' + item.id + '"]');
 
-          // Is the group set to display or not?
-          if (group.unchecked) group_elm.addClass('group-off');
-
-          // Add appropriate class on group to indicate whether or not a group has been collected
-          if (group.size == _.filter(group.collection, 'collected').length) {
-            group_elm
-              .data('group-collected', 'yes')
-              .addClass('group-collected');
-          } else {
-            group_elm
-              .data('group-collected', 'no')
-              .removeClass('group-collected');
-          }
-
-          // Toggle show/hide the group based on its user setting
-          if (group.closed) {
-            group_elm.addClass('group-closed');
-          } else {
-            group_elm.removeClass('group-closed');
-          }
-
-          // Add new items only if they don't yet exist
-          if (group_add) {
-            _.each(group.collection, function(item) {
-              var
-                item_id             = item.id,
-                item_path         = path + group_id + '-' + item_id + '.png';
-
-              // Create new grid object
-              grid.find('.' + group_id + ' .group').append(self.templates.amiiboGridItem({
-                amiibo_name: item_id,
-                amiibo_path: item_path,
-                amiibo_title: item.title || '',
-                amiibo_class: ((item.collected) ? 'collected' : '')
-              }));
-            });
+          // Create new grid object
+          if (!item_elm.length) {
+            grid.find('.' + group_id + ' .group').append(self.templates.amiiboGridItem({
+              amiibo_name: item_id,
+              amiibo_path: item_path,
+              amiibo_title: item.title || '',
+              amiibo_class: ((item.collected) ? 'collected' : '')
+            }));
           }
 
           // Otherwise swap group item positions if you're doing a group sort
-          else if (group.id == self.collection_settings.sort_group_id) {
-            _.each(group.collection, function(item, idx) {
-              var
-                item_elm        = group_elm.find('[data-amiibo-name="' + item.id + '"]');
-              item_elm.after(group_elm.find('.grid-item').eq(idx).replaceWith(item_elm));
-            });
+          else if (!group.unchecked) {
+            if (
+              (group.id == self.collection_settings.sort_group_id) ||
+              (self.collection_settings.sort_by != self.collection_settings.last_sort_by && !self.collection_settings.sort_group_id)
+            ) {
+              item_elm.after(group_elm.find('.grid-item').eq(iidx).replaceWith(item_elm));
+            }
           }
+        });
 
+        // Is the group set to display or not?
+        if (group.unchecked) group_elm.addClass('group-off');
+
+        // Add appropriate class on group to indicate whether or not a group has been collected
+        if (group.size == _.filter(group.collection, 'collected').length) {
+          group_elm
+            .data('group-collected', 'yes')
+            .addClass('group-collected');
+        } else {
+          group_elm
+            .data('group-collected', 'no')
+            .removeClass('group-collected');
+        }
+
+        // Toggle show/hide the group based on its user setting
+        if (group.closed) {
+          group_elm.addClass('group-closed');
+        } else {
+          group_elm.removeClass('group-closed');
         }
       });
+
+      // Update the last sorted by flag
+      this.collection_settings.last_sort_by = this.collection_settings.sort_by;
 
       // Reset any group sort id to blank
       this.collection_settings.sort_group_id = '';
@@ -3707,6 +3718,24 @@ define([
         item_obj.subitems[sub_item_id].note = note;
         window.localStorage.setItem(this.storage_settings.id, JSON.stringify(this.collection));
       }
+    },
+
+
+
+
+
+
+    //
+    // !!!!!!!
+    // @todo - Refactor below global events into own file or view
+    // !!!!!!!
+    //
+
+    /**
+     * Scroll back to the top of the viewport.
+     */
+    scrollViewportBackToTop: function() {
+      window.scrollTo(0, 0);
     }
 
   });

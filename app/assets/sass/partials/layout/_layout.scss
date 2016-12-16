@@ -806,6 +806,8 @@
   color: $white;
   margin-top: 40px;
   border-top: 6px solid $blue;
+  position: relative;
+  z-index: 1000;
   @include breakpoint($max: $fg-col-10) {
     font-size: 0.8rem;
   }

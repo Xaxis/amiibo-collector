@@ -8028,7 +8028,9 @@ em {
   background-color: #2f5b9f;
   color: white;
   margin-top: 40px;
-  border-top: 6px solid #3880ff; }
+  border-top: 6px solid #3880ff;
+  position: relative;
+  z-index: 1000; }
   @media only screen and (max-width: 600px) {
     .footer {
       font-size: 0.8rem; } }

@@ -106,14 +106,14 @@ define([
       'click .menu-restart .restart-continue': 'handleCollectionRestart',
 
       // @todo - Possibly refactor group controls into own view
-      'click .amiibo-grid h2 .group-expando-toggle': 'groupToggleOpenClosed',
-      'click .amiibo-grid h2 .group-select-toggle': 'groupToggleCollected',
-      'click .amiibo-grid h2 .group-toggle-on-off': 'groupToggleOnOff',
-      'click .amiibo-grid h2 .group-more': 'groupToggleMoreMenuOpenClosed',
-      'click .amiibo-grid h2 .group-sort-alpha-asc': 'groupHandleSort',
-      'click .amiibo-grid h2 .group-sort-alpha-desc': 'groupHandleSort',
-      'click .amiibo-grid h2 .group-sort-numeric-asc': 'groupHandleSort',
-      'click .amiibo-grid h2 .group-sort-numeric-desc': 'groupHandleSort',
+      'click .collection-group h2 .group-expando-toggle': 'groupToggleOpenClosed',
+      'click .collection-group h2 .group-select-toggle': 'groupToggleCollected',
+      'click .collection-group h2 .group-toggle-on-off': 'groupToggleOnOff',
+      'click .collection-group h2 .group-more': 'groupToggleMoreMenuOpenClosed',
+      'click .collection-group h2 .group-sort-alpha-asc': 'groupHandleSort',
+      'click .collection-group h2 .group-sort-alpha-desc': 'groupHandleSort',
+      'click .collection-group h2 .group-sort-numeric-asc': 'groupHandleSort',
+      'click .collection-group h2 .group-sort-numeric-desc': 'groupHandleSort',
 
       // @todo - Possibly refactor item controls/menu into own view
       'click .grid-item': 'toggleSelectedItem',
@@ -2391,17 +2391,17 @@ define([
             group_collected: _.filter(group.collection, 'collected').length,
             group_total: _.size(group.collection)
           }),
-          group_elm         = $('.amiibo-grid[data-group-name="' + group_id + '"]');
+          group_elm         = $('.collection-group[data-group-name="' + group_id + '"]');
 
         // Add group if it doesn't already exist
         if (!group_elm.length) {
           grid.append(grid_group);
-          group_elm = $('.amiibo-grid[data-group-name="' + group_id + '"]');
+          group_elm = $('.collection-group[data-group-name="' + group_id + '"]');
         }
 
         // Otherwise swap element
         else if (!self.collection_settings.sort_group_id) {
-          group_elm.parent().after($('.amiibo-grid-group-container').eq(idx).replaceWith(group_elm.parent()));
+          group_elm.parent().after($('.collection-group-container').eq(idx).replaceWith(group_elm.parent()));
         }
 
         // Iterate over a groups items
@@ -2608,7 +2608,7 @@ define([
         target        = $(e.currentTarget),
         group         = target.closest('.group-group'),
         target_id     = target.data('id'),
-        target_group  = $('.amiibo-grid[data-group-name="' + target_id + '"]');
+        target_group  = $('.collection-group[data-group-name="' + target_id + '"]');
 
       // Toggle group class in menu
       group.toggleClass('toggle-group-expando-active');
@@ -2630,7 +2630,7 @@ define([
         target        = $(e.currentTarget),
         group         = target.closest('.group-group'),
         target_id     = target.data('id'),
-        target_group  = $('.amiibo-grid[data-group-name="' + target_id + '"]');
+        target_group  = $('.collection-group[data-group-name="' + target_id + '"]');
 
       // Toggle group class in menu
       group.toggleClass('toggle-all-collected-active');
@@ -2652,7 +2652,7 @@ define([
         target        = $(e.currentTarget),
         group         = target.closest('.group-group'),
         target_id      = target.data('id'),
-        target_group  = $('.amiibo-grid[data-group-name="' + target_id + '"]');
+        target_group  = $('.collection-group[data-group-name="' + target_id + '"]');
 
       // Toggle active class on group
       group.toggleClass('toggle-on-off-active');
@@ -2674,7 +2674,7 @@ define([
         target        = $(e.currentTarget),
         group         = target.closest('.group-group'),
         target_id      = target.data('id'),
-        target_group  = $('.amiibo-grid[data-group-name="' + target_id + '"]');
+        target_group  = $('.collection-group[data-group-name="' + target_id + '"]');
 
       // Prevent default event
       e.preventDefault();
@@ -2978,7 +2978,7 @@ define([
       // Determine the dimensions of the canvas based on the number of items to be drawn
       _.each(this.collection, function(group, group_id) {
         var
-          group_elm                   = $('.amiibo-grid[data-group-name="' + group_id + '"]'),
+          group_elm                   = $('.collection-group[data-group-name="' + group_id + '"]'),
           total_to_draw_in_group      = 0,
           collected                   = _.filter(group.collection, function(item) {
             return item.collected;
@@ -3225,7 +3225,7 @@ define([
     groupToggleOpenClosed: function(e) {
       var
         target        = $(e.currentTarget),
-        parent        = target.closest('.amiibo-grid'),
+        parent        = target.closest('.collection-group'),
         group_name    = parent.attr('data-group-name'),
         group         = parent.find('.group');
 
@@ -3255,7 +3255,7 @@ define([
      */
     groupToggleCollected: function(e) {
       var
-        target        = $(e.currentTarget).closest('.amiibo-grid');
+        target        = $(e.currentTarget).closest('.collection-group');
 
       // Stop click propagation from h2's events
       e.stopPropagation();
@@ -3292,8 +3292,8 @@ define([
     groupToggleOnOff: function(e) {
       var
         target        = $(e.currentTarget),
-        group         = target.closest('.amiibo-grid'),
-        group_msg_elm = group.prev('.amiibo-grid-message.amiibo-grid-reactivation-message'),
+        group         = target.closest('.collection-group'),
+        group_msg_elm = group.prev('.collection-group-message.collection-group-reactivation-message'),
         group_id      = group.attr('data-group-name');
 
       // Toggle group on/off class
@@ -3331,7 +3331,7 @@ define([
     groupToggleMoreMenuOpenClosed: function(e) {
       var
         target                  = $(e.currentTarget),
-        group                   = target.closest('.amiibo-grid'),
+        group                   = target.closest('.collection-group'),
         group_id                = group.attr('data-group-name'),
         control_menu_container  = target.closest('.more-controls');
 
@@ -3345,7 +3345,7 @@ define([
       }
 
       // Close any other open menus
-      $('.amiibo-grid .more-controls').each(function(idx, elm) {
+      $('.collection-group .more-controls').each(function(idx, elm) {
         var other_target = $(elm).closest('.more-controls');
         if (other_target.hasClass('open')) {
           other_target.removeClass('open');
@@ -3368,7 +3368,7 @@ define([
     groupHandleSort: function(e) {
       var
         target                  = $(e.currentTarget),
-        group                   = target.closest('.amiibo-grid'),
+        group                   = target.closest('.collection-group'),
         more_control            = target.closest('.more-controls').find('.group-more'),
         group_id                = group.attr('data-group-name'),
         sort_by                 = target.closest('.more-controls-control').attr('data-control-id').replace('sort-', '');
@@ -3397,7 +3397,7 @@ define([
     toggleSelectedItem: function(e) {
       var
         target                  = $(e.currentTarget),
-        amiibo_group_container  = target.closest('.amiibo-grid'),
+        amiibo_group_container  = target.closest('.collection-group'),
         amiibo_group            = amiibo_group_container .data('group-name'),
         amiibo_name             = target.data('amiibo-name');
 
@@ -3421,7 +3421,7 @@ define([
 
       // Update the group stats
       target
-        .closest('.amiibo-grid')
+        .closest('.collection-group')
         .find('.group-stat-collected')
         .html(_.filter(this.collection[amiibo_group].collection, 'collected').length);
 
@@ -3446,7 +3446,7 @@ define([
         target      = $(e.currentTarget),
         menu        = null,
         grid_item   = target.closest('.grid-item.collected'),
-        group_name  = target.closest('.amiibo-grid').attr('data-group-name'),
+        group_name  = target.closest('.collection-group').attr('data-group-name'),
         item_name   = target.closest('[data-amiibo-name]').attr('data-amiibo-name'),
         item_obj    = this.collection[group_name].collection[item_name],
         open_modal  = true;

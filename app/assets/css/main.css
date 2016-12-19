@@ -7672,49 +7672,49 @@ em {
   @media only screen and (min-width: 840px) and (min-width: 1440px) {
     .grid-container {
       max-width: 1440px; } }
-  .grid-container .amiibo-grid-message {
+  .grid-container .collection-group-message {
     margin-bottom: 10px;
     padding: 20px;
     background: #ffd86e;
     border-radius: 4px;
     display: none; }
-  .grid-container .amiibo-grid .inpage-link {
+  .grid-container .collection-group .inpage-link {
     padding-top: 120px;
     margin-top: -120px; }
-  .grid-container .amiibo-grid h2 {
+  .grid-container .collection-group h2 {
     display: inline-block; }
     @media only screen and (max-width: 840px) {
-      .grid-container .amiibo-grid h2 {
+      .grid-container .collection-group h2 {
         font-size: 1.4rem; } }
     @media only screen and (max-width: 600px) {
-      .grid-container .amiibo-grid h2 {
+      .grid-container .collection-group h2 {
         font-size: 1.2rem; } }
-    .grid-container .amiibo-grid h2 .group-control {
+    .grid-container .collection-group h2 .group-control {
       cursor: pointer;
       display: inline-block;
       font-family: "FontAwesome";
       margin-right: 15px;
       color: #3880ff; }
-    .grid-container .amiibo-grid h2 .group-stat {
+    .grid-container .collection-group h2 .group-stat {
       font-size: .6em;
       color: #989898; }
-    .grid-container .amiibo-grid h2 .group-select-toggle.toggle-uncollected {
+    .grid-container .collection-group h2 .group-select-toggle.toggle-uncollected {
       display: none; }
-    .grid-container .amiibo-grid h2 .group-expando-toggle.toggle-closed {
+    .grid-container .collection-group h2 .group-expando-toggle.toggle-closed {
       display: none; }
-    .grid-container .amiibo-grid h2 .group-toggle-on-off.toggle-off {
+    .grid-container .collection-group h2 .group-toggle-on-off.toggle-off {
       display: none; }
-    .grid-container .amiibo-grid h2 .more-controls {
+    .grid-container .collection-group h2 .more-controls {
       position: relative;
       display: inline-block;
       color: #989898; }
-      .grid-container .amiibo-grid h2 .more-controls .group-more {
+      .grid-container .collection-group h2 .more-controls .group-more {
         color: #989898; }
-      .grid-container .amiibo-grid h2 .more-controls.open .group-control.group-more {
+      .grid-container .collection-group h2 .more-controls.open .group-control.group-more {
         color: #3880ff; }
-      .grid-container .amiibo-grid h2 .more-controls.open .more-controls-outer-container {
+      .grid-container .collection-group h2 .more-controls.open .more-controls-outer-container {
         display: block; }
-      .grid-container .amiibo-grid h2 .more-controls .more-controls-outer-container {
+      .grid-container .collection-group h2 .more-controls .more-controls-outer-container {
         display: none;
         position: absolute;
         z-index: 1000;
@@ -7725,20 +7725,20 @@ em {
         box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
         min-width: 270px;
         font-size: 0.8em; }
-        .grid-container .amiibo-grid h2 .more-controls .more-controls-outer-container .more-controls-inner-container {
+        .grid-container .collection-group h2 .more-controls .more-controls-outer-container .more-controls-inner-container {
           position: relative; }
-          .grid-container .amiibo-grid h2 .more-controls .more-controls-outer-container .more-controls-inner-container .tab-arrow {
+          .grid-container .collection-group h2 .more-controls .more-controls-outer-container .more-controls-inner-container .tab-arrow {
             position: absolute;
             top: -10px;
             left: 12px; }
-            .grid-container .amiibo-grid h2 .more-controls .more-controls-outer-container .more-controls-inner-container .tab-arrow .tab-arrow-container {
+            .grid-container .collection-group h2 .more-controls .more-controls-outer-container .more-controls-inner-container .tab-arrow .tab-arrow-container {
               position: relative;
               width: 0;
               height: 0;
               border-left: 10px solid transparent;
               border-right: 10px solid transparent;
               border-bottom: 10px solid #989898; }
-              .grid-container .amiibo-grid h2 .more-controls .more-controls-outer-container .more-controls-inner-container .tab-arrow .tab-arrow-container:before {
+              .grid-container .collection-group h2 .more-controls .more-controls-outer-container .more-controls-inner-container .tab-arrow .tab-arrow-container:before {
                 content: "";
                 position: absolute;
                 display: block;
@@ -7749,33 +7749,33 @@ em {
                 border-left: 9px solid transparent;
                 border-right: 9px solid transparent;
                 border-bottom: 9px solid white; }
-          .grid-container .amiibo-grid h2 .more-controls .more-controls-outer-container .more-controls-inner-container .more-controls-separater {
+          .grid-container .collection-group h2 .more-controls .more-controls-outer-container .more-controls-inner-container .more-controls-separater {
             width: 100%;
             height: 1px;
             background: #989898; }
-          .grid-container .amiibo-grid h2 .more-controls .more-controls-outer-container .more-controls-inner-container .more-controls-control {
+          .grid-container .collection-group h2 .more-controls .more-controls-outer-container .more-controls-inner-container .more-controls-control {
             font-size: 0.8em !important;
             padding: 8px 12px; }
-            .grid-container .amiibo-grid h2 .more-controls .more-controls-outer-container .more-controls-inner-container .more-controls-control .group-control {
+            .grid-container .collection-group h2 .more-controls .more-controls-outer-container .more-controls-inner-container .more-controls-control .group-control {
               width: 30px;
               margin-right: 0; }
-            .grid-container .amiibo-grid h2 .more-controls .more-controls-outer-container .more-controls-inner-container .more-controls-control .group-control-title {
+            .grid-container .collection-group h2 .more-controls .more-controls-outer-container .more-controls-inner-container .more-controls-control .group-control-title {
               cursor: pointer; }
-  .grid-container .amiibo-grid .group {
+  .grid-container .collection-group .group {
     overflow: hidden; }
-  .grid-container .amiibo-grid.group-collected .group-select-toggle.toggle-collected {
+  .grid-container .collection-group.group-collected .group-select-toggle.toggle-collected {
     display: none; }
-  .grid-container .amiibo-grid.group-collected .group-select-toggle.toggle-uncollected {
+  .grid-container .collection-group.group-collected .group-select-toggle.toggle-uncollected {
     display: inline-block; }
-  .grid-container .amiibo-grid.group-closed .group-expando-toggle.toggle-closed {
+  .grid-container .collection-group.group-closed .group-expando-toggle.toggle-closed {
     display: inline-block; }
-  .grid-container .amiibo-grid.group-closed .group-expando-toggle.toggle-opened {
+  .grid-container .collection-group.group-closed .group-expando-toggle.toggle-opened {
     display: none; }
-  .grid-container .amiibo-grid.group-closed .group {
+  .grid-container .collection-group.group-closed .group {
     display: none; }
-  .grid-container .amiibo-grid.group-off {
+  .grid-container .collection-group.group-off {
     display: none; }
-  .grid-container .amiibo-grid + .amiibo-grid {
+  .grid-container .collection-group + .collection-group {
     margin-top: 4%; }
   .grid-container .grid-item {
     opacity: 0.3;

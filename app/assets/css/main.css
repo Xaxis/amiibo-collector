@@ -8114,9 +8114,6 @@ em {
 .grid:after {
   clear: both; }
 
-.grid .grid-item {
-  transition: width 350ms ease; }
-
 @media only screen and (min-width: 1440px) {
   .grid .collection-group-item {
     position: relative;

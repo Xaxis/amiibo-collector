@@ -2538,7 +2538,7 @@ define([
 
       // Add the overall stat
       stats_container.prepend(self.templates.menuStatsGroup({
-        group_id: 'amiibo-total',
+        group_id: 'collection-total',
         group_title: "Total",
         group_total: stats.total,
         group_owned: stats.owned,
@@ -2547,7 +2547,7 @@ define([
 
       // Add the completed class if all groups are completed
       if (overall_perc >= 100) {
-        $('[data-group-id="amiibo-total"]').addClass('complete');
+        $('[data-group-id="collection-total"]').addClass('complete');
       }
 
       // Toggle menu open/closed
@@ -2991,8 +2991,8 @@ define([
         if (is_collected) {
 
           // Iterate over collection items
-          _.each(group.collection, function(amiibo, item_id) {
-            if (amiibo.collected) {
+          _.each(group.collection, function(item, item_id) {
+            if (item.collected) {
               var
                 img         = group_elm.find('.collection-group-item[data-item-id="' + item_id + '"] img')[0],
                 img_clone   = $(img).clone(),
@@ -3049,8 +3049,8 @@ define([
           if (collected) {
 
             // Iterate over items in group
-            _.each(group.collection, function(amiibo, item_id) {
-              if (amiibo.collected) {
+            _.each(group.collection, function(item, item_id) {
+              if (item.collected) {
                 var
                   img       = $('.collection-group-item[data-item-id="' + item_id + '"] img')[0],
                   dx        = (max_w * items_drawn),
@@ -3397,9 +3397,9 @@ define([
     toggleSelectedItem: function(e) {
       var
         target                  = $(e.currentTarget),
-        amiibo_group_container  = target.closest('.collection-group'),
-        amiibo_group            = amiibo_group_container .data('group-name'),
-        item_id                 = target.data('amiibo-name');
+        item_group_container    = target.closest('.collection-group'),
+        item_group              = item_group_container.data('group-name'),
+        item_id                 = target.data('item-id');
 
       // Stop propagation so group isn't clicked
       e.stopPropagation();
@@ -3409,9 +3409,9 @@ define([
 
       // Update the collection object
       if (target.hasClass('collected')) {
-        this.collection[amiibo_group].collection[item_id].collected = true;
+        this.collection[item_group].collection[item_id].collected = true;
       } else {
-        this.collection[amiibo_group].collection[item_id].collected = false;
+        this.collection[item_group].collection[item_id].collected = false;
       }
 
       // Update the local storage object
@@ -3423,15 +3423,15 @@ define([
       target
         .closest('.collection-group')
         .find('.group-stat-collected')
-        .html(_.filter(this.collection[amiibo_group].collection, 'collected').length);
+        .html(_.filter(this.collection[item_group].collection, 'collected').length);
 
       // Add appropriate class on group
-      if (_.size(this.collection[amiibo_group].collection) == _.filter(this.collection[amiibo_group].collection, 'collected').length) {
-        amiibo_group_container
+      if (_.size(this.collection[item_group].collection) == _.filter(this.collection[item_group].collection, 'collected').length) {
+        item_group_container
           .data('group-collected', 'yes')
           .addClass('group-collected');
       } else {
-        amiibo_group_container
+        item_group_container
           .data('group-collected', 'no')
           .removeClass('group-collected');
       }

@@ -1,8 +1,5 @@
 .grid {
   @include clearfix();
-  .grid-item {
-    transition: width 350ms ease;
-  }
 
   @include breakpoint($min: $fg-col-24) {
     .collection-group-item {

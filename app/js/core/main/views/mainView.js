@@ -25,8 +25,8 @@ define([
   'backbone',
   'jquery.sticky',
   'jquery.lazyload',
-  'text!core/main/templates/amiibo-group.tpl.html',
-  'text!core/main/templates/amiibo-grid-item.tpl.html',
+  'text!core/main/templates/collection-group.tpl.html',
+  'text!core/main/templates/collection-group-item.tpl.html',
   'text!core/main/templates/message-browser-compat.tpl.html',
   'text!core/main/templates/menu-item-settings.tpl.html',
   'text!core/main/templates/menu-item-settings-subitem.tpl.html',
@@ -43,8 +43,8 @@ define([
   Backbone,
   Sticky,
   LazyLoad,
-  amiiboGroupTpl,
-  amiiboGridItemTpl,
+  collectionGroupTpl,
+  collectionGroupItemTpl,
   messageBrowserCompatTpl,
   menuItemSettingsTpl,
   menuItemSettingsSubitemTpl,
@@ -60,8 +60,8 @@ define([
     el: $('body'),
 
     templates: {
-      amiiboGroup: _.template(amiiboGroupTpl),
-      amiiboGridItem: _.template(amiiboGridItemTpl),
+      collectionGroup: _.template(collectionGroupTpl),
+      collectionGroupItem: _.template(collectionGroupItemTpl),
       messageBrowserCompat: _.template(messageBrowserCompatTpl),
       menuItemSettings: _.template(menuItemSettingsTpl),
       menuItemSettingsSubitem: _.template(menuItemSettingsSubitemTpl),
@@ -2192,6 +2192,8 @@ define([
             $('.back-to-top').removeClass('stuck');
           } else if ($(elm).hasClass('stuck')) {
             $('.back-to-top').addClass('stuck');
+          } else if (!$(elm).hasClass('stuck')) {
+            $('.back-to-top').removeClass('stuck');
           }
         }
       });
@@ -2383,7 +2385,7 @@ define([
       _.each(this.collection_sorted, function(group, idx) {
         var
           group_id          = group.id,
-          grid_group        = self.templates.amiiboGroup({
+          grid_group        = self.templates.collectionGroup({
             group_name: group_id,
             group_title: group.title,
             group_collected: _.filter(group.collection, 'collected').length,
@@ -2411,7 +2413,7 @@ define([
 
           // Create new grid object
           if (!item_elm.length) {
-            grid.find('.' + group_id + ' .group').append(self.templates.amiiboGridItem({
+            grid.find('.' + group_id + ' .group').append(self.templates.collectionGroupItem({
               amiibo_name: item_id,
               amiibo_path: item_path,
               amiibo_title: item.title || '',

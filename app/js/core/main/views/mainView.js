@@ -116,8 +116,8 @@ define([
       'click .collection-group h2 .group-sort-numeric-desc': 'groupHandleSort',
 
       // @todo - Possibly refactor item controls/menu into own view
-      'click .grid-item': 'toggleSelectedItem',
-      'click .grid-item .grid-item-title .button': 'toggleItemSettingsMenu',
+      'click .collection-group-item': 'toggleSelectedItem',
+      'click .collection-group-item .collection-group-item-title .button': 'toggleItemSettingsMenu',
       'click .menu-item-settings .controls-item-add': 'itemSettingsAddSubitem',
       'click .menu-item-settings .controls-item-up': 'itemSettingsUpSubitem',
       'click .menu-item-settings .controls-item-favorite': 'itemSettingsFavoriteSubitem',
@@ -2224,7 +2224,7 @@ define([
      * Initialize lazy loading of grid item images
      */
     lazyLoadCollectionImages: function() {
-      $('.grid-item img[src=""]').show().lazyload({
+      $('.collection-group-item img[src=""]').show().lazyload({
         effect: "fadeIn",
         load: function() {
           $(this).prev('.fa-spinner').remove();
@@ -2409,15 +2409,15 @@ define([
           var
             item_id             = item.id,
             item_path         = path + group_id + '-' + item_id + '.png',
-            item_elm        = group_elm.find('[data-amiibo-name="' + item.id + '"]');
+            item_elm        = group_elm.find('[data-item-id="' + item.id + '"]');
 
           // Create new grid object
           if (!item_elm.length) {
             grid.find('.' + group_id + ' .group').append(self.templates.collectionGroupItem({
-              amiibo_name: item_id,
-              amiibo_path: item_path,
-              amiibo_title: item.title || '',
-              amiibo_class: ((item.collected) ? 'collected' : '')
+              item_id: item_id,
+              item_path: item_path,
+              item_title: item.title || '',
+              item_class: ((item.collected) ? 'collected' : '')
             }));
           }
 
@@ -2427,7 +2427,7 @@ define([
               (group.id == self.collection_settings.sort_group_id) ||
               (self.collection_settings.sort_by != self.collection_settings.last_sort_by && !self.collection_settings.sort_group_id)
             ) {
-              item_elm.after(group_elm.find('.grid-item').eq(iidx).replaceWith(item_elm));
+              item_elm.after(group_elm.find('.collection-group-item').eq(iidx).replaceWith(item_elm));
             }
           }
         });
@@ -2991,10 +2991,10 @@ define([
         if (is_collected) {
 
           // Iterate over collection items
-          _.each(group.collection, function(amiibo, amiibo_name) {
+          _.each(group.collection, function(amiibo, item_id) {
             if (amiibo.collected) {
               var
-                img         = group_elm.find('.grid-item[data-amiibo-name="' + amiibo_name + '"] img')[0],
+                img         = group_elm.find('.collection-group-item[data-item-id="' + item_id + '"] img')[0],
                 img_clone   = $(img).clone(),
                 img_w       = 0,
                 img_h       = 0;
@@ -3049,10 +3049,10 @@ define([
           if (collected) {
 
             // Iterate over items in group
-            _.each(group.collection, function(amiibo, amiibo_name) {
+            _.each(group.collection, function(amiibo, item_id) {
               if (amiibo.collected) {
                 var
-                  img       = $('.grid-item[data-amiibo-name="' + amiibo_name + '"] img')[0],
+                  img       = $('.collection-group-item[data-item-id="' + item_id + '"] img')[0],
                   dx        = (max_w * items_drawn),
                   dy        = (max_h * rows_drawn);
 
@@ -3264,7 +3264,7 @@ define([
       if (target.data('group-collected') == 'no' || !target.data('group-collected')) {
         target
           .addClass('group-collected')
-          .find('.grid-item')
+          .find('.collection-group-item')
           .each(function(idx, item) {
             if (!$(item).hasClass('collected')) {
               $(item).click();
@@ -3275,7 +3275,7 @@ define([
       else if (target.data('group-collected') == 'yes') {
         target
           .removeClass('group-collected')
-          .find('.grid-item')
+          .find('.collection-group-item')
           .each(function(idx, item) {
             if ($(item).hasClass('collected')) {
               $(item).click();
@@ -3399,7 +3399,7 @@ define([
         target                  = $(e.currentTarget),
         amiibo_group_container  = target.closest('.collection-group'),
         amiibo_group            = amiibo_group_container .data('group-name'),
-        amiibo_name             = target.data('amiibo-name');
+        item_id                 = target.data('amiibo-name');
 
       // Stop propagation so group isn't clicked
       e.stopPropagation();
@@ -3409,9 +3409,9 @@ define([
 
       // Update the collection object
       if (target.hasClass('collected')) {
-        this.collection[amiibo_group].collection[amiibo_name].collected = true;
+        this.collection[amiibo_group].collection[item_id].collected = true;
       } else {
-        this.collection[amiibo_group].collection[amiibo_name].collected = false;
+        this.collection[amiibo_group].collection[item_id].collected = false;
       }
 
       // Update the local storage object
@@ -3445,9 +3445,9 @@ define([
         self        = this,
         target      = $(e.currentTarget),
         menu        = null,
-        grid_item   = target.closest('.grid-item.collected'),
+        grid_item   = target.closest('.collection-group-item.collected'),
         group_name  = target.closest('.collection-group').attr('data-group-name'),
-        item_name   = target.closest('[data-amiibo-name]').attr('data-amiibo-name'),
+        item_name   = target.closest('[data-item-id]').attr('data-item-id'),
         item_obj    = this.collection[group_name].collection[item_name],
         open_modal  = true;
 

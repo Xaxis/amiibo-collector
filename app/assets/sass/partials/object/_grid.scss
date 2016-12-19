@@ -5,41 +5,41 @@
   }
 
   @include breakpoint($min: $fg-col-24) {
-    .grid-item {
+    .collection-group-item {
       @include fg-col($cols: 6, $gutter: 20px, $fluid-gutter: 2);
     }
-    .grid-item:nth-child(6n+1) {
+    .collection-group-item:nth-child(6n+1) {
       clear: left;
       margin-left: 0 !important;
     }
   }
 
   @include breakpoint($min: $fg-col-14, $max: $fg-col-24) {
-    .grid-item {
+    .collection-group-item {
       @include fg-col($cols: 5, $gutter: 20px, $fluid-gutter: 2);
     }
-    .grid-item:nth-child(5n+1) {
+    .collection-group-item:nth-child(5n+1) {
       clear: left;
       margin-left: 0 !important;
     }
   }
 
   @include breakpoint($min: $fg-col-10, $max: $fg-col-14) {
-    .grid-item {
+    .collection-group-item {
       @include fg-col($cols: 4, $gutter: 10px, $fluid-gutter: 1);
       font-size: 0.8em;
     }
-    .grid-item:nth-child(4n+1) {
+    .collection-group-item:nth-child(4n+1) {
       clear: left;
       margin-left: 0 !important;
     }
   }
   @include breakpoint($max: $fg-col-10) {
-    .grid-item {
+    .collection-group-item {
       @include fg-col($cols: 3, $gutter: 10px, $fluid-gutter: 1);
       font-size: 0.7em;
     }
-    .grid-item:nth-child(3n+1) {
+    .collection-group-item:nth-child(3n+1) {
       clear: left;
       margin-left: 0 !important;
     }

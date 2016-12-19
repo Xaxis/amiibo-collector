@@ -7777,26 +7777,26 @@ em {
     display: none; }
   .grid-container .collection-group + .collection-group {
     margin-top: 4%; }
-  .grid-container .grid-item {
+  .grid-container .collection-group-item {
     opacity: 0.3;
     text-align: center;
     cursor: pointer; }
-    .grid-container .grid-item img {
+    .grid-container .collection-group-item img {
       height: auto;
       width: 100%;
       max-width: 100%; }
-    .grid-container .grid-item .item-image {
+    .grid-container .collection-group-item .item-image {
       display: none; }
-    .grid-container .grid-item .control-settings {
+    .grid-container .collection-group-item .control-settings {
       font-family: "FontAwesome";
       margin-right: 5px;
       color: #3880ff;
       display: none; }
-  .grid-container .grid-item.collected {
+  .grid-container .collection-group-item.collected {
     opacity: 1; }
-    .grid-container .grid-item.collected .control-settings {
+    .grid-container .collection-group-item.collected .control-settings {
       display: inline-block; }
-    .grid-container .grid-item.collected .item-title {
+    .grid-container .collection-group-item.collected .item-title {
       color: #3880ff; }
 
 .menu {
@@ -8118,108 +8118,108 @@ em {
   transition: width 350ms ease; }
 
 @media only screen and (min-width: 1440px) {
-  .grid .grid-item {
+  .grid .collection-group-item {
     position: relative;
     float: left; }
-    .grid .grid-item {
+    .grid .collection-group-item {
       box-sizing: border-box; }
-    .grid .grid-item:before, .grid .grid-item:after {
+    .grid .collection-group-item:before, .grid .collection-group-item:after {
       content: " ";
       display: table; }
-    .grid .grid-item:after {
+    .grid .collection-group-item:after {
       clear: both; }
-    html.csscalc .grid .grid-item {
+    html.csscalc .grid .collection-group-item {
       margin-left: 20px; }
-    html:not(.csscalc) .grid .grid-item {
+    html:not(.csscalc) .grid .collection-group-item {
       margin-left: 2%; }
-    html.csscalc .grid .grid-item:first-child, html:not(.csscalc) .grid .grid-item:first-child {
+    html.csscalc .grid .collection-group-item:first-child, html:not(.csscalc) .grid .collection-group-item:first-child {
       margin-left: 0; }
-    html.csscalc .grid .grid-item {
+    html.csscalc .grid .collection-group-item {
       width: -webkit-calc(((100% / 6) - 20px) + (3.3333333333px));
       width: calc(((100% / 6) - 20px) + (3.3333333333px)); }
-    html:not(.csscalc) .grid .grid-item {
+    html:not(.csscalc) .grid .collection-group-item {
       width: 15%; }
-  .grid .grid-item:nth-child(6n+1) {
+  .grid .collection-group-item:nth-child(6n+1) {
     clear: left;
     margin-left: 0 !important; } }
 
 @media only screen and (min-width: 840px) and (max-width: 1440px) {
-  .grid .grid-item {
+  .grid .collection-group-item {
     position: relative;
     float: left; }
-    .grid .grid-item {
+    .grid .collection-group-item {
       box-sizing: border-box; }
-    .grid .grid-item:before, .grid .grid-item:after {
+    .grid .collection-group-item:before, .grid .collection-group-item:after {
       content: " ";
       display: table; }
-    .grid .grid-item:after {
+    .grid .collection-group-item:after {
       clear: both; }
-    html.csscalc .grid .grid-item {
+    html.csscalc .grid .collection-group-item {
       margin-left: 20px; }
-    html:not(.csscalc) .grid .grid-item {
+    html:not(.csscalc) .grid .collection-group-item {
       margin-left: 2%; }
-    html.csscalc .grid .grid-item:first-child, html:not(.csscalc) .grid .grid-item:first-child {
+    html.csscalc .grid .collection-group-item:first-child, html:not(.csscalc) .grid .collection-group-item:first-child {
       margin-left: 0; }
-    html.csscalc .grid .grid-item {
+    html.csscalc .grid .collection-group-item {
       width: -webkit-calc(((100% / 5) - 20px) + (4px));
       width: calc(((100% / 5) - 20px) + (4px)); }
-    html:not(.csscalc) .grid .grid-item {
+    html:not(.csscalc) .grid .collection-group-item {
       width: 18.4%; }
-  .grid .grid-item:nth-child(5n+1) {
+  .grid .collection-group-item:nth-child(5n+1) {
     clear: left;
     margin-left: 0 !important; } }
 
 @media only screen and (min-width: 600px) and (max-width: 840px) {
-  .grid .grid-item {
+  .grid .collection-group-item {
     position: relative;
     float: left;
     font-size: 0.8em; }
-    .grid .grid-item {
+    .grid .collection-group-item {
       box-sizing: border-box; }
-    .grid .grid-item:before, .grid .grid-item:after {
+    .grid .collection-group-item:before, .grid .collection-group-item:after {
       content: " ";
       display: table; }
-    .grid .grid-item:after {
+    .grid .collection-group-item:after {
       clear: both; }
-    html.csscalc .grid .grid-item {
+    html.csscalc .grid .collection-group-item {
       margin-left: 10px; }
-    html:not(.csscalc) .grid .grid-item {
+    html:not(.csscalc) .grid .collection-group-item {
       margin-left: 1%; }
-    html.csscalc .grid .grid-item:first-child, html:not(.csscalc) .grid .grid-item:first-child {
+    html.csscalc .grid .collection-group-item:first-child, html:not(.csscalc) .grid .collection-group-item:first-child {
       margin-left: 0; }
-    html.csscalc .grid .grid-item {
+    html.csscalc .grid .collection-group-item {
       width: -webkit-calc(((100% / 4) - 10px) + (2.5px));
       width: calc(((100% / 4) - 10px) + (2.5px)); }
-    html:not(.csscalc) .grid .grid-item {
+    html:not(.csscalc) .grid .collection-group-item {
       width: 24.25%; }
-  .grid .grid-item:nth-child(4n+1) {
+  .grid .collection-group-item:nth-child(4n+1) {
     clear: left;
     margin-left: 0 !important; } }
 
 @media only screen and (max-width: 600px) {
-  .grid .grid-item {
+  .grid .collection-group-item {
     position: relative;
     float: left;
     font-size: 0.7em; }
-    .grid .grid-item {
+    .grid .collection-group-item {
       box-sizing: border-box; }
-    .grid .grid-item:before, .grid .grid-item:after {
+    .grid .collection-group-item:before, .grid .collection-group-item:after {
       content: " ";
       display: table; }
-    .grid .grid-item:after {
+    .grid .collection-group-item:after {
       clear: both; }
-    html.csscalc .grid .grid-item {
+    html.csscalc .grid .collection-group-item {
       margin-left: 10px; }
-    html:not(.csscalc) .grid .grid-item {
+    html:not(.csscalc) .grid .collection-group-item {
       margin-left: 1%; }
-    html.csscalc .grid .grid-item:first-child, html:not(.csscalc) .grid .grid-item:first-child {
+    html.csscalc .grid .collection-group-item:first-child, html:not(.csscalc) .grid .collection-group-item:first-child {
       margin-left: 0; }
-    html.csscalc .grid .grid-item {
+    html.csscalc .grid .collection-group-item {
       width: -webkit-calc(((100% / 3) - 10px) + (3.3333333333px));
       width: calc(((100% / 3) - 10px) + (3.3333333333px)); }
-    html:not(.csscalc) .grid .grid-item {
+    html:not(.csscalc) .grid .collection-group-item {
       width: 32.6666666667%; }
-  .grid .grid-item:nth-child(3n+1) {
+  .grid .collection-group-item:nth-child(3n+1) {
     clear: left;
     margin-left: 0 !important; } }
 

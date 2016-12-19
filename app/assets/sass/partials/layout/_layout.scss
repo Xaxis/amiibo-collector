@@ -376,7 +376,7 @@
   }
 
   // Grid item
-  .grid-item {
+  .collection-group-item {
     opacity: 0.3;
     text-align: center;
     cursor: pointer;
@@ -397,7 +397,7 @@
   }
 
   // Collected grid item
-  .grid-item.collected {
+  .collection-group-item.collected {
     opacity: 1;
     .control-settings {
       display: inline-block;

@@ -3,21 +3,21 @@
  *
  * @todo - Write deployment script.
  *
- * @todo - Image generation may not be working in safari?
+ * @todo - Add user accounts, server storage of collections.
+ *
+ * @todo - Refactor app to include custom collection functionality.
  *
  * @todo - Create message/template for when no groups are being displayed.
  *
  * @todo - Consider adding sort by regions filter
  *
- * @todo - Create filter to allow users to now show/load pictures.
+ * @todo - Create filter to allow users to now show/load pictures?
  *
  * @todo - Create a bug reporting app/menu so people can email me problems/bugs, with captcha.
  *
  * @todo - Image generation functionality still doesn't quite work. Consider removing it all together.
  *
- * @todo - Add feature that allows you to resize the collection images (a slider of some sort) ??
- *
- * @todo - Add some kind of styling or feedback to indicate Weight Groups
+ * @todo - Add poochy and yoshi's wolly world bundle to collection
  */
 define([
   'jquery',

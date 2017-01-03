@@ -125,26 +125,26 @@
       color: $white;
       &:not(.logo) {
       }
-      margin-left: 20%;
+      margin-left: 28%;
       &:first-child {
         margin-left: 0 !important;
       }
       transition: margin-left 350ms ease;
       @include site-mq($fg-col-20) {
-        margin-left: 18%;
+        margin-left: 26%;
         transition: margin-left 0ms ease;
       }
       @include site-mq($fg-col-15) {
-        margin-left: 17%;
+        margin-left: 25%;
         transition: margin-left 0ms ease;
         font-size: 35px;
       }
       @include site-mq($fg-col-10) {
-        margin-left: 12%;
+        margin-left: 22%;
         transition: margin-left 0ms ease;
       }
       @include site-mq($fg-col-8) {
-        margin-left: 11%;
+        margin-left: 20%;
         transition: margin-left 0ms ease;
         font-size: 30px;
       }
@@ -729,9 +729,6 @@
         font-family: "FontAwesome";
         margin-right: 15px;
       }
-      .button {
-
-      }
       .info {
         padding-left: 35px;
         margin-top: 6px;
@@ -749,39 +746,6 @@
       .info {
         .collection-configuration-input {
           display: none;
-        }
-      }
-    }
-    .control-generate-share-image {
-      margin-bottom: 20px;
-      .button {
-        .fa-spinner {
-          color: $white;
-          visibility: hidden;
-        }
-        &:active {
-          .fa-spinner {
-            visibility: visible;
-          }
-        }
-      }
-      .info {
-        .download {
-          display: none;
-        }
-        .none {
-          display: none;
-        }
-        canvas {
-          display: none;
-          background: $white;
-          width: 400px;
-          height: 500px;
-        }
-        img {
-          margin-top: 20px;
-          width: 100%;
-          height: auto;
         }
       }
     }
@@ -830,10 +794,13 @@
     min-width: 120px;
     a {
       font-family: "FontAwesome";
-      font-size: 2.0em;
+      font-size: 1.5em;
     }
     a + a {
       margin-left: 20px;
+      @include breakpoint($max: $fg-col-10) {
+        margin-left: 10px;
+      }
     }
   }
   .inline {

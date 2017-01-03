@@ -35,8 +35,7 @@ define([
   'text!core/main/templates/menu-group-group.tpl.html',
   'text!core/main/templates/menu-share.tpl.html',
   'text!core/main/templates/menu-stats.tpl.html',
-  'text!core/main/templates/menu-stats-group.tpl.html',
-  'text!core/main/templates/menu-restart.tpl.html'
+  'text!core/main/templates/menu-stats-group.tpl.html'
 ], function(
   $,
   _,
@@ -53,8 +52,7 @@ define([
   menuGroupGroupTpl,
   menuShareTpl,
   menuStatsTpl,
-  menuStatsGroupTpl,
-  menuRestartTpl
+  menuStatsGroupTpl
 ) {
   var Main = Backbone.View.extend({
     el: $('body'),
@@ -70,8 +68,7 @@ define([
       menuGroupGroup: _.template(menuGroupGroupTpl),
       menuShare: _.template(menuShareTpl),
       menuStats: _.template(menuStatsTpl),
-      menuStatsGroup: _.template(menuStatsGroupTpl),
-      menuRestart: _.template(menuRestartTpl)
+      menuStatsGroup: _.template(menuStatsGroupTpl)
     },
 
     events: {
@@ -97,13 +94,9 @@ define([
 
       // @todo - Refactor share menu into own view
       'click .control-share': 'toggleShareMenu',
-      'click .menu-share .control-generate-share-image .button': 'generateShareImage',
       'click .menu-share .control-generate-json-config .button': 'generateJSONConfig',
       'click .menu-share .control-upload-json-config .button': 'uploadJSONConfig',
-
-      // @todo - Possibly refactor restart menu into own view
-      'click .control-restart': 'toggleRestartMenu',
-      'click .menu-restart .restart-continue': 'handleCollectionRestart',
+      'click .menu-share .control-collection-reset .button': 'handleCollectionRestart',
 
       // @todo - Possibly refactor group controls into own view
       'click .collection-group h2 .group-expando-toggle': 'groupToggleOpenClosed',
@@ -2145,12 +2138,8 @@ define([
 
         // @todo - Refactor share menu into own view
         'toggleShareMenu',
-        'generateShareImage',
         'generateJSONConfig',
         'uploadJSONConfig',
-
-        // @todo - Possibly refactor restart menu into own view
-        'toggleRestartMenu',
         'handleCollectionRestart',
 
         // @todo - Possibly refactor group controls into own view
@@ -2952,154 +2941,6 @@ define([
 
 
     /**
-     * Generates an image of a user's collection.
-     */
-    generateShareImage: function() {
-      var
-        container       = $('.control-generate-share-image'),
-        canvas          = $('<canvas class="share-image" width="400" height="600"></canvas>'),
-        c_w             = 0,                // Canvas width
-        c_h             = 0,                // Canvas height
-        ctx             = null,             // Canvas context
-        total_rows      = 0,                // Total number of rows
-        max_per_row     = 4,                // Maximum number of images to draw in a row
-        max_w           = 0,                // Maximum width to draw an image
-        max_h           = 0,                // Maximum height to draw an image
-        items_drawn     = 0,                // Number of images that have been drawn
-        rows_drawn      = 0,                // Number of rows that have been drawn
-        is_collected    = false,            // Flag set if any group has a collected item
-        collection_img  = null;             // Placeholder for the generated image
-
-      // Remove any previous canvas/image elements and a new canvas
-      container.find('.share-image').remove();
-      container.find('.true-share-image').remove();
-      container.find('.info').append(canvas);
-
-      // Determine the dimensions of the canvas based on the number of items to be drawn
-      _.each(this.collection, function(group, group_id) {
-        var
-          group_elm                   = $('.collection-group[data-group-name="' + group_id + '"]'),
-          total_to_draw_in_group      = 0,
-          collected                   = _.filter(group.collection, function(item) {
-            return item.collected;
-          }).length;
-
-        // Update collected flag
-        if (collected) is_collected = true;
-
-        // Proceed if one or more in group is collected
-        if (is_collected) {
-
-          // Iterate over collection items
-          _.each(group.collection, function(item, item_id) {
-            if (item.collected) {
-              var
-                img         = group_elm.find('.collection-group-item[data-item-id="' + item_id + '"] img')[0],
-                img_clone   = $(img).clone(),
-                img_w       = 0,
-                img_h       = 0;
-
-              // Temporarily place the image in the DOM so we can measure the actual dimensions of
-              // potentially hidden image elements.
-              $('body').append(img_clone.css({position: 'absolute', display: 'block', left: '-10000px'}));
-              img_w = img_clone.width();
-              img_h = img_clone.height();
-              img_clone.remove();
-
-              // Update current maximum width if it's greater
-              if (img_w > max_w) max_w = img_w;
-
-              // Update current maximum height if it's greater
-              if (img_h > max_h) max_h = img_h;
-
-              // Increment the total number of items to drawn in this group
-              total_to_draw_in_group += 1;
-
-              // Add another row to draw every 'max_per_row' items or when we've reached the group's last row
-              if ((total_to_draw_in_group % max_per_row) == 0 || (total_to_draw_in_group == collected)) {
-                total_rows += 1;
-              }
-            }
-          });
-        }
-      });
-
-      // Proceed when at least one thing has been collected
-      if (is_collected) {
-
-        // Set dimension values of the canvas before we draw on it
-        c_w = canvas[0].width = max_w * max_per_row;
-        c_h = canvas[0].height = (max_h * total_rows);
-        canvas.width(canvas[0].width);
-        canvas.height(canvas[0].height);
-        ctx = canvas[0].getContext("2d", {alpha: true});
-
-        // Fill the canvas background
-        ctx.fillStyle = "white";
-        ctx.fillRect(0, 0, c_w, c_h);
-
-        // Draw the collection items to the canvas
-        _.each(this.collection, function(group) {
-          var
-            collected       = _.filter(group.collection, function(am) {
-              return am.collected;
-            }).length;
-
-          // Draw if one or more in group has been collected
-          if (collected) {
-
-            // Iterate over items in group
-            _.each(group.collection, function(item, item_id) {
-              if (item.collected) {
-                var
-                  img       = $('.collection-group-item[data-item-id="' + item_id + '"] img')[0],
-                  dx        = (max_w * items_drawn),
-                  dy        = (max_h * rows_drawn);
-
-                // Increment which item is being drawn in a given row
-                items_drawn += 1;
-
-                // Increment row being drawn
-                if (items_drawn >= max_per_row) {
-                  items_drawn = 0;
-                  rows_drawn += 1;
-                }
-
-                // Draw the image
-                ctx.drawImage(img, dx, dy, max_w, max_h);
-              }
-            });
-
-            // Update number of rows drawn
-            if (items_drawn > 0) rows_drawn += 1;
-            items_drawn = 0;
-          }
-        });
-
-        // Create image element from canvas and link wrapper and then add the image
-        collection_img = new Image();
-        collection_img.src = canvas[0].toDataURL("image/png");
-        canvas.before($(collection_img).addClass('true-share-image'));
-        canvas.hide();
-
-        // Give download link source of new image
-        $('.control-generate-share-image .info .message')
-          .hide();
-        $('.control-generate-share-image .info .download')
-          .show()
-          .find('a')
-          .attr('href', collection_img.src);
-      }
-
-      // Display message if nothing has yet been collected
-      else {
-        container.find('.message').hide();
-        container.find('.none').show();
-      }
-    },
-
-
-    /**
      * Generates a JSON configuration file of a user's collection.
      */
     generateJSONConfig: function() {
@@ -3171,42 +3012,15 @@ define([
       }
     },
 
-
-
-
-
-    //
-    // !!!!!!!
-    // @todo - Possibly refactor restart menu into own view
-    // !!!!!!!
-    //
-
-    /**
-     * Toggle and load the restart menu.
-     */
-    toggleRestartMenu: function() {
-
-      // Add the modal menu
-      if (!this.menus.restart) {
-        this.menus.restart = $(this.templates.menuRestart()).remodal();
-        this.$el.append(this.menus.restart);
-      }
-
-      // Toggle menu open/closed
-      this.menus.restart.open();
-    },
-
-
     /**
      * Handle restarting/resetting the collection to its default state.
      */
     handleCollectionRestart: function() {
       window.localStorage.removeItem(this.storage_settings.id);
       window.localStorage.removeItem(this.storage_settings.id + '_settings');
+      this.menus.share.close();
       window.location.href = '/';
-      this.menus.restart.close();
     },
-
 
 
 

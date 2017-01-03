@@ -7584,26 +7584,26 @@ em {
       font-weight: lighter;
       font-size: 45px;
       color: white;
-      margin-left: 20%;
+      margin-left: 28%;
       transition: margin-left 350ms ease; }
       .controls .col2 a:first-child {
         margin-left: 0 !important; }
       @media only screen and (max-width: 1200px) {
         .controls .col2 a {
-          margin-left: 18%;
+          margin-left: 26%;
           transition: margin-left 0ms ease; } }
       @media only screen and (max-width: 900px) {
         .controls .col2 a {
-          margin-left: 17%;
+          margin-left: 25%;
           transition: margin-left 0ms ease;
           font-size: 35px; } }
       @media only screen and (max-width: 600px) {
         .controls .col2 a {
-          margin-left: 12%;
+          margin-left: 22%;
           transition: margin-left 0ms ease; } }
       @media only screen and (max-width: 480px) {
         .controls .col2 a {
-          margin-left: 11%;
+          margin-left: 20%;
           transition: margin-left 0ms ease;
           font-size: 30px; } }
   .controls.stuck {
@@ -8001,26 +8001,6 @@ em {
       max-width: 400px; }
   .menu.menu-share .control-upload-json-config .info .collection-configuration-input {
     display: none; }
-  .menu.menu-share .control-generate-share-image {
-    margin-bottom: 20px; }
-    .menu.menu-share .control-generate-share-image .button .fa-spinner {
-      color: white;
-      visibility: hidden; }
-    .menu.menu-share .control-generate-share-image .button:active .fa-spinner {
-      visibility: visible; }
-    .menu.menu-share .control-generate-share-image .info .download {
-      display: none; }
-    .menu.menu-share .control-generate-share-image .info .none {
-      display: none; }
-    .menu.menu-share .control-generate-share-image .info canvas {
-      display: none;
-      background: white;
-      width: 400px;
-      height: 500px; }
-    .menu.menu-share .control-generate-share-image .info img {
-      margin-top: 20px;
-      width: 100%;
-      height: auto; }
   .menu.menu-restart .restart-info {
     margin-bottom: 30px; }
 
@@ -8050,9 +8030,12 @@ em {
     min-width: 120px; }
     .footer .col2 a {
       font-family: "FontAwesome";
-      font-size: 2.0em; }
+      font-size: 1.5em; }
     .footer .col2 a + a {
       margin-left: 20px; }
+      @media only screen and (max-width: 600px) {
+        .footer .col2 a + a {
+          margin-left: 10px; } }
   .footer .inline {
     display: inline-block; }
   .footer .donate input {

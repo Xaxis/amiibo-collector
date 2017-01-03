@@ -14,8 +14,6 @@
  * @todo - Create filter to allow users to not show/load pictures?
  *
  * @todo - Create a bug reporting app/menu so people can email me problems/bugs, with captcha.
- *
- * @todo - Add poochy and yoshi's wolly world bundle to collection
  */
 define([
   'jquery',
@@ -1629,6 +1627,9 @@ define([
           },
           twilightprincess: {
             title: "Zelda: Twilight Princess HD"
+          },
+          yoshipoochy: {
+            title: "Yoshi & Poochy's Wooly World"
           },
           yoshiswollyworldblue: {
             title: "Yoshi's Wolly World (Blue)"

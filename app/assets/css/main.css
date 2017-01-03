@@ -7989,17 +7989,17 @@ em {
     .menu.menu-sort .sort-controls .control .control-title {
       display: inline-block;
       margin-left: 15px; }
-  .menu.menu-share .control {
+  .menu.menu-tools .control {
     margin-bottom: 20px; }
-    .menu.menu-share .control .icon {
+    .menu.menu-tools .control .icon {
       font-family: "FontAwesome";
       margin-right: 15px; }
-    .menu.menu-share .control .info {
+    .menu.menu-tools .control .info {
       padding-left: 35px;
       margin-top: 6px;
       font-size: .8rem;
       max-width: 400px; }
-  .menu.menu-share .control-upload-json-config .info .collection-configuration-input {
+  .menu.menu-tools .control-upload-json-config .info .collection-configuration-input {
     display: none; }
   .menu.menu-restart .restart-info {
     margin-bottom: 30px; }

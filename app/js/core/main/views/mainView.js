@@ -11,11 +11,9 @@
  *
  * @todo - Consider adding sort by regions filter
  *
- * @todo - Create filter to allow users to now show/load pictures?
+ * @todo - Create filter to allow users to not show/load pictures?
  *
  * @todo - Create a bug reporting app/menu so people can email me problems/bugs, with captcha.
- *
- * @todo - Image generation functionality still doesn't quite work. Consider removing it all together.
  *
  * @todo - Add poochy and yoshi's wolly world bundle to collection
  */
@@ -33,7 +31,7 @@ define([
   'text!core/main/templates/menu-sort.tpl.html',
   'text!core/main/templates/menu-group.tpl.html',
   'text!core/main/templates/menu-group-group.tpl.html',
-  'text!core/main/templates/menu-share.tpl.html',
+  'text!core/main/templates/menu-tools.tpl.html',
   'text!core/main/templates/menu-stats.tpl.html',
   'text!core/main/templates/menu-stats-group.tpl.html'
 ], function(
@@ -50,7 +48,7 @@ define([
   menuSortTpl,
   menuGroupTpl,
   menuGroupGroupTpl,
-  menuShareTpl,
+  menuToolsTpl,
   menuStatsTpl,
   menuStatsGroupTpl
 ) {
@@ -66,7 +64,7 @@ define([
       menuSort: _.template(menuSortTpl),
       menuGroup: _.template(menuGroupTpl),
       menuGroupGroup: _.template(menuGroupGroupTpl),
-      menuShare: _.template(menuShareTpl),
+      menuTools: _.template(menuToolsTpl),
       menuStats: _.template(menuStatsTpl),
       menuStatsGroup: _.template(menuStatsGroupTpl)
     },
@@ -92,11 +90,11 @@ define([
       'click .control[data-control-id="sort-numeric-asc"]': 'handleSort',
       'click .control[data-control-id="sort-numeric-desc"]': 'handleSort',
 
-      // @todo - Refactor share menu into own view
-      'click .control-share': 'toggleShareMenu',
-      'click .menu-share .control-generate-json-config .button': 'generateJSONConfig',
-      'click .menu-share .control-upload-json-config .button': 'uploadJSONConfig',
-      'click .menu-share .control-collection-reset .button': 'handleCollectionRestart',
+      // @todo - Refactor tools menu into own view
+      'click .control-tools': 'toggleToolsMenu',
+      'click .menu-tools .control-generate-json-config .button': 'generateJSONConfig',
+      'click .menu-tools .control-upload-json-config .button': 'uploadJSONConfig',
+      'click .menu-tools .control-collection-reset .button': 'handleCollectionRestart',
 
       // @todo - Possibly refactor group controls into own view
       'click .collection-group h2 .group-expando-toggle': 'groupToggleOpenClosed',
@@ -2136,8 +2134,8 @@ define([
         'sortNumericAsc',
         'sortNumericDesc',
 
-        // @todo - Refactor share menu into own view
-        'toggleShareMenu',
+        // @todo - Refactor tools menu into own view
+        'toggleToolsMenu',
         'generateJSONConfig',
         'uploadJSONConfig',
         'handleCollectionRestart',
@@ -2906,20 +2904,19 @@ define([
 
     //
     // !!!!!!!
-    // @todo - Refactor Share menu into own view
+    // @todo - Refactor tools menu into own view
     // !!!!!!!
     //
 
     /**
-     * Toggle and load the share menu
-     * Load the share menu with a dynamically generated share URL and collection image.
+     * Toggle and load the tools menu
      */
-    toggleShareMenu: function() {
+    toggleToolsMenu: function() {
 
       // Add the modal menu
-      if (!this.menus.share) {
-        this.menus.share = $(this.templates.menuShare()).remodal();
-        this.$el.append(this.menus.share);
+      if (!this.menus.tools) {
+        this.menus.tools = $(this.templates.menuTools()).remodal();
+        this.$el.append(this.menus.tools);
       }
 
       // Reset configuration generation
@@ -2927,16 +2924,8 @@ define([
       generate_json_config_container.find('.message').show();
       generate_json_config_container.find('.download').hide();
 
-      // Reset share image messages and elements
-      var generate_share_image_container = $('.control-generate-share-image');
-      generate_share_image_container.find('.message').show();
-      generate_share_image_container.find('.download').hide();
-      generate_share_image_container.find('.none').hide();
-      generate_share_image_container.find('img').remove();
-      generate_share_image_container.find('.share-image').remove();
-
       // Toggle menu open
-      this.menus.share.open();
+      this.menus.tools.open();
     },
 
 
@@ -3003,8 +2992,8 @@ define([
                 if (self.storage_settings.is_local && !self.storage_settings.dont_use_local) {
                   window.localStorage.setItem(self.storage_settings.id, JSON.stringify(self.collection));
                 }
-                self.loadCollection();
-                self.menus.share.close();
+                self.menus.tools.close();
+                window.location.href = '/';
               }
             });
           }
@@ -3018,7 +3007,7 @@ define([
     handleCollectionRestart: function() {
       window.localStorage.removeItem(this.storage_settings.id);
       window.localStorage.removeItem(this.storage_settings.id + '_settings');
-      this.menus.share.close();
+      this.menus.tools.close();
       window.location.href = '/';
     },
 

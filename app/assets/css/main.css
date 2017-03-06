@@ -7482,8 +7482,6 @@ em {
       max-width: 1440px; } }
 
 .intro {
-  margin: 0 auto;
-  max-width: 960px;
   background-color: #2f5b9f;
   border-top: 6px solid #2f5b9f;
   padding: 20px;
@@ -7493,16 +7491,6 @@ em {
     display: table; }
   .intro:after {
     clear: both; }
-  @media only screen and (min-width: 1440px) {
-    .intro {
-      max-width: 1440px; } }
-  @media only screen and (min-width: 840px) {
-    .intro {
-      margin: 0 auto;
-      max-width: 1440px; } }
-  @media only screen and (min-width: 840px) and (min-width: 1440px) {
-    .intro {
-      max-width: 1440px; } }
   .intro .intro-table {
     display: table;
     width: 100%;

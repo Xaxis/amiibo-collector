@@ -20,10 +20,6 @@
 // ---------------------------
 .intro {
   @include clearfix();
-  @include site-width('md', true, false);
-  @include breakpoint($min: $fg-col-14) {
-    @include site-width('lg', true, false);
-  }
   background-color: $dark-blue;
   border-top: 6px solid $dark-blue;
   padding: $fg-gutter;

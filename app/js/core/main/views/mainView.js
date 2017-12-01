@@ -3,13 +3,13 @@
  *
  * @todo - Write deployment script.
  *
- * @todo - Add user accounts, server storage of collections.
+ * @todo - Add user accounts, server storage of collections??
  *
- * @todo - Refactor app to include custom collection functionality.
+ * @todo - Refactor app to include custom collection functionality??
  *
  * @todo - Create message/template for when no groups are being displayed.
  *
- * @todo - Consider adding sort by regions filter
+ * @todo - Add sort by regions filter??
  *
  * @todo - Create filter to allow users to not show/load pictures?
  *
@@ -1654,6 +1654,26 @@ define([
         }
       },
 
+      // Fire emblem
+      fireemblem: {
+        title: "Fire Emblem",
+        weight: 0,
+        collection: {
+          alm: {
+            title: "Alm"
+          },
+          celica: {
+            title: "Celica"
+          },
+          chrome: {
+            title: "Chrome"
+          },
+          tiki: {
+            title: "Tiki"
+          }
+        }
+      },
+
       // Kirby
       kirby: {
         title: "Kirby",
@@ -1688,8 +1708,17 @@ define([
           linkarcher: {
             title: "Link - Archer"
           },
+          linkmajorasmask: {
+            title: "Link - Majora's Mask"
+          },
           linkrider: {
             title: "Link - Rider"
+          },
+          linkskywardsword: {
+            title: "Link - Skyward Sword"
+          },
+          linktwilightprincess: {
+            title: "Link - Twilight Princess"
           },
           ocarinalink: {
             title: "Link - Ocarina of Time"
@@ -1702,7 +1731,19 @@ define([
           },
           zelda: {
             title: "Zelda - The Wind Waker"
-          }
+          },
+          daruk: {
+            title: "Daruk"
+          },
+          mipha: {
+            title: "Mipha"
+          },
+          revali: {
+            title: "Revali"
+          },
+          urbosa: {
+            title: "Urbosa"
+          },
         }
       },
 
@@ -1713,6 +1754,20 @@ define([
         collection: {
           gold: {
             title: "Mega Man - Gold Edition"
+          }
+        }
+      },
+
+      // Metroid series
+      metroid: {
+        title: "Metroid",
+        weight: 0,
+        collection: {
+          metroid: {
+            title: "Metroid"
+          },
+          samusaran: {
+            title: "Samus Aran"
           }
         }
       },
@@ -1742,14 +1797,34 @@ define([
           }
         }
       },
+      
+      // Pikmin
+      pikmin: {
+        title: "Pikmin",
+        weight: 0,
+        collection: {
+          pikmin: {
+            title: "Pikmin"
+          }
+        }
+      },
 
       // Shovel knight
       shovelknight: {
         title: "Shovel Knight",
         weight: 0,
         collection: {
+          kingknight: {
+            title: "King Knight"
+          },
+          plagueknight: {
+            title: "Plague Knight"
+          },
           shovelknight: {
             title: "Shovel Knight"
+          },
+          specterknight: {
+            title: "Specter Knight"
           }
         }
       },
@@ -1788,16 +1863,25 @@ define([
           inklingboy2: {
             title: "Inkling Boy"
           },
+          inklingboy3: {
+            title: "Inkling Boy"
+          },
           inklinggirl1: {
             title: "Inkling Girl"
           },
           inklinggirl2: {
             title: "Inkling Girl"
           },
+          inklinggirl3: {
+            title: "Inkling Girl"
+          },
           inklingsquidgreen: {
             title: "Inkling Squid"
           },
           inklingsquidorange: {
+            title: "Inkling Squid"
+          },
+          inklingsquidpurple: {
             title: "Inkling Squid"
           },
           marie: {
@@ -1811,6 +1895,12 @@ define([
         title: "Super Smash Brothers",
         weight: 0,
         collection: {
+          bayonetta: {
+            title: "Bayonetta"
+          },
+          bayonettaplayer2: {
+            title: "Bayonetta Player 2"
+          },
           bowser: {
             title: "Bowser"
           },
@@ -1822,6 +1912,18 @@ define([
           },
           charizard: {
             title: "Charizard"
+          },
+          cloud: {
+            title: "Cloud"
+          },
+          cloudplayer2: {
+            title: "Cloud Player 2"
+          },
+          corrin: {
+            title: "Corrin"
+          },
+          corrinplayer2: {
+            title: "Corrin Player 2"
           },
           darkpit: {
             title: "Dark Pit"
@@ -2005,6 +2107,12 @@ define([
           goldmario: {
             title: "Gold Mario"
           },
+          goomba: {
+            title: "Goomba"
+          },
+          koopatroopa: {
+            title: "Koopa Troopa"
+          },
           luigi: {
             title: "Luigi"
           },
@@ -2045,6 +2153,23 @@ define([
           },
           moderncolor: {
             title: "30th Anniversary Mario - Modern Color"
+          }
+        }
+      },
+      
+      // Super Mario Odyssey
+      smo: {
+        title: "Super Mario Odyssey",
+        weight: 0,
+        collection: {
+          bowserwedding: {
+            title: "Bowser (Wedding Outfit)"
+          },
+          mariowedding: {
+            title: "Mario (Wedding Outfit)"
+          },
+          peachwedding: {
+            title: "Peach (Wedding Outfit)"
           }
         }
       },

@@ -2521,7 +2521,7 @@ define([
         _.each(group.collection, function(item, iidx) {
           var
             item_id             = item.id,
-            item_path         = path + group_id + '-' + item_id + '.png',
+            item_path         = path + group_id + '-' + item_id + '.jpg',
             item_elm        = group_elm.find('[data-item-id="' + item.id + '"]');
 
           // Create new grid object

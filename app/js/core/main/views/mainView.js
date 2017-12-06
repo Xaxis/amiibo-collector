@@ -1,7 +1,7 @@
 /**
  * Meat and potatoes of this app.
  *
- * @todo - Write deployment script.
+ * @todo - Refactor scroll linked positioning code to work with touch devices
  *
  * @todo - Add user accounts, server storage of collections??
  *
@@ -14,6 +14,10 @@
  * @todo - Create filter to allow users to not show/load pictures?
  *
  * @todo - Create a bug reporting app/menu so people can email me problems/bugs, with captcha.
+ *
+ * @todo - Make menus close upon clicking out of them
+ *
+ * @todo - Minify JavaScript in build process
  */
 define([
   'jquery',
@@ -2289,27 +2293,28 @@ define([
       );
       
       // Initialize sticky navigation
-      $('.controls').sticky({
-        start: 'top',
-        end: 'top',
-        smooth: true,
-        stack: true,
-        onStick: function(elm) {
-          $(elm).addClass('stuck');
-        },
-        onUnstick: function(elm) {
-          $(elm).removeClass('stuck');
-        },
-        onScroll: function(elm) {
-          if ($(window).scrollTop() + $(window).height() >= $(document).height() - 50) {
-            $('.back-to-top').removeClass('stuck');
-          } else if ($(elm).hasClass('stuck')) {
-            $('.back-to-top').addClass('stuck');
-          } else if (!$(elm).hasClass('stuck')) {
-            $('.back-to-top').removeClass('stuck');
-          }
-        }
-      });
+      // @todo - remove this
+      // $('.controls').sticky({
+      //   start: 'top',
+      //   end: 'top',
+      //   smooth: true,
+      //   stack: true,
+      //   onStick: function(elm) {
+      //     $(elm).addClass('stuck');
+      //   },
+      //   onUnstick: function(elm) {
+      //     $(elm).removeClass('stuck');
+      //   },
+      //   onScroll: function(elm) {
+      //     if ($(window).scrollTop() + $(window).height() >= $(document).height() - 50) {
+      //       $('.back-to-top').removeClass('stuck');
+      //     } else if ($(elm).hasClass('stuck')) {
+      //       $('.back-to-top').addClass('stuck');
+      //     } else if (!$(elm).hasClass('stuck')) {
+      //       $('.back-to-top').removeClass('stuck');
+      //     }
+      //   }
+      // });
 
       // Capture the scroll position when a modal opens so it can be restored when modals are closed
       $(document).on('opening', '.remodal', function () {
@@ -3134,7 +3139,7 @@ define([
       window.localStorage.removeItem(this.storage_settings.id);
       window.localStorage.removeItem(this.storage_settings.id + '_settings');
       this.menus.tools.close();
-      window.location.href = '/';
+      window.location.reload ? window.location.reload() : window.location.href = window.location.href;
     },
 
 
@@ -3156,7 +3161,11 @@ define([
         target        = $(e.currentTarget),
         parent        = target.closest('.collection-group'),
         group_name    = parent.attr('data-group-name'),
-        group         = parent.find('.group');
+        group         = parent.find('.group'),
+        controls      = $('.more-controls.open');
+
+      // Close any other control menus
+      controls.each(function(idx, elm) { $(elm).find('.group-more').click(); });
 
       // Stop click propagation from h2's events
       e.stopPropagation();

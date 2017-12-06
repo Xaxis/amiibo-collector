@@ -25,6 +25,10 @@
 @import "partials/core/fonts";
 @import "vendor/fontawesome";
 
+//--------
+// Cordova styles
+@import "vendor/cordova";
+
 
 //--------
 // Media print style definitions
@@ -69,3 +73,5 @@
 @import "partials/object/grid";
 @import "partials/object/modal";
 @import "partials/object/baloon";
+
+

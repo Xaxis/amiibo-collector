@@ -75,6 +75,9 @@
 // -------------------------
 .controls {
   @include clearfix();
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
   margin-bottom: 20px;
   background-color: $blue;
   z-index: 999;
@@ -146,61 +149,6 @@
       }
     }
   }
-
-  // Modified control styles when nav menu is "stuck"
-  &.stuck {
-    width: 100%;
-    .col1 {
-      display: table-cell;
-      width: 15%;
-      .logo {
-        img {
-          width: 58px;
-          opacity: 1;
-          transition:
-                  width 350ms ease,
-                  opacity 350ms ease;
-          @include site-mq($fg-col-15) {
-            width: 48px;
-          }
-          @include site-mq($fg-col-15) {
-            width: 45px;
-          }
-        }
-      }
-    }
-    .col2 {
-      width: auto;
-      text-align: right;
-      a {
-        margin-left: 18%;
-        transition: margin-left 350ms ease;
-        @include site-mq($fg-col-20) {
-          margin-left: 16%;
-          transition: margin-left 0ms ease;
-        }
-        @include site-mq($fg-col-17) {
-          margin-left: 15%;
-          transition: margin-left 0ms ease;
-          font-size: 35px;
-        }
-        @include site-mq($fg-col-15) {
-          margin-left: 13%;
-          transition: margin-left 0ms ease;
-        }
-        @include site-mq($fg-col-10) {
-          margin-left: 12%;
-          transition: margin-left 0ms ease;
-          font-size: 30px;
-        }
-        @include site-mq($fg-col-7) {
-          margin-left: 9%;
-          transition: margin-left 0ms ease;
-          font-size: 25px;
-        }
-      }
-    }
-  }
 }
 
 
@@ -229,12 +177,12 @@
     }
     h2 {
       display: inline-block;
-      @include breakpoint($max: $fg-col-14) {
-        font-size: 1.4rem;
-      }
-      @include breakpoint($max: $fg-col-10) {
-        font-size: 1.2rem;
-      }
+      //@include breakpoint($max: $fg-col-14) {
+      //  font-size: 1.4rem;
+      //}
+      //@include breakpoint($max: $fg-col-10) {
+      //  font-size: 1.2rem;
+      //}
       .group-control {
         cursor: pointer;
         display: inline-block;
@@ -320,7 +268,7 @@
               background: $text-ltgrey;
             }
             .more-controls-control {
-              font-size: 0.8em !important;
+              font-size: 0.7em !important;
               padding: 8px 12px;
               .group-control {
                 width: 30px;
@@ -412,6 +360,7 @@
   overflow-y: scroll;
   height: 100%;
   background: rgba($black-hex, 0.8) !important;
+  font-size: 1.2rem;
 
   .title {
     font-size: 1.5rem;
@@ -628,7 +577,7 @@
       .control {
         display: inline-block;
         font-family: "FontAwesome";
-        margin-right: 15px;
+        margin-right: 30px;
         cursor: pointer;
       }
       .group-title {
@@ -764,9 +713,9 @@
 .footer {
   background-color: $dark-blue;
   color: $white;
-  margin-top: 40px;
+  position: sticky;
+  bottom: 0;
   border-top: 6px solid $blue;
-  position: relative;
   z-index: 1000;
   @include breakpoint($max: $fg-col-10) {
     font-size: 0.8rem;

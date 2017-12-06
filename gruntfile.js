@@ -75,7 +75,7 @@ module.exports = function(grunt) {
      */
     watch: {
       options: {
-        livereload: true
+        livereload: false
       },
       js: {
         files: [
@@ -89,7 +89,7 @@ module.exports = function(grunt) {
       },
       html: {
         files: [
-          '**/*.html'
+          'index.html'
         ],
         options: {
           spawn: false
@@ -106,6 +106,13 @@ module.exports = function(grunt) {
    * Load grunt plugins
    */
   require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
+
+  /**
+   * Grunt build task
+   */
+  grunt.registerTask('build', [
+    'sass:dev'
+  ]);
 
   /**
    * Default task

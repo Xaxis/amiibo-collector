@@ -8101,8 +8101,9 @@ em {
 
 .back-to-top {
   position: fixed;
+  display: inline-block;
   right: 10px;
-  bottom: 10px;
+  bottom: 65px;
   padding: 4px 6px;
   border: 1px solid #989898;
   border-radius: 4px;
@@ -8113,7 +8114,7 @@ em {
   .back-to-top i {
     color: #3880ff;
     display: inline-block; }
-  .back-to-top.stuck {
+  .back-to-top.show {
     opacity: 1;
     transition: opacity 350ms ease; }
 

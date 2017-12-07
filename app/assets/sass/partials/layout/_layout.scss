@@ -773,8 +773,9 @@
 // -----------------------------
 .back-to-top {
   position: fixed;
+  display: inline-block;
   right: 10px;
-  bottom: 10px;
+  bottom: 65px;
   padding: 4px 6px;
   border: 1px solid $text-ltgrey;
   border-radius: 4px;
@@ -786,7 +787,7 @@
     color: $blue;
     display: inline-block;
   }
-  &.stuck {
+  &.show {
     opacity: 1;
     transition: opacity 350ms ease;
   }

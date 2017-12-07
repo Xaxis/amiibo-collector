@@ -1,23 +1,19 @@
 /**
  * Meat and potatoes of this app.
  *
- * @todo - Refactor scroll linked positioning code to work with touch devices
- *
- * @todo - Add user accounts, server storage of collections??
- *
- * @todo - Refactor app to include custom collection functionality??
- *
  * @todo - Create message/template for when no groups are being displayed.
  *
  * @todo - Add sort by regions filter??
  *
- * @todo - Create filter to allow users to not show/load pictures?
+ * @todo - Add sort by release date filter??
  *
  * @todo - Create a bug reporting app/menu so people can email me problems/bugs, with captcha.
  *
  * @todo - Make menus close upon clicking out of them
  *
  * @todo - Minify JavaScript in build process
+ *
+ * @todo - Create/deploy web version (with messaging regarding app installation) and android/iphone versions
  */
 define([
   'jquery',
@@ -2292,29 +2288,17 @@ define([
         'scrollViewportBackToTop'
       );
       
-      // Initialize sticky navigation
-      // @todo - remove this
-      // $('.controls').sticky({
-      //   start: 'top',
-      //   end: 'top',
-      //   smooth: true,
-      //   stack: true,
-      //   onStick: function(elm) {
-      //     $(elm).addClass('stuck');
-      //   },
-      //   onUnstick: function(elm) {
-      //     $(elm).removeClass('stuck');
-      //   },
-      //   onScroll: function(elm) {
-      //     if ($(window).scrollTop() + $(window).height() >= $(document).height() - 50) {
-      //       $('.back-to-top').removeClass('stuck');
-      //     } else if ($(elm).hasClass('stuck')) {
-      //       $('.back-to-top').addClass('stuck');
-      //     } else if (!$(elm).hasClass('stuck')) {
-      //       $('.back-to-top').removeClass('stuck');
-      //     }
-      //   }
-      // });
+      // Initialize back to top handler
+      $(window).on('scroll', function() {
+        var
+          scroll_pos        = $(window).scrollTop();
+        if (scroll_pos >= 150) {
+          $('.back-to-top').addClass('show');
+        }
+        else if (scroll_pos < 150) {
+          $('.back-to-top').removeClass('show');
+        }
+      });
 
       // Capture the scroll position when a modal opens so it can be restored when modals are closed
       $(document).on('opening', '.remodal', function () {

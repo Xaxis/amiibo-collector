@@ -24,7 +24,6 @@
       main:                 'core/main/views/mainView',
       util:                 'libs/native/util/util',
       devgrid:              'libs/native/devgrid/devgrid',
-      'modernizr-tests':    'libs/native/modernizr-tests/modernizr-tests',
       modal:                'libs/native/modal/modal'
     },
     shim: {

@@ -7646,7 +7646,6 @@ em {
   background-color: #3880ff;
   z-index: 999;
   padding: 0 20px;
-  text-align: center;
   height: 90px;
   border-top: 6px solid #2f5b9f; }
   .controls:before, .controls:after {
@@ -7660,50 +7659,38 @@ em {
   @media only screen and (max-width: 600px) {
     .controls {
       padding: 0 10px; } }
-  .controls .controls-table {
-    display: table;
+  .controls .controls-container {
     width: 100%;
     height: 100%; }
-    .controls .controls-table .cell {
-      display: table-cell;
-      vertical-align: middle;
-      height: 100%; }
-  .controls .col1 {
-    display: none;
-    text-align: left; }
-    .controls .col1 .logo img {
-      height: auto;
-      width: 0;
-      opacity: 0;
-      transition: width 350ms ease, opacity 350ms ease; }
-  .controls .col2 {
-    width: 100%; }
-    .controls .col2 a {
+    .controls .controls-container .controls-cell {
+      height: 100%;
+      width: 25%;
+      float: left;
+      display: flex;
+      align-items: center;
+      justify-content: center; }
+      .controls .controls-container .controls-cell.logo-cell {
+        display: none; }
+    .controls .controls-container a.logo {
+      height: 100%;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center; }
+      .controls .controls-container a.logo img {
+        width: auto;
+        height: 65%;
+        transition: width 350ms ease, opacity 350ms ease; }
+    .controls .controls-container a {
       font-family: "FontAwesome";
       font-weight: lighter;
       font-size: 45px;
-      color: white;
-      margin-left: 28%;
-      transition: margin-left 350ms ease; }
-      .controls .col2 a:first-child {
-        margin-left: 0 !important; }
-      @media only screen and (max-width: 1200px) {
-        .controls .col2 a {
-          margin-left: 26%;
-          transition: margin-left 0ms ease; } }
+      color: white; }
       @media only screen and (max-width: 900px) {
-        .controls .col2 a {
-          margin-left: 25%;
-          transition: margin-left 0ms ease;
+        .controls .controls-container a {
           font-size: 35px; } }
-      @media only screen and (max-width: 600px) {
-        .controls .col2 a {
-          margin-left: 22%;
-          transition: margin-left 0ms ease; } }
       @media only screen and (max-width: 480px) {
-        .controls .col2 a {
-          margin-left: 20%;
-          transition: margin-left 0ms ease;
+        .controls .controls-container a {
           font-size: 30px; } }
 
 .grid-container {

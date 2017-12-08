@@ -3,13 +3,11 @@
  */
 define([
   'devgrid',
-  'modernizr-tests',
   'modal',
   'router',
   'main'
 ], function(
   Devgrid,
-  ModernizrTests,
   Modal,
   Router,
   Main
@@ -24,7 +22,6 @@ define([
 
         // Module initializations
         Devgrid.initialize();
-        ModernizrTests.initialize();
         new Modal().initialize();
         Router.initialize({pushState: true});
         new Main();

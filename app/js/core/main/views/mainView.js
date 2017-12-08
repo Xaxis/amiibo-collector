@@ -1,6 +1,8 @@
 /**
  * Meat and potatoes of this app.
  *
+ * @todo - Amiibot website is very broken in Safari
+ * 
  * @todo - Create message/template for when no groups are being displayed.
  *
  * @todo - Add sort by regions filter??

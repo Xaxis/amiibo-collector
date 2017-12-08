@@ -82,7 +82,6 @@
   background-color: $blue;
   z-index: 999;
   padding: 0 20px;
-  text-align: center;
   height: 90px;
   border-top: 6px solid $dark-blue;
   @include site-mq($fg-col-15) {
@@ -91,60 +90,44 @@
   @include site-mq($fg-col-10) {
     padding: 0 10px;
   }
-  .controls-table {
-    display: table;
+  .controls-container {
     width: 100%;
     height: 100%;
-    .cell {
-      display: table-cell;
-      vertical-align: middle;
+    .controls-cell {
       height: 100%;
+      width: 25%;
+      float: left;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      &.logo-cell {
+        display: none;
+      }
     }
-  }
-  .col1 {
-    display: none;
-    text-align: left;
-    .logo {
+    a.logo {
+      height: 100%;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       img {
-        height: auto;
-        width: 0;
-        opacity: 0;
+        width: auto;
+        height: 65%;
+        //opacity: 0;
         transition:
                 width 350ms ease,
                 opacity 350ms ease;
       }
     }
-  }
-  .col2 {
-    width: 100%;
     a {
       font-family: "FontAwesome";
       font-weight: lighter;
       font-size: 45px;
       color: $white;
-      &:not(.logo) {
-      }
-      margin-left: 28%;
-      &:first-child {
-        margin-left: 0 !important;
-      }
-      transition: margin-left 350ms ease;
-      @include site-mq($fg-col-20) {
-        margin-left: 26%;
-        transition: margin-left 0ms ease;
-      }
       @include site-mq($fg-col-15) {
-        margin-left: 25%;
-        transition: margin-left 0ms ease;
         font-size: 35px;
       }
-      @include site-mq($fg-col-10) {
-        margin-left: 22%;
-        transition: margin-left 0ms ease;
-      }
       @include site-mq($fg-col-8) {
-        margin-left: 20%;
-        transition: margin-left 0ms ease;
         font-size: 30px;
       }
     }

@@ -10,8 +10,8 @@
     <meta name="Keywords" content="amiibo collection collectors nintendo app">
     <title>Amiibo Collector</title>
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
     <link rel="icon" type="image/png" href="favicon.png" />
-    <link rel="icon" href="favicon.ico" type="image/x-icon">
     <link rel="stylesheet" type="text/css" href="app/assets/css/main.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"></script>
     <script data-main="app/js/config" src="app/js/libs/vendor/requirejs/require.js"></script>
@@ -28,14 +28,20 @@
     </div>
 </div>
 <div class="controls">
-    <div class="controls-table">
-        <div class="cell col1">
+    <div class="controls-container">
+        <div class="controls-cell logo-cell">
             <a href="/" class="logo"><img src="app/assets/images/amiibo-collector-logo-icon-white.png"></a>
         </div>
-        <div class="cell col2">
+        <div class="controls-cell">
             <a href="#" class="control-stats" data-balloon="Stats" data-balloon-pos="down">&#xf200;</a>
+        </div>
+        <div class="controls-cell">
             <a href="#" class="control-group" data-balloon="Groups" data-balloon-pos="down">&#xf205;</a>
+        </div>
+        <div class="controls-cell">
             <a href="#" class="control-sort" data-balloon="Sort" data-balloon-pos="down">&#xf0dc;</a>
+        </div>
+        <div class="controls-cell">
             <a href="#" class="control-tools" data-balloon="Tools" data-balloon-pos="down">&#xf013;</a>
         </div>
     </div>
@@ -55,7 +61,7 @@
                 <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
                     <input type="hidden" name="cmd" value="_s-xclick">
                     <input type="hidden" name="hosted_button_id" value="5RNFW8DXG7QFL">
-                    - <input type="submit" value="buy me a beer?"  name="submit" alt="PayPal - The safer, easier way to pay online!">
+                    - <input type="submit" value="tip me?"  name="submit" alt="PayPal - The safer, easier way to pay online!">
                 </form>
             </div>
         </div>

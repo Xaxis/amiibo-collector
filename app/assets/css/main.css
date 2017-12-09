@@ -8090,25 +8090,6 @@ em {
     cursor: pointer;
     display: inline-block; }
 
-.back-to-top {
-  position: fixed;
-  display: inline-block;
-  right: 10px;
-  bottom: 65px;
-  padding: 4px 6px;
-  border: 1px solid #989898;
-  border-radius: 4px;
-  background: white;
-  cursor: pointer;
-  opacity: 0;
-  transition: opacity 350ms ease; }
-  .back-to-top i {
-    color: #3880ff;
-    display: inline-block; }
-  .back-to-top.show {
-    opacity: 1;
-    transition: opacity 350ms ease; }
-
 .btn {
   display: inline-block;
   text-decoration: none;

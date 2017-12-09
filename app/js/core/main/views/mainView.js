@@ -24,13 +24,10 @@
  * @todo - Add wishlist feature
  * 
  * @todo - Optimize. Ungodly slow on most android devices
- *
- * @todo - Add touchstart event while on mobile devices
  */
 define([
   'jquery',
   'underscore',
-  'backbone',
   'backbone.touch',
   'util',
   'jquery.lazyload',
@@ -48,7 +45,6 @@ define([
 ], function(
   $,
   _,
-  Backbone,
   BackboneTouch,
   Util,
   LazyLoad,
@@ -129,10 +125,7 @@ define([
       'change .menu-item-settings .controls-item-status select': 'itemSettingsSubitemStatusUpdate',
       'change .menu-item-settings .controls-item-condition select': 'itemSettingsSubitemConditionUpdate',
       'click .menu-item-settings .controls-item-note .button': 'itemSettingsSubitemNoteToggle',
-      'click .menu-item-settings .controls-item-note .notepad': 'itemSettingsSubitemNoteToggle',
-
-      // @todo - Refactor below global events into own file or view
-      'click .back-to-top': 'scrollViewportBackToTop'
+      'click .menu-item-settings .controls-item-note .notepad': 'itemSettingsSubitemNoteToggle'
     },
 
     // Stores references to loaded menus
@@ -2296,10 +2289,7 @@ define([
         'itemSettingsRemoveSubitem',
         'itemSettingsSubitemStatusUpdate',
         'itemSettingsSubitemConditionUpdate',
-        'itemSettingsSubitemNoteToggle',
-
-        // @todo - Refactor below global events into own file or view
-        'scrollViewportBackToTop'
+        'itemSettingsSubitemNoteToggle'
       );
 
       // Initialize cordova platform event handlers
@@ -2316,18 +2306,6 @@ define([
         // Attach cordova events
         document.addEventListener("backbutton", this.deviceBackButton, false);
       }
-
-      // Initialize back to top handler
-      $(window).on('scroll', function() {
-        var
-          scroll_pos        = $(window).scrollTop();
-        if (scroll_pos >= 150) {
-          $('.back-to-top').addClass('show');
-        }
-        else if (scroll_pos < 150) {
-          $('.back-to-top').removeClass('show');
-        }
-      });
 
       // Capture the scroll position when a modal opens so it can be restored when modals are closed
       $(document).on('opening', '.remodal', function () {

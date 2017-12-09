@@ -1,8 +1,10 @@
 /**
  * Meat and potatoes of this app.
  *
- * @todo - Amiibot website is very broken in Safari
- * 
+ * @todo - Register github private account and commit .keystore file
+ *
+ * @todo - Get splashscreen working
+ *
  * @todo - Create message/template for when no groups are being displayed.
  *
  * @todo - Add sort by regions filter??
@@ -16,12 +18,21 @@
  * @todo - Minify JavaScript in build process
  *
  * @todo - Create/deploy web version (with messaging regarding app installation) and android/iphone versions
+ *
+ * @todo - Write deploy to web script (sync files to web without needing to manually ftp)
+ * 
+ * @todo - Add wishlist feature
+ * 
+ * @todo - Optimize. Ungodly slow on most android devices
+ *
+ * @todo - Add touchstart event while on mobile devices
  */
 define([
   'jquery',
   'underscore',
   'backbone',
-  'jquery.sticky',
+  'backbone.touch',
+  'util',
   'jquery.lazyload',
   'text!core/main/templates/collection-group.tpl.html',
   'text!core/main/templates/collection-group-item.tpl.html',
@@ -38,7 +49,8 @@ define([
   $,
   _,
   Backbone,
-  Sticky,
+  BackboneTouch,
+  Util,
   LazyLoad,
   collectionGroupTpl,
   collectionGroupItemTpl,
@@ -52,7 +64,7 @@ define([
   menuStatsTpl,
   menuStatsGroupTpl
 ) {
-  var Main = Backbone.View.extend({
+  var Main = BackboneTouch.View.extend({
     el: $('body'),
 
     templates: {
@@ -2289,7 +2301,22 @@ define([
         // @todo - Refactor below global events into own file or view
         'scrollViewportBackToTop'
       );
-      
+
+      // Initialize cordova platform event handlers
+      if (Util.isCordova()) {
+
+        // Bind methods
+        _.bindAll(this,
+          'deviceBackButton'
+        );
+
+        // Add special device class
+        $('html').addClass('is-device');
+
+        // Attach cordova events
+        document.addEventListener("backbutton", this.deviceBackButton, false);
+      }
+
       // Initialize back to top handler
       $(window).on('scroll', function() {
         var
@@ -2582,7 +2609,7 @@ define([
     /**
      * Toggle and populate the stats menu.
      */
-    toggleStatsMenu: function() {
+    toggleStatsMenu: function(e) {
       var
         self                = this,
         stats_container     = null,
@@ -3662,6 +3689,25 @@ define([
      */
     scrollViewportBackToTop: function() {
       window.scrollTo(0, 0);
+    },
+
+
+
+
+
+
+    //
+    // !!!!!!!
+    // @todo - The below are cordova related methods
+    // !!!!!!!
+    //
+
+    /**
+     * Handle device back button.
+     */
+    deviceBackButton: function() {
+      $('.remodal-close').trigger('click');
+      return true;
     }
 
   });

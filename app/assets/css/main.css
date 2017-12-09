@@ -8036,6 +8036,10 @@ em {
       margin-top: 6px;
       font-size: .8rem;
       max-width: 400px; }
+  html.is-device .menu.menu-tools .control-generate-json-config {
+    display: none; }
+  html.is-device .menu.menu-tools .control-upload-json-config {
+    display: none; }
   .menu.menu-tools .control-upload-json-config .info .collection-configuration-input {
     display: none; }
   .menu.menu-restart .restart-info {

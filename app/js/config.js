@@ -18,6 +18,7 @@
       text:                 'libs/vendor/requirejs-text/text',
       underscore:           'libs/vendor/underscore/underscore',
       backbone:             'libs/vendor/backbone/backbone',
+      'backbone.touch':     'libs/vendor/backbone.touch/dist/backbone.touch.min',
       remodal:              'libs/vendor/remodal/dist/remodal.min',
 
       // Native modules
@@ -37,7 +38,37 @@
    * Bootstrap app JavaScript
    */
   require(['init'], function(Init) {
-    var app = new Init();
+    var app = {
+      initialize: function() {
+
+        // Attach device ready event listener when cordova
+        // @todo - Fix this initialization!!!
+        if ("deviceready" in window) {
+          document.addEventListener('deviceready', this.onDeviceReady.bind(this), false);
+        }
+
+        // Initialize application in browser
+        else {
+          var app = new Init();
+          app.initialize();
+        }
+      },
+
+      // Bind any cordova events here. Common events are:
+      // 'pause', 'resume', etc.
+      onDeviceReady: function() {
+        this.receivedEvent('deviceready');
+      },
+
+      // Update DOM on a Received Event
+      receivedEvent: function(id) {
+        var app = new Init();
+        app.initialize();
+        console.log('Received Event: ' + id);
+      }
+    };
+
+    // Initialize cross platform application
     app.initialize();
   });
 

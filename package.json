@@ -18,6 +18,7 @@
   "homepage": "https://github.com/Xaxis/amiibo-collector#readme",
   "dependencies": {
     "backbone": "^1.2.1",
+    "backbone.touch": "^0.4.3",
     "express": "^4.13.1",
     "font-awesome": "^4.3.0",
     "jquery": "^2.1.4",

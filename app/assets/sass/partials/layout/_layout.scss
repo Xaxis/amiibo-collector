@@ -665,12 +665,18 @@
       }
     }
     .control-generate-json-config {
+      html.is-device & {
+        display: none;
+      }
       .info {
         .download {
         }
       }
     }
     .control-upload-json-config {
+      html.is-device & {
+        display: none;
+      }
       .info {
         .collection-configuration-input {
           display: none;

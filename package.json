@@ -21,7 +21,7 @@
     "backbone.touch": "^0.4.3",
     "express": "^4.13.1",
     "font-awesome": "^4.3.0",
-    "jquery": "^2.1.4",
+    "jquery": "^3.5.0",
     "jquery-lazyload": "^1.9.7",
     "jquery.devgrid": "git+https://github.com/Xaxis/jquery.devgrid.git",
     "jquery.sticky": "git+https://github.com/Xaxis/jquery.sticky.git",

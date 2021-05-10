@@ -25,7 +25,7 @@
     "jquery-lazyload": "^1.9.7",
     "jquery.devgrid": "git+https://github.com/Xaxis/jquery.devgrid.git",
     "jquery.sticky": "git+https://github.com/Xaxis/jquery.sticky.git",
-    "lodash": "^3.10.0",
+    "lodash": "^4.17.21",
     "modernizr": "^3.0.0-alpha.4",
     "remodal": "^1.1.0",
     "requirejs": "^2.1.19",
